@@ -1,0 +1,76 @@
+body:not([class^='edition']){}body:not([class^='edition']) dl{margin:0}
+body:not([class^='edition']) html,body:not([class^='edition']) body{background:#f1f1f1}
+body:not([class^='edition']) *{font-family:Verdana,sans-serif;color:#333}
+body:not([class^='edition']) .main{background:#fff;box-shadow:0 2px 4px #333;-webkit-border-top-right-radius:0;-webkit-border-bottom-right-radius:2px;-webkit-border-bottom-left-radius:2px;-webkit-border-top-left-radius:0;-moz-border-radius-topright:0;-moz-border-radius-bottomright:2px;-moz-border-radius-bottomleft:2px;-moz-border-radius-topleft:0;border-top-right-radius:0;border-bottom-right-radius:2px;border-bottom-left-radius:2px;border-top-left-radius:0;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box;padding:2em}body:not([class^='edition']) .main .error{color:red}
+body:not([class^='edition']) .main h1{color:#ff6319;border-bottom:1px solid #ddd;margin:0 0 1em 0;padding:0 0 0.2em 0;position:relative}body:not([class^='edition']) .main h1 .explore{font-size:0.7em;top:0px}
+body:not([class^='edition']) body>.container-fluid{margin-bottom:40px}
+body:not([class^='edition']) .cornerFlag{content:'';display:inline;position:absolute;border-style:solid;bottom:-14px}
+body:not([class^='edition']) .track{position:absolute;top:-27px;left:0px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box;white-space:nowrap;color:white;font-size:0.85em;padding:4px 10px;margin:0;line-height:1em;text-transform:uppercase}
+body:not([class^='edition']) .nice-article dt{color:#ff6319;border-bottom:1px solid #ddd;padding:0 0 0.2em 0;margin-bottom:10px;font-size:1.2em}
+body:not([class^='edition']) .nice-article dd{margin-bottom:2em}
+body:not([class^='edition']) .track.color1{background-color:#F9A664}
+body:not([class^='edition']) .track.color2{background-color:#CBC75C}
+body:not([class^='edition']) .track.color3{background-color:#806CB1}
+body:not([class^='edition']) .track.color4{background-color:#B36EAD}
+body:not([class^='edition']) .track.color5{background-color:#939498}
+body:not([class^='edition']) .track.color6{background-color:#5299C7}
+body:not([class^='edition']) .track.color7{background-color:#56C4C5}
+body:not([class^='edition']) .track.color8{background-color:#F58426}
+body:not([class^='edition']) .track.color9{background-color:#593F9A}
+body:not([class^='edition']) .track.color10{background-color:#01B1AF}
+body:not([class^='edition']) .track.color11{background-color:#B7B309}
+body:not([class^='edition']) .track.color12{background-color:#C6C7CB}
+body:not([class^='edition']) .track.explore{-webkit-transform:rotate(30deg);-moz-transform:rotate(30deg);transform:rotate(30deg);color:#0066a1;border:1px solid #0066a1;right:-15px;left:inherit}
+body:not([class^='edition']) header{background:url("../img/header-home.png") no-repeat center center;background-size:auto 90%;height:200px}
+body:not([class^='edition']) .subnav-fixed{position:fixed;top:0;left:0;right:0}
+body:not([class^='edition']) .subnav{margin:0 8px;z-index:1020;position:relative}body:not([class^='edition']) .subnav .navbar-inner{background:#0066a1;background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #0066a1), color-stop(1, #08a4ff));background:-ms-linear-gradient(bottom, #0066a1, #08a4ff);background:-moz-linear-gradient(center bottom, #0066a1 0, #08a4ff 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#08a4ff, endColorstr=#0066a1, GradientType=0);box-shadow:0;-webkit-border-top-right-radius:3px;-webkit-border-bottom-right-radius:0;-webkit-border-bottom-left-radius:0;-webkit-border-top-left-radius:3px;-moz-border-radius-topright:3px;-moz-border-radius-bottomright:0;-moz-border-radius-bottomleft:0;-moz-border-radius-topleft:3px;border-top-right-radius:3px;border-bottom-right-radius:0;border-bottom-left-radius:0;border-top-left-radius:3px;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box;font-size:1.2em}body:not([class^='edition']) .subnav .navbar-inner .active,body:not([class^='edition']) .subnav .navbar-inner .active>a,body:not([class^='edition']) .subnav .navbar-inner .active>a:hover{background:#0066a1;background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #0066a1), color-stop(1, #08a4ff));background:-ms-linear-gradient(bottom, #0066a1, #08a4ff);background:-moz-linear-gradient(center bottom, #0066a1 0, #08a4ff 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#08a4ff, endColorstr=#0066a1, GradientType=0)}
+body:not([class^='edition']) .subnav .nav>li:not(.active):not(:hover)>a{color:#142835}
+body:not([class^='edition']) .subnav .navbar-inner:after{content:'';display:inline;position:absolute;border-style:solid;bottom:-14px;border-color:#00253b transparent transparent transparent;border-width:14px 0 0 12px;left:0}
+body:not([class^='edition']) .subnav .navbar-inner:before{content:'';display:inline;position:absolute;border-style:solid;bottom:-14px;border-color:#00253b transparent transparent transparent;border-width:14px 12px 0 0;right:0}
+body:not([class^='edition']) .subnav .user .name{color:#fff;padding-right:5px}
+body:not([class^='edition']) #schedule>*{border-bottom:1px solid #ddd;margin-bottom:5px;padding:1em 0}
+body:not([class^='edition']) #schedule .row-fluid>.span2:first-child{margin-left:14.3646%}
+body:not([class^='edition']) #schedule .hovered{background-color:#e6e6e6;-moz-transition-duration:300ms;-webkit-transition-duration:300ms;transition-duration:300ms}body:not([class^='edition']) #schedule .hovered .speaker *,body:not([class^='edition']) #schedule .hovered .speaker{color:#900}
+body:not([class^='edition']) #schedule .span8:hover{background-color:#e6e6e6;-moz-transition-duration:300ms;-webkit-transition-duration:300ms;transition-duration:300ms}body:not([class^='edition']) #schedule .span8:hover .speaker *,body:not([class^='edition']) #schedule .span8:hover .speaker{color:#900}
+body:not([class^='edition']) #schedule>h3{color:#ff6319;font-size:1.625em;padding:0.25em;text-transform:uppercase}
+body:not([class^='edition']) #schedule .room{-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box;text-align:center;font-weight:900;color:#fff;text-transform:uppercase;padding:6px 0;min-height:0;background:#f00;background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #f00), color-stop(1, #f66));background:-ms-linear-gradient(bottom, #f00, #f66);background:-moz-linear-gradient(center bottom, #f00 0, #f66 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff6666, endColorstr=#ff0000, GradientType=0)}
+body:not([class^='edition']) #schedule .span8>h2{font-size:1.2em;line-height:1.2em;color:#fff;padding:0.4em;text-align:center;margin:0;font-weight:normal}
+body:not([class^='edition']) #schedule time{background:#f00;color:#f00;font-style:italic;font-weight:900;padding:8px 10px 0;text-align:center;vertical-align:bottom}
+body:not([class^='edition']) #schedule .title{margin-bottom:0.4em;padding-bottom:0.5em;color:#ff6319}body:not([class^='edition']) #schedule .title a{font-size:1.2em;font-weight:700;color:#ff6319}
+body:not([class^='edition']) #schedule .speaker{margin-top:0.5em;color:#f00;font-size:0.9em;margin-left:0}body:not([class^='edition']) #schedule .speaker *{color:#f00}
+body:not([class^='edition']) #schedule .speaker.empty{display:none}
+body:not([class^='edition']) #schedule .break{border-left:3px solid #f00;border-right:3px solid #f00;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box;background:#fff}body:not([class^='edition']) #schedule .break h2{color:#f00;font-weight:900}
+body:not([class^='edition']) #schedule .keynote{border-left:3px solid #f00;border-right:3px solid #f00;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box}body:not([class^='edition']) #schedule .keynote h2{color:#f00;font-weight:900}
+body:not([class^='edition']) #schedule .keynote .speaker{text-align:center;padding:0.2em 0;font-size:0.9em;margin:0}
+body:not([class^='edition']) #schedule article{-webkit-border-radius:2px;-moz-border-radius:2px;border-radius:2px;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box;padding:0.5em}body:not([class^='edition']) #schedule article dl{margin-top:2.2em;position:relative}
+body:not([class^='edition']) #schedule article:hover{background-color:#e6e6e6;-moz-transition-duration:300ms;-webkit-transition-duration:300ms;transition-duration:300ms}body:not([class^='edition']) #schedule article:hover .speaker *,body:not([class^='edition']) #schedule article:hover .speaker{color:#900}
+body:not([class^='edition']) #schedule article:hover .title a{color:#f00}
+body:not([class^='edition']) #session{padding:1em 2em 2em}body:not([class^='edition']) #session dt{color:#ff6319;border-bottom:1px solid #ddd;padding:0 0 0.2em 0;margin-bottom:10px;font-size:1.2em}
+body:not([class^='edition']) #session dd{margin-bottom:2em}
+body:not([class^='edition']) #session h2{display:inline-block;font-size:1.2em;line-height:1.2em;color:#f00;width:auto}body:not([class^='edition']) #session h2 *{color:#f00}
+body:not([class^='edition']) #session .abstract{position:relative}body:not([class^='edition']) #session .abstract .track{top:-5px;right:0;left:inherit}
+body:not([class^='edition']) #session .slides .icon{display:inline-block;margin-right:5px}
+body:not([class^='edition']) #session .slides a{color:#142835}
+body:not([class^='edition']) #session .video{min-height:370px}
+body:not([class^='edition']) #bio{padding:1em 2em 2em}body:not([class^='edition']) #bio dt{color:#ff6319;border-bottom:1px solid #ddd;padding:0 0 0.2em 0;margin-bottom:10px;font-size:1.2em}
+body:not([class^='edition']) #bio dd{margin-bottom:2em}
+body:not([class^='edition']) #bio h1 *{color:#ff6319}
+body:not([class^='edition']) #bio h1 .firstname{padding-right:15px}
+body:not([class^='edition']) #bio h1 .lastname{text-transform:uppercase}
+body:not([class^='edition']) #bio img{display:block;margin:0 auto}
+body:not([class^='edition']) #bio dd.sessions *{color:#333}
+body:not([class^='edition']) #bio dd.sessions .icon{padding-right:5px}
+body:not([class^='edition']) #submission article dt{color:#ff6319;border-bottom:1px solid #ddd;padding:0 0 0.2em 0;margin-bottom:10px;font-size:1.2em}
+body:not([class^='edition']) #submission article dd{margin-bottom:2em}
+body:not([class^='edition']) #submission .control-label{width:30%;margin-right:1em}
+body:not([class^='edition']) #submission .controls{margin-left:32%}body:not([class^='edition']) #submission .controls .help-inline{font-style:italic}
+body:not([class^='edition']) #submission textarea,body:not([class^='edition']) #submission input[type=text]{resize:none;width:96%}
+body:not([class^='edition']) #submission .commands{text-align:center}
+body:not([class^='edition']) #submission .upload{width:97%}body:not([class^='edition']) #submission .upload .control-label{width:70px}
+body:not([class^='edition']) #submission .upload .controls{margin-left:90px}
+body:not([class^='edition']) #submission .upload .btn{position:relative}body:not([class^='edition']) #submission .upload .btn input[type=file]{opacity:0;position:absolute;top:0;left:0;width:100%;height:100%}
+body:not([class^='edition']) .contribution{border-radius:5px;padding:1em;margin-bottom:1em}body:not([class^='edition']) .contribution h1>.btn{float:right}
+body:not([class^='edition']) .contribution:hover{background-color:#eee;transition:background-color 500ms}
+body:not([class^='edition']) .btn-primary{background:#0066a1;background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #0066a1), color-stop(1, #08a4ff));background:-ms-linear-gradient(bottom, #0066a1, #08a4ff);background:-moz-linear-gradient(center bottom, #0066a1 0, #08a4ff 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#08a4ff, endColorstr=#0066a1, GradientType=0);border-color:#00253b;color:#fff}
+body:not([class^='edition']) .btn-primary:hover,body:not([class^='edition']) .btn:focus,body:not([class^='edition']) .btn:active .btn.active{background:#000;background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #000), color-stop(1, #00253b));background:-ms-linear-gradient(bottom, #000, #00253b);background:-moz-linear-gradient(center bottom, #000 0, #00253b 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#00253b, endColorstr=#000000, GradientType=0);color:#ff6319}
+@media screen and (max-width:480px){body:not([class^='edition']) header{background-size:auto 80%, auto 75%;height:50px}}@media screen and (max-width:767px){body:not([class^='edition']) .subnav:not(.subnav-fixed){margin:0 -12px} body:not([class^='edition']) #schedule .room{padding:4px 10px} body:not([class^='edition']) #schedule time{background:#ff0;text-align:center;font-size:1.2em;margin-bottom:2%} body:not([class^='edition']) #schedule time.empty{display:none} body:not([class^='edition']) #schedule .row-fluid>.span2:first-child{margin-left:0} body:not([class^='edition']) #schedule article{margin-bottom:1em}body:not([class^='edition']) #schedule article dl{margin-top:0} body:not([class^='edition']) #schedule article .track:not(.explore){position:static;display:inline-block !important;margin:0.5em 0.5em 0 0} body:not([class^='edition']) #schedule article .room{color:white;font-weight:normal;font-style:italic} body:not([class^='edition']) #schedule article .explore{top:-5px} body:not([class^='edition']) #schedule section article{width:45%;float:left;clear:left} body:not([class^='edition']) #schedule section article:nth-of-type(2n){float:right;clear:right} body:not([class^='edition']) #session article{margin-top:2em} body:not([class^='edition']) #session .video{width:100%;min-width:0}}@media screen and (min-width:481px) and (max-width:767px){body:not([class^='edition']) header{background-size:auto 75%, auto 55%;height:80px}}@media screen and (min-width:768px){body:not([class^='edition']) time:not(.empty){border-left:3px solid #f00;border-right:3px solid #f00;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box}}

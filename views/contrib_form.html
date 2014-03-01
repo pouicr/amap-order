@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{root}}/css/techforum.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
+    <script type="application/javascript" src="{{root}}/js/common.js"></script>
+  </head>
+  <body>
+
+    <header></header>
+
+    <div class="subnav navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav">
+            {{#user.menu}}
+              <li {{#active}}class="active"{{/active}}><a {{^active}}href="{{link}}"{{/active}}>{{name}}</a></li>
+            {{/user.menu}}
+          </ul>
+          <div class="user pull-right">
+            <span class="name">Welcome {{user.id}}</span><a class="btn" href="{{root}}/logout"><i class="icon-lock"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <section class="main">
+       <h1>Submit a Contribution</h1>
+          <form action="/submit/{{contrib._id}}" method="post" class="form form-horizontal">	
+            <div class="row-fluid">
+            {{#error}} 
+                <div class="alert">  
+                    <a class="close" data-dismiss="alert">×</a>  
+                    <strong>Validation error!</strong>  {{error}} 
+                </div>
+            {{/error}} 
+	        <dt>General information</dt>
+            {{#contrib}}
+	        <dd>
+	             <div class="control-group">
+	          	    <label class="control-label" for="title">Title:</label>
+	                <div class="controls">
+	              	    <input type="text" name="title" id="title" value="{{title}}"/>
+	                </div>
+                </div>
+	            <div class="control-group">
+                    <label class="control-label" for="sum">Sum:</label>
+                    <div class="controls">
+                  	    <input type="text" name="sum" id="sum" value="{{sum}}"/>
+	                </div>
+                </div>
+		</dd>
+          {{/contrib}}
+            </div>
+            <div class="commands">
+              <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Submit</button>
+            </div>
+          </form>
+      </section>
+     </div>
+  </body>
+</html>
+
