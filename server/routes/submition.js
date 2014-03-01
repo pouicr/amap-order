@@ -7,5 +7,5 @@ module.exports = function (server) {
     server.get('/form/:contrib_id', controller.form);
     server.get('/form', controller.form);
     server.get('/list', controller.list);
-    server.get('/listall/:user', controller.csv_export);
+    server.get('/listall', controller.csv_export);
 };

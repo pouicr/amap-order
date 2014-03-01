@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{root}}/css/techforum.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
+    <script type="application/javascript" src="{{root}}/js/common.js"></script>
+  </head>
+  <body>
+
+    <header></header>
+
+    <div class="subnav navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav">
+            {{#user.menu}}
+              <li {{#active}}class="active"{{/active}}><a {{^active}}href="{{link}}"{{/active}}>{{name}}</a></li>
+            {{/user.menu}}
+          </ul>
+          <div class="user pull-right">
+            <span class="name">Welcome {{user.id}}</span><a class="btn" href="{{root}}/logout"><i class="icon-lock"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <section class="main">
+        <form action="/admin" method="post" class="form form-horizontal">	
+            <ul class="nav">
+                <li>phase : <input type="text" name="phase" id="phase" value="{{config.phase}}"/></li>
+                <li>admin : <input type="text" name="admins" id="admins" value="{{config.admins}}"/></li>
+            </ul>
+            <div class="commands">
+              <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Update</button>
+            </div>
+        </form>
+      </section>
+     </div>
+  </body>
+</html>

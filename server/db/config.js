@@ -25,10 +25,11 @@ Config.statics.get = function(cb){
 };
 
 Config.statics.set = function(newConf,cb){
-    conf = newConf;
-    this.save(conf,function(err){
+    conf.phase = newConf.phase;
+    conf.admins = newConf.admins;
+    conf.save(function(err){
         if(err){console.log('err : '+err); return cb(err);}
-        return cb(null);
+        return cb(null,conf);
     });
 };
 
