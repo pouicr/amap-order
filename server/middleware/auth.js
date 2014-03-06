@@ -2,9 +2,9 @@ var Config = require('../db/config');
 
 
 var menuitems = [
-    {name: 'Home', link: '/'},
-    {name: 'List', link: '/list'},
-    {name: 'New contribution', link: '/form'}
+    {name: 'Accueil', link: '/'},
+    {name: 'Commandes du mois', link: '/order'},
+    {name: 'Toutes mes commandes', link: '/order/list'}
 ];
 
 
@@ -18,6 +18,7 @@ var configureUser = function(req, res, next){
             req.session.user.menu = JSON.parse(JSON.stringify(menuitems));
             if (config.admins == req.session.user.id){
                 req.session.user.admin = true;
+                req.session.order_id = config.order_id;
                 req.session.user.menu.push({name: 'Admin', link: '/admin'});
             }
             return next();

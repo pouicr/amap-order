@@ -1,0 +1,1 @@
+db.configs.insert({name:"admin",order_id:"Commande du mois de Mars",admins:"pouic"})

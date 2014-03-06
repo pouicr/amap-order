@@ -1,8 +1,8 @@
 var db = require('./db');  
 
 var Config = new db.Schema({
-    _id   : { type : String }
-   ,phase : { type : String }
+    name   : { type : String, index: {unique: true},required: true }
+   ,order_id : { type : String }
    ,admins: { type : String }
 });
 
@@ -12,7 +12,7 @@ Config.statics.get = function(cb){
     if(null != conf){
         return cb(null,conf);
     }else{
-        this.findOne({ _id: '1' },function(err,result){
+        this.findOne({ name : 'admin' },function(err,result){
             if(err){console.log('err : '+err); return cb(err);}
             if(null == result){
                 return cb('error : no config in db');
