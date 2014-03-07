@@ -11,6 +11,8 @@ var Product = new db.Schema({
 var Producer = new db.Schema({
     name       :  { type: String, required: true, index: true} //match: /[a-z]/ ,
   , desc       :  { type: String }
+  , referent   :  { type: String }
+  , info       :  { type: String }    
   , category   :  { type: String, required: true }
   , address    :  { type: String }
   , products   :  [ Product ]

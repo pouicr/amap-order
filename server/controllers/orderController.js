@@ -75,11 +75,10 @@ var fillOrder = function(req, order, cb){
                         order.lines.push(line);
                     }
                 } else {
-                    console.log('vide !');
                     for(var i = 0; i < order.lines.length; i++) {
                         if (order.lines[i].product_id.equals(product._id)) {
                             amount -= order.lines[i].line_sum;
-                            order.lines.pop(order.lines[i]);
+                            order.lines.splice(i,1);
                             break;
                         }
                     }
@@ -87,7 +86,7 @@ var fillOrder = function(req, order, cb){
             });
         });
         order.order_ref = req.session.order_id;
-        order.amount = new Number(amount);
+        order.amount = Math.round(amount*100)/100;
         order.owner = req.session.user.id;
         return cb(null,order);
     });
@@ -131,7 +130,7 @@ var submit = function (req, res, next){
 
 
 var form = function (req, res, next){
-    var id = req.params.order_id;
+var id = req.params.order_id;
     Producer.producer.find({}).exec()
     .then(function(producers){
         if(id){

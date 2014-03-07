@@ -3,6 +3,7 @@ var Config = require('../db/config');
 
 var menuitems = [
     {name: 'Accueil', link: '/'},
+    {name: 'Producteurs', link: '/producer/list'},    
     {name: 'Commandes du mois', link: '/order'},
     {name: 'Toutes mes commandes', link: '/order/list'}
 ];
@@ -10,7 +11,7 @@ var menuitems = [
 
 var configureUser = function(req, res, next){
     if(!req.session.user){
-        req.session.user = {id : 'undifined'};
+        req.session.user = {id : 'pouic'};
     }
     if(!req.session.user.menu){
         Config.get(function(err,config){
