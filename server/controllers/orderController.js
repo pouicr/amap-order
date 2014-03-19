@@ -1,4 +1,7 @@
 var Order = require('../db/order'),
+    Family = require('../db/family'),
+    Db = require('../db/db'),
+    async = require('async'),
     Producer = require('../db/producer');
 
 
@@ -30,110 +33,81 @@ var prepareData = function(producers,order){
     return prod;
 };
 
-var fillOrder = function(req, order, cb){
-    var amount =  new Number(order.amount || 0);
-    Producer.producer.find({}).exec()
-    .then(function(producers){
-        //for each producer
-        producers.forEach(function(producer){
-            //for each product
-            producer.products.forEach(function(product){
-                //check if value exist for this product in the order
-                var qty_1 = parseInt(req.body['qty_'+product._id+'_s1']) || 0;
-                var qty_2 = parseInt(req.body['qty_'+product._id+'_s2']) || 0;
-                var qty_3 = parseInt(req.body['qty_'+product._id+'_s3']) || 0;
-                var qty_4 = parseInt(req.body['qty_'+product._id+'_s4']) || 0;                                
-                var qty_5 = parseInt(req.body['qty_'+product._id+'_s5']) || 0;                
-                if(qty_1 || qty_2 || qty_3 || qty_4 || qty_5){
-                    var newline = true;
-                    var line = new Order.line();
-                    for(var i = 0; i < order.lines.length; i++) {
-                        if (order.lines[i].product_id.equals(product._id)) {
-                            newline = false;
-                            line = order.lines[i];
-                            break;
-                        }
+var saveOrder = function(req, cb){
+    Family.findOne({name:'rodier'}).exec()
+    .then(function(family){
+        var fid = family._id;
+        console.log('family found = '+family);
+        async.eachSeries(Object.keys(req.body),function(key,next){
+            if(req.body[key]){
+                var objId = key.substring(4,28);                
+                console.log('non empty key = '+objId+" - "+ Db.Types.ObjectId(objId));
+                Producer.producer.findOne({'products._id':Db.Types.ObjectId(objId)})
+                .exec(function(err,producer){
+                    //console.log('producER '+producer); 
+                    //console.log('products '+producer.name);
+                    var product = producer.products.id(Db.Types.ObjectId(objId));
+                    console.log('product found ? '+(product ? 'yes' : 'no'));
+                    if(product){
+                        Order.findOne({family_id: fid, 'product.id':Db.Types.ObjectId(objId)})
+                        .exec(function(err,result){
+                            console.log('order found for product ? '+(result ? 'yes' : 'no'));
+                            if(err){console.log('err : '+err); return next(err);}
+                            var order = result;
+                            if(result){
+                                console.log('exist !');
+                                order.product.price = product.price;
+                                order.amount = parseInt(req.body[key]);
+                                order.delivery_date = new Date('2014-04-22');
+                            }else{
+                                order = new Order({
+                                    family_id : fid,
+                                    product : {
+                                        id : product._id,
+                                        price : product.price},
+                                    amount : parseInt(req.body[key]),
+                                    order_date : Date.now(),
+                                    delivery_date : new Date('2014-04-11')
+                                });
+                            }
+                            console.log('family found = '+family);
+                            console.log('order to be saved = '+order);
+                            order.save(function(err,result){
+                                if(err){console.log('err : '+err); return cb(err);}
+	                        });
+                        });
+                        return next();
+                    }else{
+                        return next(new Error('product not found'));
                     }
-                    if (!newline){
-                        amount -= line.line_sum;
-                    }
-                    line.product_id = product._id;
-                    line.quantity_s1 = qty_1;
-                    line.quantity_s2 = qty_2;
-                    line.quantity_s3 = qty_3;
-                    line.quantity_s4 = qty_4;   
-                    line.quantity_s5 = qty_5;     
-                    line_sum = new Number(0);
-                    line_sum += (qty_1*product.price);
-                    line_sum += (qty_2*product.price);
-                    line_sum += (qty_3*product.price);
-                    line_sum += (qty_4*product.price);
-                    line_sum += (qty_5*product.price);
-                    amount += line_sum;
-                    line.line_sum = line_sum;
-                    if (newline){
-                        order.lines.push(line);
-                    }
-                } else {
-                    for(var i = 0; i < order.lines.length; i++) {
-                        if (order.lines[i].product_id.equals(product._id)) {
-                            amount -= order.lines[i].line_sum;
-                            order.lines.splice(i,1);
-                            break;
-                        }
-                    }
-                }
-            });
-        });
-        order.order_ref = req.session.order_id;
-        order.amount = Math.round(amount*100)/100;
-        order.owner = req.session.user.id;
-        return cb(null,order);
-    });
-};
-
-var submit = function (req, res, next){
-    var id = req.params.order_id;
-    var order;
-    //if there is an id
-    if(id){
-        order = Order.order.findOne({_id: id},function(err,result){
-            if(err){console.log('err : '+err); return next(err);}
-            if(result){
-                if(!req.session.user.admin && result.owner != req.session.user.id){
-                   return res.send(403);
-                }
-                fillOrder(req,result,function(err,order){
-                    console.log('update order OK');
-                    if(err){console.log('err : '+err); return next(err);}
-                    order.save(function(err,result){
-                        if(err){console.log('err : '+err); return next(err);}
-            	        return res.redirect('/order/'+result._id);
-	                });
                 });
             }else{
-                return res.send(403);
+                console.log('vide');
+                return next();
             }
+        },function(err){
+            console.log('ALL DONE NOW !!!!');
+            return cb(err);
         });
-    }else{
-        order = new Order.order();
-        fillOrder(req,order,function(err,order){
-            console.log('fill order OK');
-            if(err){console.log('err : '+err); return next(err);}
-            order.save(function(err,result){
-                if(err){console.log('err : '+err); return next(err);}
-    	        return res.redirect('/order/'+result._id);
-	        });
-        });
-    }
+    });
+}
+
+var submit = function (req, res, next){
+    console.log('submit order');
+    saveOrder(req, function(err,cb){
+        console.log('save order OK');
+        if(err){console.log('err : '+err); return next(err);}
+        return res.redirect('/order/');
+    });
 };
 
 
 var form = function (req, res, next){
-var id = req.params.order_id;
+    var id = req.params.order_id;
+    
     Producer.producer.find({}).exec()
     .then(function(producers){
-        if(id){
+/*        if(id){
             Order.order.findOne({_id: id}).exec()
             .then(function(order){
                 console.log('prepare'); 
@@ -144,9 +118,9 @@ var id = req.params.order_id;
                 console.log('err in form find order: '+err); 
                 return next(err);
             });
-        }else{
+        }else{*/
             return res.render('order/form',{user:req.session.user, producers : producers});
-        }
+        //}
     },function(err){
         console.log('err in form : '+err); 
         return next(err);
