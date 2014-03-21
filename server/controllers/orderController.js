@@ -23,19 +23,12 @@ var getFamily = function(aName){
 
 
 var getProduct = function(objId){
-    var deferred = when.defer();
-    Producer.producer.findOne({'products._id':Db.Types.ObjectId(objId)})
-    .exec(function(err,producer){
-        if(err){
-            console.log('err : '+err);  
-            deferred.reject(err);
-        }else{
-            var product = producer.products.id(Db.Types.ObjectId(objId));
-            console.log('resolve product  '+product);
-            deferred.resolve(product);
-        }
+    return Producer.producer.findOne({'products._id':Db.Types.ObjectId(objId)}).exec()
+    .then(function(producer) {
+        var product = producer.products.id(Db.Types.ObjectId(objId));
+        console.log('resolve product  '+ product);
+        return when.resolve(product);
     }); 
-    return deferred.promise;
 };
 
 var getOrder = function(product,family){
@@ -47,7 +40,10 @@ var getOrder = function(product,family){
             console.log('err : '+err);  
             deferred.reject(err);
         }else{
-            deferred.resolve(result,product);
+            deferred.resolve({
+                order: result,
+                product: product
+            });
         }
     }); 
     return deferred.promise;
@@ -79,57 +75,59 @@ var processOrder = function(anOrder,product,val,family){
             console.log('err : '+err);  
             deferred.reject(err);
         }else{
-            deferred.resolve();
+            deferred.resolve(result);
         }
     });
     return deferred.promise;
 }
 
 var processKey = function(family,key,value){
-    var objId = key.substring(4,28);  
-    var productBu;              
-    getProduct(objId)
+    var objId = key.split('_')[1];
+    
+    return getProduct(objId)
     .then(function(product){
-        productBu = product;
-        return getOrder(product,family);
+        return getOrder(product, family);
     })
-    .then(function(order){
-        return processOrder(order,productBu,value,family);
+    .then(function(result){
+        return processOrder(result.order,result.product,value,family);
     })
 }
 
-var processOrderGroup = function(family,req){
+var processOrderGroup = function(order){
     var processedKeys = [];
-    var values = Object.keys(req.body);
-    for(var i = 0, len = values.length; i < len; i++) {
-        console.log('process to Key '+values[i]+' value => '+req.body[values[i]]);
-        if(req.body[values[i]]){
-            processedKeys.push(processKey(family,values[i],req.body[values[i]]));
+    for (p in order.body) {
+        console.log('process to Key '+ p +' value => '+order.body[p]);
+        if(order.body[p]){
+            processedKeys.push(processKey(order.family, p, order.body[p]));
         }
     }
     return when.all(processedKeys);
 }
 
 
-var saveOrder = function(req, cb){
-    getFamily('rodier')
-    .then(function(family){
-        return processOrderGroup(family,req);
+var saveOrder = function(order) {
+    return getFamily('rodier')
+    .then(function(family) {
+        order.family = family;
+        return processOrderGroup(order);
     })
-    .then(function(){ 
+    .then(function(order){ 
         console.log('Saved !!!!!!!');
-        return cb(null);
+        return when.resolve(order);
     },function(err){ 
         console.log('Error on saved :-( ');
-        return cb(err);
-    })
+        return when.reject(err);
+    });
 };
 
 var submit = function (req, res, next){
-    saveOrder(req, function(err,cb){
-        if(err){console.log('err : '+err); return next(err);}
+    var order = {
+        body: req.body
+    };
+    saveOrder(order)
+    .then(function(_order) {
         return res.redirect('/order/');
-    });
+    }, next);
 };
 
 
