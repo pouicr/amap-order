@@ -1,12 +1,6 @@
-var db = require('./db');
-
-var Product = new db.Schema({
-    name        :  { type: String, required: true }
-  , desc        :  { type: String}
-  , unit        :  { type: String, required: true }
-  , price       :  { type: Number, required: true }    
-  , update_date :  { type: Date, default: Date.now }
-});
+var db = require('./db'),
+    slugs = require('slugs'),
+    when = require('when');
 
 var Producer = new db.Schema({
     name       :  { type: String, required: true, index: true} //match: /[a-z]/ ,
@@ -15,27 +9,19 @@ var Producer = new db.Schema({
   , info       :  { type: String }    
   , category   :  { type: String, required: true }
   , address    :  { type: String }
-  , products   :  [ Product ]
   , date       :  { type: Date, default: Date.now }
 });
 
-// a setter
-//Contrib.path('title').set(function (v) {
-//  return capitalize(v);
-//});
-
-//Contrib.path('color').validate(function (value) {
-//  return /blue|green|white|red|orange|periwinkle/i.test(value);
-//}, 'Invalid color');
-
-
-//middleware
-Product.pre('save', function (next) {
-    update_date = Date.now;
-    next();
-});
-
-module.exports = {
-    product:db.model('Product', Product),
-    producer:db.model('Producer', Producer)
+/*Product.statics.findOneById = function findOneById(objId){
+    return this.model('Producer').findOne({'products._id':db.Types.ObjectId(objId)}).exec()
+    .then(function(producer) {
+        var product = producer.products.id(db.Types.ObjectId(objId));
+        console.log('resolve product  '+ product);
+        return when.resolve(product);
+    });
+}*/
+Producer.methods.getSlugName = function slug(){
+    return slugs(this.name);
 }
+
+module.exports = db.model('Producer', Producer)

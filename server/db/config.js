@@ -2,8 +2,7 @@ var db = require('./db');
 
 var Config = new db.Schema({
     name   : { type : String, index: {unique: true},required: true }
-   ,order_id : { type : String }
-   ,admins: { type : String }
+   ,order_id : { type : db.Schema.Types.ObjectId }
 });
 
 var conf;

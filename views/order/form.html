@@ -25,7 +25,7 @@
             {{/user.menu}}
           </ul>
           <div class="user pull-right">
-            <span class="name">Welcome {{user.id}}</span><a class="btn" href="{{root}}/logout"><i class="icon-lock"></i></a>
+            <span class="name">Welcome {{user.name}}</span><a class="btn" href="{{root}}/logout"><i class="icon-lock"></i></a>
           </div>
         </div>
       </div>
@@ -42,8 +42,7 @@
                 </div>
             {{/error}} 
             
-            {{#producers}}
-            <dt><a class="btn" data-toggle="collapse" data-target="#producer_{{_id}}">Producteur : {{category}}</a></dt>
+
             <dd id="producer_{{_id}}" class="collapse in">
                 <table class="table table-bordered">
                     <tr>
@@ -68,7 +67,7 @@
                     {{/products}}
                 </table>
             </dd>
-            {{/producers}}
+            
             <h3>Recap</h3>
             <div>
                 <span>REF = {{producers.order_ref}}</span>

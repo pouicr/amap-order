@@ -1,4 +1,5 @@
-var Config = require('../db/config');
+var //Config = require('../db/config'),
+    User = require('../db/user');
 
 
 var menuitems = [
@@ -11,19 +12,18 @@ var menuitems = [
 
 var configureUser = function(req, res, next){
     if(!req.session.user){
-        req.session.user = {id : 'pouic'};
-    }
-    if(!req.session.user.menu){
-        Config.get(function(err,config){
-            if(err){console.log('err : '+err); return next(err);}
+        return User.findByLoginAndPwd('pouic','pouic')
+        .then(function(user){
+            console.log('user found : '+user);
+            req.session.user = user;
             req.session.user.menu = JSON.parse(JSON.stringify(menuitems));
-            if (config.admins == req.session.user.id){
+            if (user.role.indexOf('admin') >= 0){
+                console.log('user Admin ');
                 req.session.user.admin = true;
-                req.session.order_id = config.order_id;
                 req.session.user.menu.push({name: 'Admin', link: '/admin'});
             }
             return next();
-        });
+        })
     }else{
         return next();
     }

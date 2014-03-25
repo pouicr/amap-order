@@ -2,159 +2,70 @@ var Order = require('../db/order'),
     Family = require('../db/family'),
     Db = require('../db/db'),
     when = require('when'),
-    nodefn = require('when/node');
+    nodefn = require('when/node'),
+    OrderCalendar = require('../db/orderCalendar'),
+    Product = require('../db/product'),
     Producer = require('../db/producer');
 
 
 
-var getFamily = function(aName){
-    var deferred = when.defer();
-    Family.findOne({name:aName}).exec(function(err,family){
-        console.log('family  '+family);
-        if(err){
-            console.log('err : '+err);  
-            deferred.reject(err);
-        }else{
-            deferred.resolve(family);
-        }
-    });
-    return deferred.promise;
-};
-
-
-var getProduct = function(objId){
-    return Producer.producer.findOne({'products._id':Db.Types.ObjectId(objId)}).exec()
-    .then(function(producer) {
-        var product = producer.products.id(Db.Types.ObjectId(objId));
-        console.log('resolve product  '+ product);
-        return when.resolve(product);
-    }); 
-};
-
-var getOrder = function(product,family){
-    var deferred = when.defer();
-    Order.findOne({family_id: family._id, 'product.id':product._id})
-    .exec(function(err,result){
-        console.log('order found for product ? '+(result ? 'yes' : 'no'));
-        if(err){
-            console.log('err : '+err);  
-            deferred.reject(err);
-        }else{
-            deferred.resolve({
-                order: result,
-                product: product
-            });
-        }
-    }); 
-    return deferred.promise;
-};
-
-var processOrder = function(anOrder,product,val,family){
-    var deferred = when.defer();
-    var order = anOrder;
-    console.log('order = '+order);
-    console.log('product = '+product);
-    if(order){
-        order.product.price = product.price;
-        order.amount = parseInt(val);
-        order.delivery_date = new Date('2014-04-22');
-    }else{
-        order = new Order({
-            family_id : family._id,
-            product : {
-                id : product._id,
-                price : product.price},
-            amount : parseInt(val),
-            order_date : Date.now(),
-            delivery_date : new Date('2014-04-11')
-        });
-    }
-    console.log('order to be saved = '+order);
-    order.save(function(err,result){
-        if(err){
-            console.log('err : '+err);  
-            deferred.reject(err);
-        }else{
-            deferred.resolve(result);
-        }
-    });
-    return deferred.promise;
-}
-
 var processKey = function(family,key,value){
     var objId = key.split('_')[1];
-    
-    return getProduct(objId)
+    return Product.findOneById(objId)
     .then(function(product){
-        return getOrder(product, family);
+        return Order.findByProductAndFamily(product, family);
     })
     .then(function(result){
-        return processOrder(result.order,result.product,value,family);
+        return Order.process(result.order,result.product,value,family);
     })
 }
 
-var processOrderGroup = function(order){
+var processOrderGroup = function(data,family){
     var processedKeys = [];
-    for (p in order.body) {
-        console.log('process to Key '+ p +' value => '+order.body[p]);
-        if(order.body[p]){
-            processedKeys.push(processKey(order.family, p, order.body[p]));
+    for (p in data) {
+        console.log('process to Key '+ p +' value => '+data[p]);
+        if(data[p]){
+            processedKeys.push(processKey(family, p, data[p]));
         }
     }
     return when.all(processedKeys);
 }
 
-
-var saveOrder = function(order) {
-    return getFamily('rodier')
-    .then(function(family) {
-        order.family = family;
-        return processOrderGroup(order);
-    })
-    .then(function(order){ 
-        console.log('Saved !!!!!!!');
-        return when.resolve(order);
-    },function(err){ 
-        console.log('Error on saved :-( ');
-        return when.reject(err);
-    });
-};
-
 var submit = function (req, res, next){
-    var order = {
-        body: req.body
-    };
-    saveOrder(order)
+    Family.findByName(req.session.user.family)
+    .then(function(family) {
+        return processOrderGroup(req.body,family);
+    })
     .then(function(_order) {
+        console.log('Saved !!!!!!!');
         return res.redirect('/order/');
     }, next);
 };
 
-
+var prepareData = function(products,orders){
+    return when.resolve(products);
+}
 
 var form = function (req, res, next){
-    var id = req.params.order_id;
-    
-    Producer.producer.find({}).exec()
-    .then(function(producers){
-/*        if(id){
-            Order.order.findOne({_id: id}).exec()
-            .then(function(order){
-                console.log('prepare'); 
-                var data = prepareData(producers,order);
-                return res.render('order/form',{user:req.session.user, producers : data});
+    OrderCalendar.findOneByRef(1)
+    .then(function(calendar){
+        Product.findAllByCategory()
+        .then(function(products){
+            Order.findByRefAndFamily(calendar.ref,req.session.user.family_id._id)
+            .then(function(orders){ 
+                return prepareData(products,orders);
             })
-            .fail(function(err){
+            .then(function(order){
+                return res.render('order/form',{user : req.session.user, products : order});
+            },function(err){
                 console.log('err in form find order: '+err); 
                 return next(err);
             });
-        }else{*/
-            return res.render('order/form',{user:req.session.user, producers : producers});
-        //}
-    },function(err){
-        console.log('err in form : '+err); 
-        return next(err);
-    });
+        },function(err){
+            console.log('err in form : '+err); 
+            return next(err);
+        });
+    });        
 };
 	
 var list = function (req, res, next){
