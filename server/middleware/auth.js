@@ -16,11 +16,10 @@ var configureUser = function(req, res, next){
         .then(function(user){
             console.log('user found : '+user);
             req.session.user = user;
-            req.session.user.menu = JSON.parse(JSON.stringify(menuitems));
+            req.session.menu = JSON.parse(JSON.stringify(menuitems));
             if (user.role.indexOf('admin') >= 0){
                 console.log('user Admin ');
-                req.session.user.admin = true;
-                req.session.user.menu.push({name: 'Admin', link: '/admin'});
+                req.session.menu.push({name: 'Admin', link: '/admin'});
             }
             return next();
         })

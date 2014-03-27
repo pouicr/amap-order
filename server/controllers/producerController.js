@@ -18,10 +18,10 @@ var submit = function (req, res, next){
     var producer;
     //if there is an id
     if(id){
-        producer = Producer.producer.findOne({_id: id},function(err,result){
+        producer = Producer.findOne({_id: id},function(err,result){
             if(err){console.log('err : '+err); return next(err);}
             if(result){
-                if(!req.session.user.admin && result.referent != req.session.user.id){
+                if(!req.session.user.role['admin'] && result.referent != req.session.user.id){
                    return res.send(403);
                 }
                 fillProducer(req,producer,function(err,filledProducer){
@@ -37,7 +37,7 @@ var submit = function (req, res, next){
             }
         });
     }else{
-        producer = new Producer.producer();
+        producer = new Producer();
         fillProducer(req,producer,function(err,filledProducer){
             console.log('fill order OK');
             if(err){console.log('err : '+err); return next(err);}
@@ -52,10 +52,10 @@ var submit = function (req, res, next){
 
 var form = function (req, res, next){
     var id = req.params.producer_id;
-    Producer.producer.find({_id: id}).exec()
+    Producer.find({_id: id}).exec()
     .then(function(result){
         console.log('result : '+result); 
-        return res.render('producer/form',{user:req.session.user, producer : result});
+        return res.render('producer/form',{menu:req.session.menu,user:req.session.user, producer : result});
     }),function(err){
         console.log('err in form : '+err); 
         return next(err);
@@ -63,13 +63,13 @@ var form = function (req, res, next){
 };
 	
 var list = function (req, res, next){
-	Producer.producer.find({},function(err,result){
+	Producer.find({},function(err,result){
 	    if(err){console.log('err : '+err); return next(err);}
 	    var data;
 	    if (!result){
-	        data = {user:req.session.user};
+	        data = {menu:req.session.menu,user:req.session.user};
 	    }else{
-	        data = {user:req.session.user, producers : result};
+	        data = {menu:req.session.menu,user:req.session.user, producers : result};
 	    }
 	    console.log('list data = '+data);
 		return res.render('producer/list',data);

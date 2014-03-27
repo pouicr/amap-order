@@ -6,6 +6,6 @@ module.exports = function (server) {
         res.redirect('/');
     });
     server.get('/', function(req,res,next){
-        res.render('home',{user:req.session.user,message:":-)"});
+        res.render('home',{menu:req.session.menu,user:req.session.user,message:":-)"});
     });
 };

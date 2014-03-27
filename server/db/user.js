@@ -7,13 +7,13 @@ var User = new db.Schema({
    ,name        : { type : String, index: {unique: true},required: true }
    ,pwd         : { type : String }   
    ,role        : { type : String }
-   ,family_id   : { type: db.Schema.Types.ObjectId, ref: 'Family'},   
+   ,family      : { type: db.Schema.Types.ObjectId, ref: 'Family'},   
 });
 
 
 User.statics.findByLoginAndPwd = function findByLoginAndPwd(login,pwd){
     return this.model('User').findOne({login:login, pwd:pwd})
-    .populate('family_id')
+    .populate('family')
     .exec()
     .then(function(user){
         return when.resolve(user);

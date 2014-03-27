@@ -1,8 +1,9 @@
 var db = require('./db'),
-    when = require('when');
+    when = require('when'),
+    Family = require('./family');
 
 var Order = new db.Schema({
-    family_id    :  { type: db.Schema.Types.ObjectId, required: true, index: true} //match: /[a-z]/ ,
+    family       :  { type: db.Schema.Types.ObjectId, ref:'Family', required: true, index: true} //match: /[a-z]/ ,
   , product      :  { 
         id       :  { type: db.Schema.Types.ObjectId, required: true},
         price    :  Number
@@ -14,7 +15,7 @@ var Order = new db.Schema({
 });
 
 Order.statics.findByProductAndFamily = function findByProductAndFamily(product,family){
-    return this.model('Order').findOne({family_id: family._id, 'product.id':product._id})
+    return this.model('Order').findOne({family: family._id, 'product.id':product._id})
     .exec()
     .then(function(order){
         return when.resolve({
@@ -25,7 +26,7 @@ Order.statics.findByProductAndFamily = function findByProductAndFamily(product,f
 };
 
 Order.statics.findByRefAndFamily = function findByRefAndFamily(ref,family){
-    return this.model('Order').find({family_id: family._id, reference:ref})
+    return this.model('Order').find({family: family._id, reference:ref})
     .sort('category')
     .exec()
     .then(function(orders){
@@ -33,32 +34,39 @@ Order.statics.findByRefAndFamily = function findByRefAndFamily(ref,family){
     });
 };
 
-Order.statics.process = function process(anOrder,product,val,family){
-    var order = anOrder;
-    console.log('order = '+order);
-    console.log('product = '+product);
-    if(order){
-        order.product.price = product.price;
-        order.amount = parseInt(val);
-        order.delivery_date = new Date('2014-04-22');
-    }else{
-        order = new Order({
-        family_id : family._id,
-        product : { 
-            id : product._id,
-            price : product.price},
-        amount : parseInt(val),
-        order_date : Date.now(),
-        delivery_date : new Date('2014-04-11')
-        });
-    }
-    console.log('order to be saved = '+order);
-    order.save(function(err,result){
-        if(err){
-            return when.reject(err);
+Order.statics.process = function process(ref,product,val,family){
+    return this.findByRefAndFamily(ref,family)
+    .then(function(order){
+        console.log('order = '+order);
+        console.log('product = '+product);
+        if(order != ''){
+            console.log('pdt'+order.product);
+            order.product.price = product.price;
+            order.amount = parseInt(val);
+            order.delivery_date = new Date('2014-04-22');
         }else{
-            return when.resolve(result);
+            order = new(db.model('Order'))({
+            family  : family._id,
+            product : { 
+                id : product._id,
+                price : product.price},
+            amount : parseInt(val),
+            reference:ref,
+            order_date : Date.now(),
+            delivery_date : new Date('2014-04-11')
+            });
         }
+        console.log('order to be saved = '+order);
+        var defered = when.defer();
+        order.save(function(err,result){
+            if(err){
+                return defered.reject(err);
+            }else{
+                console.log('oder saved!!'+ result);
+                return defered.resolve(result);
+            }
+        });
+        return defered.promise;
     });
 };
 

@@ -20,7 +20,6 @@ var init = function(){
 }
 
 var removeAndInsertOrderCalendar = function(){
-    console.log('pwet');
     return OrderCalendar.remove().exec()
     .then(function(){
         var orderCalendar = new OrderCalendar({
@@ -58,7 +57,6 @@ var removeAndInsertUsersAndFamilies = function(){
             "name"  : "Rodier/Pujole", 
             "adress": "Chemin du bas Mortier"
         });
-        console.log('Saving family...');
         family.save(function(err,result){
             if(err){
                 console.log('err : '+err);
@@ -72,9 +70,8 @@ var removeAndInsertUsersAndFamilies = function(){
                         "name"  : "pouic",
                         "pwd"   : "pouic",
                         "role"  : "admin",
-                        "family_id": family._id
+                        "family": family._id
                     });
-                    console.log('Saving user...');
                     user.save(function(err,res){
                         if(err){
                             console.log('err : '+err);
@@ -83,7 +80,6 @@ var removeAndInsertUsersAndFamilies = function(){
                             defered.resolve(res);
                         }
                     });
-                    console.log('return user promise');
                     return defered.promise;
                 }).then(function(){
                     deferedFamily.resolve(result);
@@ -101,14 +97,10 @@ var removeAndInsertProducerAndProduct = function(){
     return Producer.remove().exec()
     .then(function(){
         var savedProducer = [];
-        console.log('producerdata : '+JSON.stringify(producerData));
-        
         for (p in producerData ){
-            console.log('p '+producerData[p]);
             var defered = when.defer();
             savedProducer.push(defered);
             var producer = new Producer(producerData[p]);
-            console.log('p to saved '+producer);
             producer.save(function(err,res){
                 if(err){
                     console.log('err : '+err);
@@ -131,10 +123,8 @@ var saveProducts = function(producer){
     return Product.remove().exec()
     .then(function(){
         var savedProducts = [];
-        console.log('pdct to saved : '+producer.getSlugName());
         var products = require('../../data/product_'+producer.getSlugName());
         for (prod in products ){
-            console.log('pdct to saved : '+products[prod]);
             var defered = when.defer();
             savedProducts.push(defered);
             var product = new Product(products[prod]);
@@ -150,7 +140,6 @@ var saveProducts = function(producer){
         }
         return when.all(savedProducts);
     });
-        
 }
 
 module.exports = init();

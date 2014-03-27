@@ -9,40 +9,44 @@ var Order = require('../db/order'),
 
 
 
-var processKey = function(family,key,value){
+var processKey = function(family,ref,key,value){
     var objId = key.split('_')[1];
     return Product.findOneById(objId)
     .then(function(product){
-        return Order.findByProductAndFamily(product, family);
-    })
-    .then(function(result){
-        return Order.process(result.order,result.product,value,family);
+        console.log('prod : '+product);
+        console.log('famil: '+family);
+        return Order.process(ref,product,value,family);
     })
 }
 
-var processOrderGroup = function(data,family){
+var processOrderGroup = function(ref,data,family){
     var processedKeys = [];
     for (p in data) {
         console.log('process to Key '+ p +' value => '+data[p]);
         if(data[p]){
-            processedKeys.push(processKey(family, p, data[p]));
+            processedKeys.push(processKey(family,ref, p, data[p]));
         }
     }
     return when.all(processedKeys);
 }
 
 var submit = function (req, res, next){
-    Family.findByName(req.session.user.family)
+    Family.findById(req.session.user.family._id).exec()
+//    Family.findByName(req.session.user.family)
     .then(function(family) {
-        return processOrderGroup(req.body,family);
+        return processOrderGroup(1,req.body,family);
     })
     .then(function(_order) {
         console.log('Saved !!!!!!!');
         return res.redirect('/order/');
-    }, next);
+    }, function(err){
+        console.log('err on save order:'+err);
+    });
 };
 
 var prepareData = function(products,orders){
+//    console.log('products : '+products);
+//    console.log('orders : '+orders);
     return when.resolve(products);
 }
 
@@ -51,12 +55,13 @@ var form = function (req, res, next){
     .then(function(calendar){
         Product.findAllByCategory()
         .then(function(products){
-            Order.findByRefAndFamily(calendar.ref,req.session.user.family_id._id)
+            Order.findByRefAndFamily(calendar.ref,req.session.user.family._id)
             .then(function(orders){ 
                 return prepareData(products,orders);
             })
             .then(function(order){
-                return res.render('order/form',{user : req.session.user, products : order});
+                console.log('user to display :'+ req.session.user);
+                return res.render('order/form',{menu:req.session.menu, user : req.session.user, products : order});
             },function(err){
                 console.log('err in form find order: '+err); 
                 return next(err);
@@ -70,13 +75,13 @@ var form = function (req, res, next){
 	
 var list = function (req, res, next){
     console.log('list');
-	Order.order.find({owner:req.session.user.id},function(err,result){
+	Order.find({family:req.session.user.family.id},function(err,result){
 	    if(err){console.log('err : '+err); return next(err);}
 	    var data;
 	    if (!result){
-	        data = {user:req.session.user};
+	        data = {menu:req.session.menu, user:req.session.user};
 	    }else{
-	        data = {user:req.session.user, orders : result};
+	        data = {menu:req.session.menu, user:req.session.user, orders : result};
 	    }
 	    console.log('list data = '+data);
 		return res.render('order/list',data);
