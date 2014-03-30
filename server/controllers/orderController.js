@@ -13,8 +13,8 @@ var processKey = function(family,ref,key,value){
     var objId = key.split('_')[1];
     return Product.findOneById(objId)
     .then(function(product){
-        console.log('prod : '+product);
-        console.log('famil: '+family);
+//        console.log('prod : '+product);
+//        console.log('famil: '+family);
         return Order.process(ref,product,value,family);
     })
 }
@@ -44,33 +44,17 @@ var submit = function (req, res, next){
     });
 };
 
-var prepareData = function(products,orders){
-//    console.log('products : '+products);
-//    console.log('orders : '+orders);
-    return when.resolve(products);
-}
-
 var form = function (req, res, next){
-    OrderCalendar.findOneByRef(1)
-    .then(function(calendar){
-        Product.findAllByCategory()
-        .then(function(products){
-            Order.findByRefAndFamily(calendar.ref,req.session.user.family._id)
-            .then(function(orders){ 
-                return prepareData(products,orders);
-            })
-            .then(function(order){
-                console.log('user to display :'+ req.session.user);
-                return res.render('order/form',{menu:req.session.menu, user : req.session.user, products : order});
-            },function(err){
-                console.log('err in form find order: '+err); 
-                return next(err);
-            });
-        },function(err){
-            console.log('err in form : '+err); 
-            return next(err);
-        });
-    });        
+    console.log('form!!!');
+    var oder_ref=1;
+    Order.prepareData(order_ref,family)
+    .then(function(order){
+        console.log('user to display :'+ req.session.user);
+        return res.render('order/form',{menu : req.session.menu, user : req.session.user, products : order});
+    },function(err){
+        console.log('err in form find order: '+err);
+        return next(err);
+    });
 };
 	
 var list = function (req, res, next){

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{root}}/css/amap.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
+    <script type="application/javascript" src="{{root}}/js/common.js"></script>
+    <script type="application/javascript" src="{{root}}/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+
+    <header></header>
+
+    <div class="subnav navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav">
+            {{#menu}}
+              <li {{#active}}class="active"{{/active}}><a {{^active}}href="{{link}}"{{/active}}>{{name}}</a></li>
+            {{/menu}}
+          </ul>
+          <div class="user pull-right">
+            <span class="name">Welcome {{user.name}}</span><a class="btn" href="{{root}}/logout"><i class="icon-lock"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <section class="main order">
+       <h1>Commande mensuelle</h1>
+          <form action="/calendar/{{calendar._id}}" method="post" class="form form-horizontal">	
+            <div class="row-fluid">
+            {{#error}} 
+                <div class="alert">  
+                    <a class="close" data-dismiss="alert">×</a>  
+                    <strong>Validation error!</strong>  {{error}} 
+                </div>
+            {{/error}}
+            <dd id="producer_{{_id}}" class="collapse in">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Produits</th>
+                        <th>Unité</th>
+                        <th>Tarif</th>
+                        <th>dates...</th>
+                    </tr>
+                    {{#calendar.cal}}
+                    <tr>
+                        <td>{{product.name}}</td>
+                        <td>{{product.unit}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.delivery}}</td>
+                    </tr>
+                    {{/calendar.cal}}
+                </table>
+            </dd>
+            <div class="commands">
+              <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Commander</button>
+            </div>
+          </form>
+      </section>
+     </div>
+  </body>
+</html>
+

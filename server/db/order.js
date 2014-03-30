@@ -25,9 +25,8 @@ Order.statics.findByProductAndFamily = function findByProductAndFamily(product,f
     });
 };
 
-Order.statics.findByRefAndFamily = function findByRefAndFamily(ref,family){
-    return this.model('Order').find({family: family._id, reference:ref})
-    .sort('category')
+Order.statics.findByRefFamilyAndProd = function (ref,family,prod){
+    return this.model('Order').find({family: family._id, reference:ref,'product.id':prod._id})
     .exec()
     .then(function(orders){
         return when.resolve(orders);
@@ -35,7 +34,7 @@ Order.statics.findByRefAndFamily = function findByRefAndFamily(ref,family){
 };
 
 Order.statics.process = function process(ref,product,val,family){
-    return this.findByRefAndFamily(ref,family)
+    return this.findByRefFamilyAndProd(ref,family,product)
     .then(function(order){
         console.log('order = '+order);
         console.log('product = '+product);
