@@ -1,4 +1,5 @@
 var db = require('./db'),
+    Producer = require('./producer'),
     when = require('when');
 
 var Product = new db.Schema({
@@ -8,7 +9,7 @@ var Product = new db.Schema({
   , unit        :  { type: String, required: true }
   , price       :  { type: Number, required: true }    
   , update_date :  { type: Date, default: Date.now }
-  , producer_id :  { type: db.Schema.Types.ObjectId, required: true}
+  , producer    :  { type: db.Schema.Types.ObjectId, ref: 'Producer', required: true}
 });
 
 Product.statics.findOneById = function findOneById(objId){

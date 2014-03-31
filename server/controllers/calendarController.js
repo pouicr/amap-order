@@ -8,7 +8,7 @@ var Order = require('../db/order'),
 
 
 var submit = function (req, res, next){
-    var calId = req.params.cal_id;
+    var calId = req.params.calendar_id;
     console.log('calendar id'+calId);
     OrderCalendar.process(calId,req.body)
     .then(function(_order) {
@@ -27,9 +27,10 @@ var submitNew = function(req,res,next){
 }
 
 var form = function (req, res, next){
-    var calId = req.params.cal_id;
+    var calId = req.params.calendar_id;
     console.log('calendar id'+calId);
     OrderCalendar.findById(calId)
+    .exec()
     .then(function(result){
         return res.render('calendar/form',{menu : req.session.menu, user : req.session.user, calendar : result});
     },function(err){

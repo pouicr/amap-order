@@ -16,31 +16,20 @@
 
     <header></header>
 
-        <div class="subnav navbar">
-          <div class="navbar-inner">
-            <div class="container">
-              <ul class="nav">
-                {{#menu}}
-                  <li {{#active}}class="active"{{/active}}><a {{^active}}href="{{link}}"{{/active}}>{{name}}</a></li>
-                {{/menu}}
-              </ul>
-              <div class="user pull-right">
-                <span class="name">Welcome {{user.name}}</span><a class="btn" href="{{root}}/logout"><i class="icon-lock"></i></a>
-              </div>
+    {{> menu}}
+
+    <div class="container-fluid">
+        {{#error}} 
+            <div class="alert">  
+                <a class="close" data-dismiss="alert">×</a>  
+                <strong>Validation error!</strong>  {{error}} 
             </div>
-          </div>
-        </div>
-        <div class="container-fluid">
-            {{#error}} 
-                <div class="alert">  
-                    <a class="close" data-dismiss="alert">×</a>  
-                    <strong>Validation error!</strong>  {{error}} 
-                </div>
             {{/error}} 
             {{#producer}}
             <section class="main order">
                 <h1>{{^_id}}Nouveau producteur{{/_id}}{{#_id}}{{name}}{{/_id}}</h1>
-                <form action="/order/{{producers.order_id}}" method="post" class="form form-horizontal">	
+                <a href="/producer/new">New</a>
+                <form action="/producer/{{_id}}" method="post" class="form form-horizontal">	
                     <div class="row-fluid">
 
                         <div>

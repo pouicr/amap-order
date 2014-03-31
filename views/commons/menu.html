@@ -1,0 +1,15 @@
+<div class="subnav navbar">
+    <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav">
+            {{#menu}}
+              <li {{#active}}class="active"{{/active}}><a {{^active}}href="{{link}}"{{/active}}>{{name}}</a></li>
+            {{/menu}}
+          </ul>
+          <div class="user pull-right">
+            <span class="name">Welcome {{user.name}}</span><a class="btn" href="{{root}}/logout"><i class="icon-lock"></i></a>
+          </div>
+        </div>
+    </div>
+</div>
+

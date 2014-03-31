@@ -128,7 +128,7 @@ var saveProducts = function(producer){
             var defered = when.defer();
             savedProducts.push(defered);
             var product = new Product(products[prod]);
-            product.producer_id = producer._id;
+            product.producer = producer._id;
             product.save(function(err,res){
                 if(err){
                     console.log('err : '+err);

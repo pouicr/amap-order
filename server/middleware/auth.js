@@ -4,7 +4,8 @@ var //Config = require('../db/config'),
 
 var menuitems = [
     {name: 'Accueil', link: '/'},
-    {name: 'Producteurs', link: '/producer/list'},    
+    {name: 'Producteurs', link: '/producer/list'},
+    {name: 'Calendrier', link: '/calendar/list'},
     {name: 'Commandes du mois', link: '/order'},
     {name: 'Toutes mes commandes', link: '/order/list'}
 ];

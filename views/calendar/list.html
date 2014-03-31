@@ -14,39 +14,15 @@
   <body>
 
     <header></header>
-
-    <div class="subnav navbar">
-      <div class="navbar-inner">
-        <div class="container">
-          <ul class="nav">
-            {{#menu}}
-              <li {{#active}}class="active"{{/active}}><a {{^active}}href="{{link}}"{{/active}}>{{name}}</a></li>
-            {{/menu}}
-          </ul>
-          <div class="user pull-right">
-            <span class="name">Welcome {{user.name}}</span><a class="btn" href="{{root}}/logout"><i class="icon-lock"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
+    
+    {{> menu}}
+    
     <div class="container-fluid">
       <section class="main">
-       <h1>Commandes :</h1>
+       <h1>Calendrier de commandes :</h1>
           {{#orders}}
               <div class="row-fluid">
-                <dt>Commande : <a href="/order/{{_id}}">{{order_ref}}</a></dt>
-                <dd>
-                    <div class="control-group">
-                      	<label class="control-label">Amount:</label>
-                        <div class="controls">
-                      	    {{amount}}
-                        </div>
-                        <label class="control-label">Date:</label>
-                        <div class="controls">
-                      	    {{date}}
-                        </div>
-                    </div>
-                </dd>
+                <dt>Calendrier : <a href="/calendar/{{_id}}">{{name}}</a></dt>
               </div>
           {{/orders}}
       </section>

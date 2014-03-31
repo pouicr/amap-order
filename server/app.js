@@ -29,6 +29,7 @@ app.configure(function(){
     app.set('host', conf.host || localhost);
     app.engine('html',hogan);
     app.set('view engine', 'html');
+    app.set('partials', {menu: 'commons/menu'});
     app.set('views', viewFolder);
     app.use(express.logger('dev'));
     app.use(express.bodyParser());

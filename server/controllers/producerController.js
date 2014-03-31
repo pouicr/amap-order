@@ -1,4 +1,5 @@
-var Producer = require('../db/producer');
+var Producer = require('../db/producer'),
+    Product = require('../db/product');
 
 
 var init = function (req, res, next){
@@ -52,10 +53,14 @@ var submit = function (req, res, next){
 
 var form = function (req, res, next){
     var id = req.params.producer_id;
-    Producer.find({_id: id}).exec()
-    .then(function(result){
-        console.log('result : '+result); 
-        return res.render('producer/form',{menu:req.session.menu,user:req.session.user, producer : result});
+    Producer.findById(id)
+    .exec()
+    .then(function(producer){
+        Product.find({producer:producer._id})
+        .exec()
+        .then(function(result){
+            return res.render('producer/form',{menu:req.session.menu,user:req.session.user, producer : producer, products:result});
+        });
     }),function(err){
         console.log('err in form : '+err); 
         return next(err);

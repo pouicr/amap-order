@@ -16,23 +16,11 @@
 
     <header></header>
 
-    <div class="subnav navbar">
-      <div class="navbar-inner">
-        <div class="container">
-          <ul class="nav">
-            {{#menu}}
-              <li {{#active}}class="active"{{/active}}><a {{^active}}href="{{link}}"{{/active}}>{{name}}</a></li>
-            {{/menu}}
-          </ul>
-          <div class="user pull-right">
-            <span class="name">Welcome {{user.name}}</span><a class="btn" href="{{root}}/logout"><i class="icon-lock"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
+    {{> menu}}
+
     <div class="container-fluid">
       <section class="main order">
-       <h1>Commande mensuelle</h1>
+       <h1>Calendrier mensuelle</h1>
           <form action="/calendar/{{calendar._id}}" method="post" class="form form-horizontal">	
             <div class="row-fluid">
             {{#error}} 
@@ -60,7 +48,7 @@
                 </table>
             </dd>
             <div class="commands">
-              <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Commander</button>
+              <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Sauvegarder</button>
             </div>
           </form>
       </section>
