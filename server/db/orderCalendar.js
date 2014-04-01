@@ -10,11 +10,11 @@ var OrderCalendar = new db.Schema({
     }]
 });
 
-OrderCalendar.statics.process = function (calId,data){
-    var cal = this.model('OrderCalendar').findById(calId)
+OrderCalendar.statics.process = function process (calId,data){
+    return this.model('OrderCalendar').findById(calId)
     .exec()
     .then(function(ocal) {
-        console.log('data = '+data);
+        console.log('data = '+JSON.stringify(data));
         return when.resolve(ocal);
     });
 }

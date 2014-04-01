@@ -11,6 +11,8 @@
     <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
     <script type="application/javascript" src="{{root}}/js/common.js"></script>
     <script type="application/javascript" src="{{root}}/js/bootstrap.min.js"></script>
+    <script type="application/javascript" src="{{root}}/js/calendar.js"></script>
+    <script type="application/javascript" src="{{root}}/js/bootstrap-datepicker.js"></script>
   </head>
   <body>
 
@@ -30,23 +32,31 @@
                 </div>
             {{/error}}
             <dd id="producer_{{_id}}" class="collapse in">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Produits</th>
-                        <th>Unité</th>
-                        <th>Tarif</th>
-                        <th>dates...</th>
-                    </tr>
-                    {{#calendar.cal}}
-                    <tr>
-                        <td>{{product.name}}</td>
-                        <td>{{product.unit}}</td>
-                        <td>{{product.price}}</td>
-                        <td>{{product.delivery}}</td>
-                    </tr>
-                    {{/calendar.cal}}
+                <table id="cal_table" class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Produits</th>
+                            <th>Unité</th>
+                            <th>Tarif</th>
+                            <th>dates...</th>
+                        </tr>
+                        {{#calendar.cal}}
+                        <tr>
+                            <td>{{product.name}}</td>
+                            <td>{{product.unit}}</td>
+                            <td>{{product.price}}</td>
+                            <td>{{product.delivery}}</td>
+                        </tr>
+                        {{/calendar.cal}}
+                    </tbody>
                 </table>
             </dd>
+            <select id="product">
+                {{#products}}
+                    <option value="{{_id}}">{{name}} - {{unit}}</option>
+                {{/products}}
+            </select>
+            <a href="#" onClick="addLine()">ADD</a>
             <div class="commands">
               <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Sauvegarder</button>
             </div>

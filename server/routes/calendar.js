@@ -5,6 +5,7 @@ module.exports = function (server) {
     server.get('/calendar/list', controller.list);
     server.get('/calendar', controller.newCalendar);
     server.get('/calendar/:calendar_id', controller.form);
+    server.post('/calendar/getLine', controller.validate, controller.getLine);
     server.post('/calendar/:calendar_id', controller.validate, controller.submit);
     server.post('/calendar', controller.validate, controller.submitNew);
 };

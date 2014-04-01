@@ -11,9 +11,9 @@ var submit = function (req, res, next){
     var calId = req.params.calendar_id;
     console.log('calendar id'+calId);
     OrderCalendar.process(calId,req.body)
-    .then(function(_order) {
+    .then(function(cal) {
         console.log('calendar Saved !!!!!!!');
-        return res.redirect('/order/');
+        return res.redirect('/calendar/'+cal._id);
     }, function(err){
         console.log('err on save calendar:'+err);
     });
@@ -26,13 +26,26 @@ var submitNew = function(req,res,next){
     });
 }
 
+var getLine = function(req,res,next){
+    console.log("req "+req.body.id);
+    Product.findById(req.body.id)
+    .exec()
+    .then(function(product){
+        return res.send(product);
+    });
+}
+
 var form = function (req, res, next){
     var calId = req.params.calendar_id;
     console.log('calendar id'+calId);
     OrderCalendar.findById(calId)
     .exec()
     .then(function(result){
-        return res.render('calendar/form',{menu : req.session.menu, user : req.session.user, calendar : result});
+        Product.find({})
+        .exec()
+        .then(function(products){
+            return res.render('calendar/form',{menu : req.session.menu, user : req.session.user, calendar : result, products : products});
+        });
     },function(err){
         console.log('err in form calendar : '+err);
         return next(err);
@@ -77,6 +90,7 @@ module.exports = {
     submit : submit,    
     validate : validate,
     list : list,
+    getLine : getLine,
     newCalendar:newCalendar,
     submitNew:submitNew
 }
