@@ -1,5 +1,9 @@
 var addLine = function (){
     var id = $('#product').find(":selected").val();
+    if(!id){
+        return;
+    }
+    $('#product').find(":selected").remove();
     $.ajax({
         url : "/calendar/getLine",
         type: "POST",
@@ -16,9 +20,9 @@ var addLine = function (){
                 .append($('<td>')
                     .text(data.price))
                 .append($('<td>')
-                    .append('<input type="text" class="span2" value="02-16-2014" id="val_'+id+'">')));
+                    .append('<input type="text" value="02-16-2014" name="val_'+id+'" id="val_'+id+'">')));
         },complete: function(jqXHR, status){
-            $("#val_"+id).datepicker();
+            $("#val_"+id).multiDatesPicker();
         },error: function(jqXHR, status, errorThrown){
             //err
             alert(status);
