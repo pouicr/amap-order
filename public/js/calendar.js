@@ -29,3 +29,13 @@ var addLine = function (){
         }
     });
 };
+
+$().ready(function() {
+    $(".cal").each(function() {    
+            $(this).multiDatesPicker({
+                //dateFormat: "dd/mm/yy",
+                addDates : $(this).val().split(',')
+            });
+    });
+//    $(".cal").multiDatesPicker();
+});

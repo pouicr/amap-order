@@ -5,12 +5,16 @@
     <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap-responsive.min.css"/>
     <link rel="stylesheet" type="text/css" href="{{root}}/css/amap.min.css">
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
+    <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <script type="application/javascript" src="{{root}}/js/common.js"></script>
     <script type="application/javascript" src="{{root}}/js/bootstrap.min.js"></script>
+    <script type="application/javascript" src="{{root}}/js/calendar.js"></script>
+    <script src="http://multidatespickr.sourceforge.net/jquery-ui.multidatespicker.js"/></script>
   </head>
   <body>
 
@@ -21,7 +25,7 @@
     <div class="container-fluid">
       <section class="main order">
        <h1>Créer un template de commande</h1>
-          <form action="/calendar/new" method="post" class="form form-horizontal">	
+          <form action="/calendar" method="post" class="form form-horizontal">	
             <div class="row-fluid">
             {{#error}} 
                 <div class="alert">  
@@ -30,13 +34,21 @@
                 </div>
             {{/error}}
             <div class="control-group">
-                <label class="control-label" for="sum">Nom de la commande :</label>
+                <label class="control-label" for="calendar_name">Nom de la commande :</label>
                 <div class="controls">
-                    <input type="text" name="order_name" id="order_name" value=""/>
+                    <input type="text" name="calendar_name" id="calendar_name" value=""/>
+                </div>
+                <label class="control-label" for="begin">Date début :</label>
+                <div class="controls">
+                    <input type="text" class="cal" name="begin" id="begin" value=""/>
+                </div>
+                <label class="control-label" for="end">Date fin :</label>
+                <div class="controls">
+                    <input type="text" class="cal" name="end" id="end" value=""/>
                 </div>
             </div>
             <div class="commands">
-              <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Commander</button>
+              <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Créer calendrier</button>
             </div>
           </form>
       </section>

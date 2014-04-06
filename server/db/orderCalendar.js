@@ -4,34 +4,79 @@ var db = require('./db'),
 
 var OrderCalendar = new db.Schema({
     name    : { type : String, required: true }
+    ,begin  : { type : Date, required: true }
+    ,end    : { type : Date, required: true }
     ,cal    : [{
         product : { type: db.Schema.Types.ObjectId, ref: 'Product'},
         delivery: [Date]
     }]
 });
+/*
+Array.prototype.indexOfField = function (propertyName, value) {
+    for (var i = 0; i < this.length; i++){
+        if (this[i][propertyName] === value){
+            return i;
+        }
+    }
+    return -1;
+}*/
 
 OrderCalendar.statics.process = function process (calId,data){
     return this.model('OrderCalendar').findById(calId)
     .exec()
     .then(function(ocal) {
-        console.log('data = '+JSON.stringify(data));
-        return when.resolve(ocal);
+        var willBeDone=[];
+        for(p in data){
+            var index = -1;
+            for (var i = 0; i < ocal.cal.length; i++){
+                if (ocal.cal[i].product == p.split('_')[1]){
+                    index = i;
+                }
+            }
+            //var index = ocal.cal.indexOfField('product',p.split('_')[1]);
+            if (index != -1){
+                ocal.cal[index].delivery = data[p].split(',');
+            } else {
+                ocal.cal.push({product:p.split('_')[1], delivery:data[p].split(',')});
+            }
+            console.log('call insert '+p.split('_')[1]);
+        }
+        var defered = when.defer();
+        ocal.save(function(err){
+            console.log('saved !'+err);
+            if(err){
+                defered.reject(err);
+            }else{
+                console.log('odercalendar saved!!'+ ocal);
+                defered.resolve(ocal);
+            }
+        });
+        return defered.promise;
     });
 }
 
-OrderCalendar.statics.initNewCalendar = function (calId,name){
-    Product.find({})
+OrderCalendar.statics.initCalendar = function (name,begin,end){
+    return Product.find({})
     .exec()
     .then(function(products){
         var ocal = new(db.model('OrderCalendar'))({
-            name: name
+            name: name,
+            begin: new Date(begin),
+            end: new Date(end),
+            cal:[]
         });
         for(p in products){
-            ocal.cal.push({product:p._id, delivery:[]});
-            console.log('ocal.pussh '+p);
+            ocal.cal.push({product:products[p]._id, delivery:[]});
         }
-        console.log('ocal promise');
-        return when.resolve(ocal);
+        var defered = when.defer();
+        ocal.save(function(err){
+            if(err){
+                defered.reject(err);
+            }else{
+                defered.resolve(ocal);
+            }
+        });
+        return defered.promise;
     });
 }
 

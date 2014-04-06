@@ -4,15 +4,14 @@ var Order = require('../db/order'),
     when = require('when'),
     OrderCalendar = require('../db/orderCalendar'),
     Product = require('../db/product'),
+    moment = require('moment'),
     Producer = require('../db/producer');
 
 
 var submit = function (req, res, next){
     var calId = req.params.calendar_id;
-    console.log('calendar id'+calId);
     OrderCalendar.process(calId,req.body)
     .then(function(cal) {
-        console.log('calendar Saved !!!!!!!');
         return res.redirect('/calendar/'+cal._id);
     }, function(err){
         console.log('err on save calendar:'+err);
@@ -27,25 +26,48 @@ var submitNew = function(req,res,next){
 }
 
 var getLine = function(req,res,next){
-    console.log("req "+req.body.id);
     Product.findById(req.body.id)
     .exec()
     .then(function(product){
         return res.send(product);
     });
 }
+var dateFormatterBis = function(){
+    return function(text,render){
+        if(true){
+            console.log('date = '+moment(this).format('dd/mm/yyyy'));
+            return moment(this).format('dd/mm/yyyy');
+        }else{
+            return '';
+        }
+    }
+}
+var dateFormatter = function(){
+    if(true){
+        console.log('date = '+moment(this).format('DD/MM/YYYY'));
+        return moment(this).format('MM/DD/YYYY');
+    }else{
+        return '';
+    }
+}
 
 var form = function (req, res, next){
     var calId = req.params.calendar_id;
     console.log('calendar id'+calId);
     OrderCalendar.findById(calId)
+    .populate('cal.product')
     .exec()
     .then(function(result){
-        Product.find({})
+        if(!result){
+            return res.redirect('/calendar/');
+        }else{
+            return res.render('calendar/form',{menu : req.session.menu, user : req.session.user, calendar : result, util : dateFormatter, util2 : dateFormatterBis});
+        }
+        /*Product.find({})
         .exec()
         .then(function(products){
             return res.render('calendar/form',{menu : req.session.menu, user : req.session.user, calendar : result, products : products});
-        });
+        });*/
     },function(err){
         console.log('err in form calendar : '+err);
         return next(err);

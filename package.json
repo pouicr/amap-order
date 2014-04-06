@@ -10,7 +10,8 @@
     "hogan-express": "0.5.2",
     "mongoose": "3.8.8",
     "when":"3.0.0",
-    "slugs":"0.1.2"
+    "slugs":"0.1.2",
+    "moment":"2.5.1"
   },
   "scripts": {
     "start": "node server/app.js;"

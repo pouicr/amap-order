@@ -20,8 +20,8 @@ var init = function(){
 }
 
 var removeAndInsertOrderCalendar = function(){
-    return OrderCalendar.remove().exec()
-    .then(function(){
+    return OrderCalendar.remove().exec();
+  /*  .then(function(){
         var orderCalendar = new OrderCalendar({
             "name" : "Commande du mois", 
             "ref" : 1
@@ -31,7 +31,7 @@ var removeAndInsertOrderCalendar = function(){
             console.log('orderCalendar saved');
         });
         return when.resolve(orderCalendar);
-    });
+    });*/
 }
 /*
 var removeAndInsertConfig = function(orderCal){
