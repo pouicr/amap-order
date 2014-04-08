@@ -10,28 +10,23 @@ var db = require('./db'),
     
     
 var init = function(){
-    return removeAndInsertOrderCalendar()
-//    .then(removeAndInsertConfig)
-    .then(removeAndInsertUsersAndFamilies)
-    .then(removeAndInsertProducerAndProduct,
+    return removeAndInsertUsersAndFamilies()
+    .then(removeAndInsertProducerAndProduct)
+    .then(removeAndInsertOrderCalendar)
+    .then(function(){
+        console.log('DDDDDDDDDDDDDOOOOOOOOOOOONNEEE');
+    },
     function(err){
         console.log('err on save : '+err);
     });
 }
 
 var removeAndInsertOrderCalendar = function(){
-    return OrderCalendar.remove().exec();
-  /*  .then(function(){
-        var orderCalendar = new OrderCalendar({
-            "name" : "Commande du mois", 
-            "ref" : 1
-        });
-        orderCalendar.save(function(err){
-            if(err){console.log('err : '+err);}
-            console.log('orderCalendar saved');
-        });
-        return when.resolve(orderCalendar);
-    });*/
+    return OrderCalendar.remove().exec()
+    .then(function(){
+        console.log('return order calendar');
+        return OrderCalendar.initCalendar('la commande du mois',Date.now(),Date.now());
+    });
 }
 /*
 var removeAndInsertConfig = function(orderCal){
@@ -106,25 +101,25 @@ var removeAndInsertProducerAndProduct = function(){
                     console.log('err : '+err);
                     defered.reject(err);
                 }else{
-                    saveProducts(res)
-                    .then(function(){
-                        defered.resolve(res);
-                    },function(err){
-                        defered.reject(err);
-                    });
+                    console.log('current producer => '+res);
+                    defered.resolve(saveProducts(res));
                 }
             });
         }
+        console.log('return producer promise');
         return when.all(savedProducer);
     });
 }
 
 var saveProducts = function(producer){
+    console.log('producer to save : '+producer.name);
     return Product.remove().exec()
     .then(function(){
         var savedProducts = [];
         var products = require('../../data/product_'+producer.getSlugName());
+        console.log('products => '+ products);
         for (prod in products ){
+            console.log('product => '+ prod);
             var defered = when.defer();
             savedProducts.push(defered);
             var product = new Product(products[prod]);
@@ -132,12 +127,14 @@ var saveProducts = function(producer){
             product.save(function(err,res){
                 if(err){
                     console.log('err : '+err);
-                    defered.reject(err);
+                    return defered.reject(err);
                 }else{
-                    defered.resolve(res);
+                    console.log('p saved : '+res);
+                    return defered.resolve(res);
                 }
             });
         }
+        console.log('return all savedi!!!!');
         return when.all(savedProducts);
     });
 }

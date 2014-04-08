@@ -31,11 +31,14 @@ var addLine = function (){
 };
 
 $().ready(function() {
-    $(".cal").each(function() {    
+    $(".cal").each(function() {
+        if($(this).val().split(',')){
+            $(this).multiDatesPicker();
+        }else{
             $(this).multiDatesPicker({
                 //dateFormat: "dd/mm/yy",
                 addDates : $(this).val().split(',')
             });
+        }
     });
-//    $(".cal").multiDatesPicker();
 });

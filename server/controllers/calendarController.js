@@ -19,7 +19,7 @@ var submit = function (req, res, next){
 };
 
 var submitNew = function(req,res,next){
-    OrderCalendar.initCalendar(req.body.calendar_name)
+    OrderCalendar.initCalendar(req.body.calendar_name,req.body.begin,req.body.end)
     .then(function(calendar){
         return res.redirect('/calendar/'+calendar._id);
     });
@@ -32,22 +32,15 @@ var getLine = function(req,res,next){
         return res.send(product);
     });
 }
-var dateFormatterBis = function(){
+var dateFormatter = function(){
     return function(text,render){
+        console.log(render(text));
         if(true){
-            console.log('date = '+moment(this).format('dd/mm/yyyy'));
-            return moment(this).format('dd/mm/yyyy');
+            console.log('date = '+moment(this).format('MM/DD/YY'));
+            return moment(this).format('MM/DD/YY');
         }else{
             return '';
         }
-    }
-}
-var dateFormatter = function(){
-    if(true){
-        console.log('date = '+moment(this).format('DD/MM/YYYY'));
-        return moment(this).format('MM/DD/YYYY');
-    }else{
-        return '';
     }
 }
 
@@ -61,7 +54,9 @@ var form = function (req, res, next){
         if(!result){
             return res.redirect('/calendar/');
         }else{
-            return res.render('calendar/form',{menu : req.session.menu, user : req.session.user, calendar : result, util : dateFormatter, util2 : dateFormatterBis});
+            var data = {menu : req.session.menu, user : req.session.user, calendar : result, util : dateFormatter};
+            console.log(data);
+            return res.render('calendar/form',{menu : req.session.menu, user : req.session.user, calendar : result});
         }
         /*Product.find({})
         .exec()

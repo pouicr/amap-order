@@ -27,29 +27,29 @@
        <h1>Créer un template de commande</h1>
           <form action="/calendar" method="post" class="form form-horizontal">	
             <div class="row-fluid">
-            {{#error}} 
+                {{#error}} 
                 <div class="alert">  
                     <a class="close" data-dismiss="alert">×</a>  
                     <strong>Validation error!</strong>  {{error}} 
                 </div>
-            {{/error}}
-            <div class="control-group">
-                <label class="control-label" for="calendar_name">Nom de la commande :</label>
-                <div class="controls">
-                    <input type="text" name="calendar_name" id="calendar_name" value=""/>
+                {{/error}}
+                <div class="control-group">
+                    <label class="mylabel" for="calendar_name">Nom de la commande :</label>
+                    <div class="controls">
+                        <input type="text" name="calendar_name" id="calendar_name" value=""/>
+                    </div>
+                    <label class="mylabel" for="begin">Date début :</label>
+                    <div class="controls">
+                        <input type="text" class="cal" name="begin" id="begin" value=""/>
+                    </div>
+                    <label class="mylabel" for="end">Date fin :</label>
+                    <div class="controls">
+                        <input type="text" class="cal" name="end" id="end" value=""/>
+                    </div>
                 </div>
-                <label class="control-label" for="begin">Date début :</label>
-                <div class="controls">
-                    <input type="text" class="cal" name="begin" id="begin" value=""/>
+                <div class="commands">
+                  <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Créer calendrier</button>
                 </div>
-                <label class="control-label" for="end">Date fin :</label>
-                <div class="controls">
-                    <input type="text" class="cal" name="end" id="end" value=""/>
-                </div>
-            </div>
-            <div class="commands">
-              <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Créer calendrier</button>
-            </div>
           </form>
       </section>
      </div>

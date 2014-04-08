@@ -16,17 +16,9 @@ body .subnav .nav>li:not(.active):not(:hover)>a{color:#142835}
 body .subnav .navbar-inner:after{content:'';display:inline;position:absolute;border-style:solid;bottom:-14px;border-color:#003108 transparent transparent transparent;border-width:14px 0 0 12px;left:0}
 body .subnav .navbar-inner:before{content:'';display:inline;position:absolute;border-style:solid;bottom:-14px;border-color:#003108 transparent transparent transparent;border-width:14px 12px 0 0;right:0}
 body .subnav .user .name{color:#fff;padding-right:5px}
-body #submission article dt{color:#0328b8;border-bottom:1px solid #ddd;padding:0 0 0.2em 0;margin-bottom:10px;font-size:1.2em}
-body #submission article dd{margin-bottom:2em}
-body #submission .control-label{width:30%;margin-right:1em}
-body #submission .controls{margin-left:32%}body #submission .controls .help-inline{font-style:italic}
-body #submission textarea,body #submission input[type=text]{resize:none;width:96%}
-body #submission .commands{text-align:center}
-body #submission .upload{width:97%}body #submission .upload .control-label{width:70px}
-body #submission .upload .controls{margin-left:90px}
-body #submission .upload .btn{position:relative}body #submission .upload .btn input[type=file]{opacity:0;position:absolute;top:0;left:0;width:100%;height:100%}
 body .order{border-radius:5px;padding:1em;margin-bottom:1em}body .order h1>.btn{float:right}
 body .order input{width:auto}
+body .order .mylabel{width:200px;float:left}
 body .btn-primary{background:#009718;background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #009718), color-stop(1, #00fd28));background:-ms-linear-gradient(bottom, #009718, #00fd28);background:-moz-linear-gradient(center bottom, #009718 0, #00fd28 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#00fd28, endColorstr=#009718, GradientType=0);border-color:#003108;color:#fff}
 body .btn-primary:hover,body .btn:focus,body .btn:active .btn.active{background:#000;background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #000), color-stop(1, #003108));background:-ms-linear-gradient(bottom, #000, #003108);background:-moz-linear-gradient(center bottom, #000 0, #003108 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#003108, endColorstr=#000000, GradientType=0);color:#0328b8}
 @media screen and (max-width:480px){body header{background-size:auto 80%, auto 75%;height:50px}}@media screen and (max-width:767px){body .subnav:not(.subnav-fixed){margin:0 -12px} body #schedule .room{padding:4px 10px} body #schedule time{background:#ff0;text-align:center;font-size:1.2em;margin-bottom:2%} body #schedule time.empty{display:none} body #schedule .row-fluid>.span2:first-child{margin-left:0} body #schedule article{margin-bottom:1em}body #schedule article dl{margin-top:0} body #schedule article .track:not(.explore){position:static;display:inline-block !important;margin:0.5em 0.5em 0 0} body #schedule article .room{color:white;font-weight:normal;font-style:italic} body #schedule article .explore{top:-5px} body #schedule section article{width:45%;float:left;clear:left} body #schedule section article:nth-of-type(2n){float:right;clear:right} body #session article{margin-top:2em} body #session .video{width:100%;min-width:0}}@media screen and (min-width:481px) and (max-width:767px){body header{background-size:auto 75%, auto 55%;height:80px}}@media screen and (min-width:768px){body time:not(.empty){border-left:3px solid #f00;border-right:3px solid #f00;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box}}

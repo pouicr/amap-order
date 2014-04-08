@@ -39,7 +39,7 @@ OrderCalendar.statics.process = function process (calId,data){
             } else {
                 ocal.cal.push({product:p.split('_')[1], delivery:data[p].split(',')});
             }
-            console.log('call insert '+p.split('_')[1]);
+            console.log('call insert '+p.split('_')[1]+' date = '+data[p].split(','));
         }
         var defered = when.defer();
         ocal.save(function(err){
@@ -76,6 +76,7 @@ OrderCalendar.statics.initCalendar = function (name,begin,end){
                 defered.resolve(ocal);
             }
         });
+        console.log('defered.promise products => '+products);
         return defered.promise;
     });
 }
