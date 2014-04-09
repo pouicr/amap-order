@@ -28,22 +28,7 @@ var removeAndInsertOrderCalendar = function(){
         return OrderCalendar.initCalendar('la commande du mois',Date.now(),Date.now());
     });
 }
-/*
-var removeAndInsertConfig = function(orderCal){
-    return Config.remove().exec()
-    .then(function(){
-        var conf = new Config({
-            "name" : "admin", 
-            "order_id" : orderCal._id
-        });
-        conf.save(function(err){
-            if(err){console.log('err : '+err);}
-            console.log('Config saved');
-        });
-        return when.resolve(conf);
-    })
-}
-*/
+
 var removeAndInsertUsersAndFamilies = function(){
     return Family.remove().exec()
     .then(function(){
@@ -52,39 +37,22 @@ var removeAndInsertUsersAndFamilies = function(){
             "name"  : "Rodier/Pujole", 
             "adress": "Chemin du bas Mortier"
         });
-        family.save(function(err,result){
-            if(err){
-                console.log('err : '+err);
-                deferedFamily.reject(err);
-            }else{
-                return User.remove().exec()
-                .then(function(){
-                    var defered = when.defer();
-                    var user = new User({
-                        "login"  : "pouic",
-                        "name"  : "pouic",
-                        "pwd"   : "pouic",
-                        "role"  : "admin",
-                        "family": family._id
-                    });
-                    user.save(function(err,res){
-                        if(err){
-                            console.log('err : '+err);
-                            defered.reject(err);
-                        }else{
-                            defered.resolve(res);
-                        }
-                    });
-                    return defered.promise;
-                }).then(function(){
-                    deferedFamily.resolve(result);
-                },function(err){
-                    console.log('failed');
+        Family.create(family)
+        .then(function(_family){
+            return User.remove().exec()
+            .then(function(){
+                var user = new User({
+                    "login"  : "pouic",
+                    "name"  : "pouic",
+                    "pwd"   : "pouic",
+                    "role"  : "admin",
+                    "family": family._id
                 });
-            }                
+                return User.create(user);
+            }).then(function(){
+                deferedFamily.resolve(_family);
+            });
         });
-        console.log('return family promise');
-        return deferedFamily.promise;
     });
 }
 
@@ -93,20 +61,13 @@ var removeAndInsertProducerAndProduct = function(){
     .then(function(){
         var savedProducer = [];
         for (p in producerData ){
-            var defered = when.defer();
-            savedProducer.push(defered);
             var producer = new Producer(producerData[p]);
-            producer.save(function(err,res){
-                if(err){
-                    console.log('err : '+err);
-                    defered.reject(err);
-                }else{
-                    console.log('current producer => '+res);
-                    defered.resolve(saveProducts(res));
-                }
-            });
+            savedProducer.push(Producer.create(producer)
+            .then(function(_producer){
+                console.log('producer saved : '+_producer.name);
+                return saveProducts(_producer);
+            }));
         }
-        console.log('return producer promise');
         return when.all(savedProducer);
     });
 }
@@ -120,21 +81,14 @@ var saveProducts = function(producer){
         console.log('products => '+ products);
         for (prod in products ){
             console.log('product => '+ prod);
-            var defered = when.defer();
-            savedProducts.push(defered);
             var product = new Product(products[prod]);
             product.producer = producer._id;
-            product.save(function(err,res){
-                if(err){
-                    console.log('err : '+err);
-                    return defered.reject(err);
-                }else{
-                    console.log('p saved : '+res);
-                    return defered.resolve(res);
-                }
-            });
+            savedProducts.push(Product.create(product)
+            .then(function(_product){
+                console.log('procudt saved ',_product);
+                return when.resolve(_product);
+            }));
         }
-        console.log('return all savedi!!!!');
         return when.all(savedProducts);
     });
 }

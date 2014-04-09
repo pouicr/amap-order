@@ -68,16 +68,11 @@ OrderCalendar.statics.initCalendar = function (name,begin,end){
         for(p in products){
             ocal.cal.push({product:products[p]._id, delivery:[]});
         }
-        var defered = when.defer();
-        ocal.save(function(err){
-            if(err){
-                defered.reject(err);
-            }else{
-                defered.resolve(ocal);
-            }
+        return db.model('OrderCalendar').create(ocal)
+        .then(function(_ocal){
+            console.log('ocal created : ', _ocal);  
+            return when.resolve(_ocal);
         });
-        console.log('defered.promise products => '+products);
-        return defered.promise;
     });
 }
 
