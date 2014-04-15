@@ -20,6 +20,26 @@ Array.prototype.indexOfField = function (propertyName, value) {
     }
     return -1;
 }*/
+OrderCalendar.methods.getDeliveryList = function getDeliveryList(cb){
+    var deliveryList = [];
+    console.log('pwet');
+    console.log('this.cal = ',this);
+    for (c in this.cal){
+        console.log(c);
+        deliveryList.push(c.delivery);
+    }
+    return cb(deliveryList);
+    //return when.resolve(deliveryList);
+}
+
+OrderCalendar.statics.findCurrent = function findCurrent(){
+    return this.model('OrderCalendar').find({begin : { $lt : new Date()}, end: { $gt : new Date()}})
+        .exec()
+        .then(function(ocal) {
+            return when.resolve(ocal);
+        });
+}
+
 
 OrderCalendar.statics.process = function process (calId,data){
     return this.model('OrderCalendar').findById(calId)

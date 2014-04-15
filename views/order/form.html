@@ -35,22 +35,20 @@
                         <th>Produits</th>
                         <th>Unité</th>
                         <th>Tarif</th>
-                        <th>S1</th>
-                        <th>S2</th>
-                        <th>S3</th>
-                        <th>S4</th>
+                        {{#cal.cal.deliveryList}}
+                            <th>{{.}}</th>
+                        {{/cal.cal.deliveryList}}
                     </tr>
-                    {{#products}}
+                    {{#cal.cal}}
                     <tr>
                         <td>{{name}}</td>
                         <td>{{unit}}</td>
                         <td>{{price}}</td>
-                        <td><input type="text" name="qty_{{_id}}_s1" id="qty_{{_id}}_s1" value="{{s1}}"/></td>
-                        <td><input type="text" name="qty_{{_id}}_s2" id="qty_{{_id}}_s2" value="{{s2}}"/></td>
-                        <td><input type="text" name="qty_{{_id}}_s3" id="qty_{{_id}}_s3" value="{{s3}}"/></td>
-                        <td><input type="text" name="qty_{{_id}}_s4" id="qty_{{_id}}_s4" value="{{s4}}"/></td>
+                        {{#valList}}
+                            <td><input type="text" name="qty_{{_id}}_s1" id="qty_{{_id}}_s1" value="{{s1}}"/></td>
+                        {{/valList}}
                     </tr>
-                    {{/products}}
+                    {{/cal.cal}}
                 </table>
             </dd>
             <h3>Recap</h3>

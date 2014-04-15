@@ -45,15 +45,17 @@ var submit = function (req, res, next){
 };
 
 var form = function (req, res, next){
-    console.log('form!!!');
-    var oder_ref=1;
-    Order.prepareData(order_ref,family)
-    .then(function(order){
-        console.log('user to display :'+ req.session.user);
-        return res.render('order/form',{menu : req.session.menu, user : req.session.user, products : order});
-    },function(err){
-        console.log('err in form find order: '+err);
-        return next(err);
+    OrderCalendar.findCurrent()
+    .then(function(ocal){
+        if(ocal){
+            Order.prepareData(ocal,req.session.user.family._id)
+            .then(function(order){
+                console.log('o = ' +order);
+                return res.render('order/form',{menu : req.session.menu, user : req.session.user, cal : order});
+            })
+        }else{
+            return res.render('order/form',{menu : req.session.menu, user : req.session.user});
+        }
     });
 };
 	
