@@ -6,7 +6,7 @@ var express = require('express'),
     hogan = require('hogan-express'),
     http = require('http'),
     auth = require('./middleware/auth'),
-    conf = require('../conf.yml'),
+    conf = require('../etc/conf.yml'),
     routes = require('./routes'),
     appInfo = require('../package.json');;
 

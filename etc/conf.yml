@@ -3,4 +3,4 @@ port: 8000
 # true for developpement only: disabled cache for mustache templates
 noCache: true
 root: /
-
+dburl: localhost:27017
