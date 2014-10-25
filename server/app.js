@@ -52,7 +52,7 @@ function errorHandler(err, req, res, next) {
 
 require('./routes')(app);
 
-require('./db/initDB');
+//require('./db/initDB');
 
 console.log('start the server');
 var server = http.createServer(app);

@@ -3,6 +3,8 @@ var db = require('./db'),
     producerData = require('../../data/producer'),
 //    Config = require('./config'),
     OrderCalendar = require('./orderCalendar'),
+    Calendar = require('./calendar'),
+    CalendarItem = require('./calendarItem'),
     User = require('./user'),
     Family = require('./family'),
     Producer = require('./producer'),
@@ -12,7 +14,7 @@ var db = require('./db'),
 var init = function(){
     return removeAndInsertUsersAndFamilies()
     .then(removeAndInsertProducerAndProduct)
-    .then(removeAndInsertOrderCalendar)
+    .then(removeAndInsertCalendar)
     .then(function(){
         console.log('DDDDDDDDDDDDDOOOOOOOOOOOONNEEE');
     },
@@ -21,15 +23,29 @@ var init = function(){
     });
 }
 
-var removeAndInsertOrderCalendar = function(){
-    return OrderCalendar.remove().exec()
+var removeAndInsertCalendar = function(){
+    return Calendar.remove().exec()
     .then(function(){
-        var deb = new Date();
-        var fin = new Date(new Date(deb).setMonth(deb.getMonth()+1));
-        console.log('deb = ',deb);
-        console.log('fin = ',fin);
-        return OrderCalendar.initCalendar('la commande du mois',deb,fin);
-    });
+    console.log('pwet');
+        var cal = new Calendar('la commande du mois',[]);
+        Calendar.create(cal)
+        .then(function(_cal){
+/*        var cal = new (db.model('Calendar'))({
+            reference: 'la commande du mois',
+            calendarItems: []
+        });*/
+            console.log('cal : %s', _cal);
+            var products = this.model('Product').find();
+            //var fin = new Date(new Date(deb).setMonth(deb.getMonth()+1));
+            var savedItem = [];
+            savedItem.push(CalendarItem.create(_cal._id,new Date(),products));
+            savedItem.push(CalendarItem.create(_cal._id,new Date(new Date(deb).setWeek(deb.getWeek()+1),products)));
+            cal.calendarItems = savedItem;
+            return when.all(savedItem);
+        });
+    }),function(err){
+        console.log('err on calendar insert : '+err);
+    };
 }
 
 var removeAndInsertUsersAndFamilies = function(){

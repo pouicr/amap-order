@@ -14,6 +14,7 @@
         <script type="application/javascript" src="{{root}}/js/common.js"></script>
         <script type="application/javascript" src="{{root}}/js/bootstrap.min.js"></script>
         <script type="application/javascript" src="{{root}}/js/calendar.js"></script>
+        <script type="application/javascript" src="{{root}}/js/jquery-dateFormat.min.js"></script>
         <script src="http://multidatespickr.sourceforge.net/jquery-ui.multidatespicker.js"/></script>
     </head>
     <body>
@@ -24,7 +25,7 @@
 
         <div class="container-fluid">
             <section class="main order">
-            <h1>Créer un template de commande</h1>
+            <h1>Calendrier : {{calendar.reference}}</h1>
             <form action="/calendar/{{calendar._id}}" method="post" class="form form-horizontal">	
                 <div class="row-fluid">
                     {{#error}} 
@@ -33,34 +34,35 @@
                         <strong>Validation error!</strong>  {{error}} 
                     </div>
                     {{/error}}
-                    <div class="control-group">
-                        <label class="mylabel" for="reference">Nom de la commande :</label>
-                        <div class="controls">
-                            <input type="text" name="reference" id="reference" value="{{calendar.reference}}"/>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="mylabel" for="openDate">Dates de début de commande</label>
-                        <input type="text" class="cal" name="openDate" id="openDate" value="{{calendar.openDate}}">
-                    </div>
-                    <div>
-                        <label class="mylabel" for="endDate">Dates de fin de commande</label>
-                        <input type="text" class="cal" name="endDate" id="endDate" value="{{calendar.endDate}}">
-                    </div>
-                    <div>
-                        <label class="mylabel" for="itemDates">Définir les dates de livraison associé</label>
-                        <input type="text" class="cal" name="itemDates" id="itemDates" value="{{itemDates}}">
-                    </div>
+
+                    <dd id="producer_{{_id}}" class="collapse in">
+                    <table id="cal_table" class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>Produits : unité / tarif</th>
+                                {{#items}}
+                                <th>{{delivery_date}}</th>
+                                {{/items}}
+                            </tr>
+                            {{#products}}
+                            <tr>
+                                <td>{{name}} : {{unit}} / {{price}}</td>
+                                {{#items}}
+                                <td><input type="text" class="cal" name="val_{{product._id}}" id="val_{{product._id}}" value="{{#util}}{{delivery}}{{/util}}"></td>
+                                {{/items}}
+                            </tr>
+                            {{/products}}
+                        </tbody>
+                    </table>
+                    </dd>
+                    <select id="product">
+                        {{#products}}
+                        <option value="{{_id}}">{{name}} - {{unit}}</option>
+                        {{/products}}
+                    </select>
+                    <a href="#" onClick="addLine()">ADD</a>
                     <div class="commands">
-                        {{#calendar._id}}
-                        <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Modifier calendrier</button>
-                        <div class="commands">
-                            <a href="/calendar/detail/{{calendar._id}}" class="btn btn-primary btn-lg active" role="button">Détail</a>
-                        </div>
-                        {{/calendar._id}}
-                        {{^calendar._id}}
-                        <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Créer calendrier</button>
-                        {{/calendar._id}}
+                        <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Sauvegarder</button>
                     </div>
                 </form>
                 </section>

@@ -1,4 +1,4 @@
-.PHONY : build clean run
+.PHONY : all
 
 USERNAME:=pouic
 APPNAME:=amap-order
@@ -30,6 +30,9 @@ install:
 shell:
 	echo "shel..."
 	docker run -it $(docker_run_flags) --link mongo:mongo --entrypoint /bin/bash $(IMAGE) -c bash
+
+mongo-cli:
+	docker run --rm -it --link mongo:mongo mongo:2.6 sh -c 'exec mongo "$(MONGO_PORT_27017_TCP_ADDR):$(MONGO_PORT_27017_TCP_PORT)/test"'
 
 mongo-up:
 	docker run -d --name mongo -p 27017:27017 mongo:2.6 mongod --smallfiles

@@ -21,11 +21,12 @@
       <section class="main">
        <h1>Calendrier de commandes :</h1>
             <a href="/calendar">Ajouter</a>
-          {{#orders}}
+            {{#calendars}}
+            
               <div class="row-fluid">
-                <dt>Calendrier : <a href="/calendar/{{_id}}">{{name}}</a></dt>
+                <dt>Calendrier : <a href="/calendar/{{_id}}">{{reference}}</a></dt>
               </div>
-          {{/orders}}
+            {{/calendars}}
       </section>
      </div>
   </body>

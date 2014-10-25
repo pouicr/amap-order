@@ -48,11 +48,9 @@ var form = function (req, res, next){
     OrderCalendar.findCurrent()
     .then(function(ocal){
         if(ocal){
-            Order.prepareData(ocal,req.session.user.family._id)
-            .then(function(order){
-                console.log('o = ' +order);
-                return res.render('order/form',{menu : req.session.menu, user : req.session.user, cal : order});
-            })
+            var orderList = Order.find(ocal,req.session.user.family._id)
+            console.log('list = ' +orderList);
+            return res.render('order/form',{menu : req.session.menu, user : req.session.user, cal : order});
         }else{
             return res.render('order/form',{menu : req.session.menu, user : req.session.user});
         }

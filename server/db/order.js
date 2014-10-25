@@ -34,18 +34,16 @@ Order.statics.findByRefFamilyAndProd = function (ref,family,prod){
 };
 
 Order.statics.prepareData = function prepareData(ocal,family){
+    
+    return ocal;
     //ocal.deliveryList = ocal.getDeliveryList();
-    ocal.getDeliveryList(function(ret){
-        console.log(ret);
-        return when.resolve(ocal);
-    });
     //return when.resolve(ocal);
 }
 
 Order.statics.process = function process(ref,product,val,family){
     return this.findByRefFamilyAndProd(ref,family,product)
     .then(function(order){
-        console.log('order = '+order);i
+        console.log('order = '+order);
         console.log('product = '+product);
         if(order != ''){
             console.log('pdt'+order.product);

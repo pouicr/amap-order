@@ -88,14 +88,15 @@ OrderCalendar.statics.initCalendar = function (name,begin,end){
 
 OrderCalendar.methods.getDeliveryList = function getDeliveryList(cb){
     console.log('pwet');
-    console.log('this.cal = ',this);
-    var deliveryList = [];
-    for (c in this.cal){
-        console.log(c);
-        deliveryList.push(c.delivery);
-    }
-    return cb(deliveryList);
+    //console.log('this.cal = ',this);
+    //var deliveryList = [];
+    //for (c in this.cal){
+    //    console.log(c);
+    //    deliveryList.push(c.delivery);
+    //}
+    //return cb(deliveryList);
     //return when.resolve(deliveryList);
+    return cb;
 }
 
 module.exports = db.model('OrderCalendar', OrderCalendar);
