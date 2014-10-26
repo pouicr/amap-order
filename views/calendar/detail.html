@@ -47,19 +47,13 @@
                             <tr>
                                 <td>{{name}} : {{unit}} / {{price}}</td>
                                 {{#items}}
-                                <td><input type="text" class="cal" name="val_{{product._id}}" id="val_{{product._id}}" value="{{#util}}{{delivery}}{{/util}}"></td>
+                                <td><input type="checkbox" name="val_{{product._id}}" id="val_{{product._id}}" value=""></td>
                                 {{/items}}
                             </tr>
                             {{/products}}
                         </tbody>
                     </table>
                     </dd>
-                    <select id="product">
-                        {{#products}}
-                        <option value="{{_id}}">{{name}} - {{unit}}</option>
-                        {{/products}}
-                    </select>
-                    <a href="#" onClick="addLine()">ADD</a>
                     <div class="commands">
                         <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Sauvegarder</button>
                     </div>
