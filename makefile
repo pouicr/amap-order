@@ -3,6 +3,7 @@
 USERNAME:=pouic
 APPNAME:=amap-order
 IMAGE:=$(USERNAME)/$(APPNAME)
+MONGO_IP:=`docker inspect --format '{{ .NetworkSettings.IPAddress }}' mongo`
 
 define docker_run_flags
 -v $(PWD):/data \
@@ -31,11 +32,14 @@ shell:
 	echo "shel..."
 	docker run -it $(docker_run_flags) --link mongo:mongo --entrypoint /bin/bash $(IMAGE) -c bash
 
+init:
+	docker run --rm -it $(docker_run_flags) --link mongo:mongo $(IMAGE) node server/db/initDB.js
+
 mongo-cli:
-	docker run --rm -it --link mongo:mongo mongo:2.6 sh -c 'exec mongo "$(MONGO_PORT_27017_TCP_ADDR):$(MONGO_PORT_27017_TCP_PORT)/test"'
+	docker run --rm -it --link mongo:mongo mongo:2.6 mongo $(MONGO_IP)/mydb
 
 mongo-up:
-	docker run -d --name mongo -p 27017:27017 mongo:2.6 mongod --smallfiles
+	docker run -d --name mongo -v /var/data/amap:/data/db -p 27017:27017 mongo:2.6 mongod --smallfiles
 
 mongo-rm:
 	docker stop mongo && docker rm mongo
