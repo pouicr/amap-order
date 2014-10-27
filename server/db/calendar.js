@@ -2,7 +2,8 @@ var db = require('./db'),
 CalendarItem = require('./calendarItem'),
 when = require('when');
 
-var Calendar = new db.Schema({
+var Calendar = new db.Schema(
+{
     reference      : { type: String , required: true, index: true}
     , openDate     : { type : Date, required: true }
     , endDate      : { type : Date, required: true }

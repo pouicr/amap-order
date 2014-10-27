@@ -2,12 +2,13 @@ var db = require('./db'),
     Producer = require('./producer'),
     when = require('when');
 
-var Product = new db.Schema({
+var Product = new db.Schema(
+{
     name        :  { type: String, required: true }
   , category    :  { type: String, required: true, index: true}
   , desc        :  { type: String}
   , unit        :  { type: String, required: true }
-  , price       :  { type: Number, required: true }    
+  , price       :  { type: Number, required: true }
   , update_date :  { type: Date, default: Date.now }
   , producer    :  { type: db.Schema.Types.ObjectId, ref: 'Producer', required: true}
 });
