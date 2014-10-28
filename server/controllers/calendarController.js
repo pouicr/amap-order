@@ -10,7 +10,7 @@ moment = require('moment'),
 Producer = require('../db/producer');
 
 
-var submit_old = function (req, res, next){
+var submit = function (req, res, next){
     var calId = req.params.calendar_id;
     Calendar.process(calId,req.body)
     .then(function(cal) {
@@ -20,7 +20,7 @@ var submit_old = function (req, res, next){
     });
 };
 
-var submit = function(req,res,next){
+var submit_old = function(req,res,next){
     var cal = new Calendar(
         {
         reference: req.body.reference,
@@ -65,7 +65,6 @@ var dateFormatter =  function(){
 }
 var detail = function (req, res, next){
     var calId = req.params.calendar_id;
-    console.log('calendar id'+calId);
     Calendar.findById(calId)
     .exec()
     .then(function(result){
@@ -90,13 +89,10 @@ var detail = function (req, res, next){
 
 var form = function (req, res, next){
     var calId = req.params.calendar_id;
-    console.log('calendar id '+calId);
     Calendar.findById(calId)
     .populate('cal.calendarItems')
     .exec()
     .then(function(result){
-        console.log('res ',result);
-
         if(!result){
             return res.render('calendar/form',{menu : req.session.menu, user : req.session.user});
         }else{
