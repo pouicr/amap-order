@@ -38,7 +38,7 @@ up: volume mongo-up run
 
 run:
 	echo "Running $(IMAGE) ..."
-	docker run $(docker_run_flags) --name $(APPNAME) $(IMAGE) npm start
+	docker run $(docker_run_flags) --name $(APPNAME) $(IMAGE)
 
 install:
 	echo "Installing $(IMAGE) ..."

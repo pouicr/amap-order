@@ -18,7 +18,8 @@
     "moment":"2.8.3"
   },
   "scripts": {
-    "start": "node server/app.js;"
+    "start": "node server/app.js;",
+    "test": "echo 'No test yet :-( '"
   },
   "engine": {
     "node": ">=0.8"
