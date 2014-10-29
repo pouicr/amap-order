@@ -5,6 +5,11 @@ APPNAME:=amap-order
 IMAGE:=$(USERNAME)/$(APPNAME)
 MONGO_IP:=`docker inspect --format '{{ .NetworkSettings.IPAddress }}' mongo`
 
+define docker_install_flags
+--rm \
+--volumes-from $(APPNAME)_volumes
+endef
+
 define docker_run_flags
 -p 8000:8000 \
 -it \
@@ -42,7 +47,7 @@ run:
 
 install:
 	echo "Installing $(IMAGE) ..."
-	docker run $(docker_run_flags) $(IMAGE) npm install
+	docker run $(docker_install_flags) $(IMAGE) npm install
 
 shell:
 	echo "shel..."

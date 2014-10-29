@@ -3,17 +3,26 @@ AMAP order web site
 
 Nodejs website (express, hogan, mongoose, less) + mongodb
 
+
+Requirement
 ----
 
-Setup :
-
-npm install
+Docker and make
 
 
-Run :
+Usage
+----
 
-start your mongodb on default port
 
-npm start
+* Install: make install 
+  install node modules
+* Build: make build
+  create an image with everything in it
+* Up : make up
+  will start a mongo container, create a box for the volumes and start the nodejs server
 
-Visit http://localhost:8000
+
+Configuration
+----
+
+The configuration is done in server/conf.js
