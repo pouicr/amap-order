@@ -10,7 +10,7 @@ var express = require('express'),
     session = require('express-session'),
     methodOverride = require('method-override'),
     auth = require('./middleware/auth'),
-    conf = require('../etc/conf.yml'),
+    conf = require('./conf'),
     routes = require('./routes'),
     appInfo = require('../package.json');;
 
@@ -28,8 +28,8 @@ app.set('info', {
     version: appInfo.version,
     author: appInfo.author
 });
-app.set('port', conf.port || 8000);
-app.set('host', conf.host || localhost);
+app.set('port', conf.port);
+app.set('host', conf.ip);
 app.engine('html',hogan);
 app.set('view engine', 'html');
 app.set('partials', {menu: 'commons/menu'});

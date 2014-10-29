@@ -1,7 +1,9 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    conf = require('../conf')
+;
 
-console.log(process.env);
-var db = mongoose.connect(process.env.MONGO_PORT_27017_TCP_ADDR,'mydb', process.env.MONGO_PORT_27017_TCP_PORT, function(err) {
+console.log('pouic : ',conf);
+var db = mongoose.connect(conf.dburl, function(err) {
   if (err) { throw err; }
 });
 
