@@ -1,8 +1,8 @@
 var conf = function() {
     var c = {};
     
-    c.ip = process.env.NODE_IP || 'localhost';
-    c.port = process.env.NODE_PORT || 8000;
+    c.ip = process.env.IP || '0.0.0.0';
+    c.port = process.env.PORT || 8000;
     
     if (process.env.MONGO_PORT_27017_TCP_ADDR){
         console.log('mongo from docker link');
