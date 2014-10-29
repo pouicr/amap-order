@@ -6,5 +6,14 @@ RUN chown node:node -R /data
 RUN mkdir /home/node
 RUN chown node:node /home/node
 
+
+
 USER node
 ENV HOME /home/node
+
+ADD . /data
+WORKDIR /data
+
+#ENTRYPOINT ["/usr/bin/npm"]
+
+CMD ["npm", "start"]

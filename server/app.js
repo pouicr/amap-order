@@ -5,6 +5,10 @@ var express = require('express'),
     yaml = require('js-yaml'),
     hogan = require('hogan-express'),
     http = require('http'),
+    bodyParser = require('body-parser'),
+    cookieParser = require('cookie-parser'),
+    session = require('express-session'),
+    methodOverride = require('method-override'),
     auth = require('./middleware/auth'),
     conf = require('../etc/conf.yml'),
     routes = require('./routes'),
@@ -17,31 +21,33 @@ var app = express();
 var publicFolder = path.normalize(conf.publicFolder || path.join(__dirname, '..', 'public'));
 var viewFolder = path.normalize(conf.viewFolder || path.join(__dirname, '..', 'views'));
 
-app.configure(function(){
-    app.set('info', {
-        name: appInfo.name,
-        title: appInfo.name,
-        description: appInfo.description,
-        version: appInfo.version,
-        author: appInfo.author
-    });
-    app.set('port', conf.port || 8000);
-    app.set('host', conf.host || localhost);
-    app.engine('html',hogan);
-    app.set('view engine', 'html');
-    app.set('partials', {menu: 'commons/menu'});
-    app.set('views', viewFolder);
-    app.use(express.logger('dev'));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(express.cookieParser());
-    app.use(express.session({secret : 'pwet'}));
-    app.use(auth);
-    app.use(app.router);
-    app.use(less({src : publicFolder,compress : true}));
-    app.use(express['static'](publicFolder));
-    app.use(errorHandler);
+app.set('info', {
+    name: appInfo.name,
+    title: appInfo.name,
+    description: appInfo.description,
+    version: appInfo.version,
+    author: appInfo.author
 });
+app.set('port', conf.port || 8000);
+app.set('host', conf.host || localhost);
+app.engine('html',hogan);
+app.set('view engine', 'html');
+app.set('partials', {menu: 'commons/menu'});
+app.set('views', viewFolder);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(methodOverride());
+app.use(cookieParser());
+app.use(session({
+    secret : 'bioenbrenne',
+    name: 'amap',
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(auth);
+app.use(less(publicFolder));
+app.use(express['static'](publicFolder));
+app.use(errorHandler);
 
 
 function errorHandler(err, req, res, next) {
