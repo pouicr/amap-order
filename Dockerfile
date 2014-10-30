@@ -14,6 +14,8 @@ RUN chown node:node /data
 USER node
 ENV HOME /home/node
 
-#ENTRYPOINT ["/usr/bin/npm"]
+RUN npm install
 
-CMD ["npm", "start"]
+ENTRYPOINT ["/usr/local/bin/npm"]
+
+CMD ["start"]
