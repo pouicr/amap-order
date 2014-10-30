@@ -10,7 +10,6 @@ Producer
   , desc       :  { type: String }
   , referent   :  { type: String }
   , info       :  { type: String }    
-  , category   :  { type: String, required: true }
   , address    :  { type: String }
   , date       :  { type: Date, default: Date.now }
 }
@@ -18,6 +17,7 @@ Producer
 [get]   /producer       get producer list
 [get]   /producer/{id}  get producer
 [post]  /producer       add a producer
+[post]  /producer/product/{id}  add a product to a producer
 [post]  /producer/{id}  update producer
 [delete]/producer/{id}  delete producer
 
@@ -39,7 +39,6 @@ Product
 
 [get]   /product       get product list
 [get]   /product/{id}  get product
-[post]  /product       add a product
 [post]  /product/{id}  update product
 [delete]/product/{id}  delete product
 

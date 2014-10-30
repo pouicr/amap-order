@@ -24,50 +24,42 @@
                 <strong>Validation error!</strong>  {{error}} 
             </div>
             {{/error}} 
-            <section class="main order">
             {{#producer}}
-            <h1>{{^_id}}Nouveau producteur{{/_id}}{{#_id}}{{name}}{{/_id}}</h1>
-            {{/producer}}
-            <form action="/producer/{{produer._id}}" method="post" class="form form-horizontal">	
+            <section class="main order">
+            <h1>{{^_id}}Nouveau producteur{{/_id}}{{#_id}}{{name}}{{/_id}} {{#user.role.admin}}<i class="icon icon-remove-circle"></i>{{/user.role.admin}}</h1>
+            <form action="/producer/{{_id}}" method="post" class="form form-horizontal">	
                 <div class="row-fluid control-group">
                     <div>
                         <dl>
                             <dt>Description</dt>
-                            <dd><textarea class="form-control" id="description" required>{{producer.desc}}</textarea></dd>
+                            <dd>{{desc}}</dd>
                         </dl>
                         <dl>
                             <dt>Référent</dt>
-                            <dd><input type="text" class="form-control" id="referent" value="{{producer.referent}}" required></input></dd>
+                            <dd>{{referent}}</dd>
                         </dl>
                     </div>
-                    <dt><a class="btn" data-toggle="collapse" data-target="#producer_{{producer._id}}">Produits : </a></dt>
-                    <dd id="producer_{{producer._id}}" class="collapse in">
+                    <dt><a class="btn" data-toggle="collapse" data-target="#producer_{{_id}}">Produits : </a></dt>
+                    <dd id="producer_{{_id}}" class="collapse in">
                     <table class="table table-bordered">
                         <tr>
                             <th>Nom</th>
                             <th>Unité</th>
                             <th>Tarif</th>
-                            <th>Action</th>
                         </tr>
-                        {{#producer}}
                         {{#products}}
                         <tr>
                             <td>{{name}}</td>
                             <td>{{unit}}</td>
                             <td>{{price}}</td>
-                            <td><button type="submit" class="btn"><i href="#" class="icon icon-edit"></button></i><button type="submit" class="btn btn-primary btn-large"><i href="#" class="icon icon-remove-circle"></i></button></td>
                         </tr>
                         {{/products}}
-                        {{/producer}}
                     </table>
                     </dd>
-
-                    <div class="commands">
-                        <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Mettre à jour</button>
-                    </div>
                 </div>
             </form>
             </section>
+            {{/producer}}
         </div>
     </body>
 </html>
