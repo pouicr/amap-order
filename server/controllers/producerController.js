@@ -9,8 +9,8 @@ var submit = function (req, res, next){
         producer = Producer.findOne({_id: id},function(err,result){
             if(err){console.log('err : '+err); return next(err);}
             if(result){
-                if(!req.session.user.role['admin'] && result.referent != req.session.user.id){
-                    return res.send(403);
+                if(req.session.user.role != 'admin'){
+                    return res.sendStatus(403);
                 }
                 fillProducer(req,producer,function(err,filledProducer){
                     console.log('fill order OK');
@@ -21,6 +21,7 @@ var submit = function (req, res, next){
                     });
                 });
             }else{
+                console.log("producer not found");
                 return res.send(403);
             }
         });

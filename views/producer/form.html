@@ -28,7 +28,7 @@
             {{#producer}}
             <h1>{{^_id}}Nouveau producteur{{/_id}}{{#_id}}{{name}}{{/_id}}</h1>
             {{/producer}}
-            <form action="/producer/{{produer._id}}" method="post" class="form form-horizontal">	
+            <form action="/producer/{{producer._id}}" method="post" class="form form-horizontal">	
                 <div class="row-fluid control-group">
                     <div>
                         <dl>
@@ -55,7 +55,13 @@
                             <td>{{name}}</td>
                             <td>{{unit}}</td>
                             <td>{{price}}</td>
-                            <td><button type="submit" class="btn"><i href="#" class="icon icon-edit"></button></i><button type="submit" class="btn btn-primary btn-large"><i href="#" class="icon icon-remove-circle"></i></button></td>
+                            <td>
+                                <a class="btn btn-sm btn-primary" href="#">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                                <a class="btn btn-sm btn-primary" href="#">
+                                    <span class="glyphicon glyphicon-remove-circle"></span>
+                                </a>
                         </tr>
                         {{/products}}
                         {{/producer}}

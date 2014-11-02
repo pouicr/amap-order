@@ -26,7 +26,11 @@
             {{/error}} 
             {{#producer}}
             <section class="main order">
-            <h1>{{^_id}}Nouveau producteur{{/_id}}{{#_id}}{{name}}{{/_id}} {{#user.role.admin}}<i class="icon icon-remove-circle"></i>{{/user.role.admin}}</h1>
+            <h1>
+                {{^_id}}Nouveau producteur{{/_id}}
+                {{#_id}}{{name}}{{/_id}} 
+                {{#user.admin}}<a class="btn btn-primary" href="/producer/{{producer._id}}"><i class="icon-star icon-white"></i>Edit</a>{{/user.admin}}
+            </h1>
             <form action="/producer/{{_id}}" method="post" class="form form-horizontal">	
                 <div class="row-fluid control-group">
                     <div>

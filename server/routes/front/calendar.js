@@ -1,4 +1,4 @@
-var controller = require('../controllers/calendarController.js');
+var controller = require('../../controllers/calendarController.js');
 
 module.exports = function (server) {
     // ### submition routes

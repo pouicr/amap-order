@@ -1,4 +1,4 @@
-var controller = require('../controllers/producerController.js');
+var controller = require('../../controllers/producerController.js');
 
 module.exports = function (server) {
     // ### submition routes

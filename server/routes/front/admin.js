@@ -1,4 +1,4 @@
-var controller = require('../controllers/adminController.js');
+var controller = require('../../controllers/adminController.js');
 
 module.exports = function (server) {
     // ### admin routes

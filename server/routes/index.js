@@ -1,8 +1,9 @@
-var root  = require('./root'),
-    order = require('./order'),
-    admin = require('./admin'),
-    calendar = require('./calendar'),
-    producer = require('./producer');
+var root  = require('./front/root'),
+    order = require('./front/order'),
+    admin = require('./front/admin'),
+    calendar = require('./front/calendar'),
+    producer = require('./front/producer')
+    ;
 
 module.exports = function(server){
     return {

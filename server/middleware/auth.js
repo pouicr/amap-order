@@ -15,13 +15,14 @@ var configureUser = function(req, res, next){
     if(!req.session.user){
         return User.findByLoginAndPwd('pouic','pouic')
         .then(function(user){
-            console.log('user found : '+user);
-            req.session.user = user;
+            var u = user.toObject();
             req.session.menu = JSON.parse(JSON.stringify(menuitems));
             if (user.role.indexOf('admin') >= 0){
-                console.log('user Admin ');
+                u.admin='bla';
                 req.session.menu.push({name: 'Admin', link: '/admin'});
             }
+            console.log('user : ',u);
+            req.session.user = u;
             return next();
         })
     }else{

@@ -1,4 +1,4 @@
-var controller = require('../controllers/orderController.js');
+var controller = require('../../controllers/orderController.js');
 
 module.exports = function (server) {
     // ### submition routes
