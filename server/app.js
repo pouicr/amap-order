@@ -57,6 +57,7 @@ function errorHandler(err, req, res, next) {
 
 
 require('./routes')(app);
+require('./routes/api')(app);
 
 require('./db/initDB');
 

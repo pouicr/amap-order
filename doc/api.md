@@ -1,6 +1,9 @@
 Server API
 ====
 
+Notes:
+Default result size = 10
+
 Producer
 ----
 
@@ -15,6 +18,8 @@ Producer
 }
 
 [get]   /producer       get producer list
+?size=x                 change result default size
+?page=y                 get specific page
 [get]   /producer/{id}  get producer
 [post]  /producer       add a producer
 [post]  /producer/product/{id}  add a product to a producer

@@ -1,5 +1,6 @@
 var Producer = require('../../db/producer'),
-Product = require('../../db/product');
+Product = require('../../db/product'),
+conf = require('../../conf');
 
 
 var update = function (req, res, next){
@@ -27,7 +28,7 @@ var remove = function(req,res,next){
 
 
 
-var form = function (req, res, next){
+var get = function (req, res, next){
     var id = req.params.producer_id;
     Producer.findById(id)
     .exec()
@@ -52,15 +53,22 @@ var form = function (req, res, next){
 };
 
 var list = function (req, res, next){
-    Producer.find({},function(err,result){
+    console.log('api/producer');
+    var limit = conf.limit;
+    var skip = 0;
+    if (req.query.limit){
+        limit = req.query.limit;
+    }
+    if (req.query.skip){
+        skip = req.query.skip;
+    }
+    Producer.find({})
+    .skip(skip)
+    .limit(limit)
+    .exec()
+    .then(function(err,result){
         if(err){console.log('err : '+err); return next(err);}
-        var data;
-        if (!result){
-            data = {menu:req.session.menu,user:req.session.user};
-        }else{
-            data = {menu:req.session.menu,user:req.session.user, producers : result};
-        }
-        return res.render('producer/list',data);
+        return res.json(result);
     });
 };
 
@@ -78,8 +86,8 @@ var validate = function (req, res, next){
 
 module.exports = {
     remove : remove,
-    submit : submit,
+    update : update,
     list :list,
-    form : form,
+    get : get,
     validate :validate
 }

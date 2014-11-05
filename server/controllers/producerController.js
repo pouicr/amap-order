@@ -1,5 +1,7 @@
 var Producer = require('../db/producer'),
-Product = require('../db/product');
+Product = require('../db/product'),
+conf = require('../conf'),
+request = require('request');
 
 
 var submit = function (req, res, next){
@@ -70,8 +72,12 @@ var form = function (req, res, next){
 };
 
 var list = function (req, res, next){
-    Producer.find({},function(err,result){
+    request({
+        url: conf.api_url+'/producer',
+        json: true
+    },function(err,response,result){
         if(err){console.log('err : '+err); return next(err);}
+        console.log(' producer found : '+result);
         var data;
         if (!result){
             data = {menu:req.session.menu,user:req.session.user};

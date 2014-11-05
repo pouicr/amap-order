@@ -3,6 +3,8 @@ var conf = function() {
     
     c.ip = process.env.IP || '0.0.0.0';
     c.port = process.env.PORT || 8000;
+    c.limit = 10;
+    c.api_url = 'http://localhost:8000/api'
     
     if (process.env.MONGO_PORT_27017_TCP_ADDR){
         console.log('mongo from docker link');
