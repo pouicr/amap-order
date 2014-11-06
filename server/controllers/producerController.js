@@ -1,6 +1,7 @@
 var Producer = require('../db/producer'),
 Product = require('../db/product'),
 conf = require('../conf'),
+log = require('../log'),
 request = require('request');
 
 
@@ -76,8 +77,9 @@ var list = function (req, res, next){
         url: conf.api_url+'/producer',
         json: true
     },function(err,response,result){
-        if(err){console.log('err : '+err); return next(err);}
-        console.log(' producer found : '+result);
+        if(err){log.error(err); return next(err);}
+        log.debug('producer found : '+result);
+        log.error('test');
         var data;
         if (!result){
             data = {menu:req.session.menu,user:req.session.user};

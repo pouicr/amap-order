@@ -66,10 +66,12 @@ var list = function (req, res, next){
     .skip(skip)
     .limit(limit)
     .exec()
-    .then(function(err,result){
-        if(err){console.log('err : '+err); return next(err);}
+    .then(function(result){
         return res.json(result);
-    });
+    }),function(err){
+        console.log('err : '+err); 
+        return next(err);
+    };
 };
 
 var validate = function (req, res, next){
