@@ -2,6 +2,7 @@ var Producer = require('../db/producer'),
 Product = require('../db/product'),
 conf = require('../conf'),
 log = require('../log'),
+rest = require('rest'),
 request = require('request');
 
 
@@ -49,28 +50,33 @@ var remove = function(req,res,next){
 
 
 var form = function (req, res, next){
-    var id = req.params.producer_id;
-    Producer.findById(id)
-    .exec()
+    rest(function(){
+        request({
+            url: conf.api_url+'/producer/'+req.params.producer_id,
+            json: true
+        },function(err,response,result){
+            log.debug('producer found : '+result);
+            return result;
+        })
+    })
     .then(function(producer){
-        if (producer){
-        Product.find({producer:producer._id})
-        .exec()
-        .then(function(result){
-            var action = 'form';
-            if(req.url.indexOf('view') > -1) {
-                action = 'view';
-            }
-            return res.render('producer/'+action,{menu:req.session.menu,user:req.session.user, producer : producer, products:result});
-        });
-        }else{
-            return res.render('producer/form',{menu:req.session.menu,user:req.session.user});
+        request({
+            url: conf.api_url+'/producer/products/'+req.params.producer_id,
+            json: true
+        },function(err,response,result){
+            log.debug('products found : '+result);
+            return {producer,result};
+        })
+    })
+    .done(function(producer,products){
+        var action = 'form';
+        if(req.url.indexOf('view') > -1) {
+            action = 'view';
         }
-    }),function(err){
-        console.log('err in form : '+err); 
-        return next(err);
-    };
-};
+        return res.render('producer/'+action,{menu:req.session.menu,user:req.session.user, producer : producer, products:result});
+    });
+}
+//return res.render('producer/form',{menu:req.session.menu,user:req.session.user});
 
 var list = function (req, res, next){
     request({
@@ -79,7 +85,6 @@ var list = function (req, res, next){
     },function(err,response,result){
         if(err){log.error(err); return next(err);}
         log.debug('producer found : '+result);
-        log.error('test');
         var data;
         if (!result){
             data = {menu:req.session.menu,user:req.session.user};
