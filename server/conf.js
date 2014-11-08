@@ -19,6 +19,12 @@ var conf = function() {
         console.log('default : mongo local');
         c.dburl = 'localhost:27017';
     }
+
+
+    if(process.env.API_URL){
+        console.log('api url from external');
+        c.api_url = process.env.API_URL;
+    }
     return c;
 }
 
