@@ -1,6 +1,5 @@
 var Producer = require('../../db/producer'),
 Product = require('../../db/product'),
-rest = require('rest'),
 conf = require('../../log'),
 conf = require('../../conf');
 
@@ -32,6 +31,7 @@ var remove = function(req,res,next){
 
 var get = function (req, res, next){
     var id = req.params.producer_id;
+    console.log('GET producer:',id);
     Producer.findById(id)
     .exec()
     .then(function(producer){
@@ -42,6 +42,18 @@ var get = function (req, res, next){
     };
 };
 
+var getProducts = function (req, res, next){
+    var id = req.params.producer_id;
+    console.log('GET products for producer :',id);
+    Product.findAllByCategory()
+//    Product.findByProducer(id)
+    .then(function(products){
+        return res.json(products);
+    }),function(err){
+        log.error(err); 
+        return next(err);
+    };
+};
 
 var list = function (req, res, next){
     var limit = conf.limit;
@@ -83,6 +95,8 @@ module.exports = {
     remove : remove,
     update : update,
     list :list,
+    get : get,
+    getProducts : getProducts,
     get : get,
     validate :validate
 }

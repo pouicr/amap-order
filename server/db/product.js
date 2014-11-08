@@ -36,6 +36,13 @@ Product.statics.findByCategory = function findByCategory(category){
     });
 }
 
+Product.statics.findByProducer = function findByProducer(producer){
+    return this.model('Product').find({producer:producer}).exec()
+    .then(function(products) {
+        return when.resolve(products);
+    });
+}
+
 //middleware
 Product.pre('save', function (next) {
     update_date = Date.now;

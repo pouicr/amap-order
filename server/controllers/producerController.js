@@ -2,7 +2,7 @@ var Producer = require('../db/producer'),
 Product = require('../db/product'),
 conf = require('../conf'),
 log = require('../log'),
-rest = require('rest'),
+nodefn = require('when/node'),
 request = require('request');
 
 
@@ -50,14 +50,15 @@ var remove = function(req,res,next){
 
 
 var form = function (req, res, next){
-    rest(function(){
-        request({
-            url: conf.api_url+'/producer/'+req.params.producer_id,
-            json: true
-        },function(err,response,result){
-            log.debug('producer found : '+result);
-            return result;
-        })
+    nodefn.call(request,{
+        url: conf.api_url+'/producer/'+req.params.producer_id,
+        json: true
+    })
+    .then(function(response,result){
+        console.log('resp : ',response);
+        console.log('res : ',result);
+        log.debug('producer found : '+result);
+        return result;
     })
     .then(function(producer){
         request({
@@ -65,7 +66,7 @@ var form = function (req, res, next){
             json: true
         },function(err,response,result){
             log.debug('products found : '+result);
-            return {producer,result};
+            return {producer : producer, products : result};
         })
     })
     .done(function(producer,products){
@@ -73,7 +74,10 @@ var form = function (req, res, next){
         if(req.url.indexOf('view') > -1) {
             action = 'view';
         }
-        return res.render('producer/'+action,{menu:req.session.menu,user:req.session.user, producer : producer, products:result});
+        return res.render('producer/'+action,{menu:req.session.menu,user:req.session.user, producer : producer, products : products});
+    },function(error){
+        log.error(err);
+        return res.sendStatus(500);
     });
 }
 //return res.render('producer/form',{menu:req.session.menu,user:req.session.user});
