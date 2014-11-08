@@ -4,13 +4,11 @@ var logger = function(){
     return loggerFactory.createLogger({
         name:'amap',
         streams: [{
-            type: 'rotating-file',
-            path: 'logs/amap.log',
-            period: '1d',   // daily rotation
-            count: 3,        // keep 3 back copies
+            stream: process.stdout,
             level: 'debug'
         },{
-            path:'logs/error.log',
+            //path:'logs/error.log',
+            stream: process.stdout,
             level:'error'
         }]
     });
