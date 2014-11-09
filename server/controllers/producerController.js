@@ -3,6 +3,7 @@ Product = require('../db/product'),
 conf = require('../conf'),
 log = require('../log'),
 nodefn = require('when/node'),
+when = require('when'),
 request = require('request');
 
 
@@ -50,37 +51,26 @@ var remove = function(req,res,next){
 
 
 var form = function (req, res, next){
-    nodefn.call(request,{
+    request({
         url: conf.api_url+'/producer/'+req.params.producer_id,
         json: true
-    })
-    .then(function(response,result){
-        console.log('resp : ',response);
-        console.log('res : ',result);
-        log.debug('producer found : '+result);
-        return result;
-    })
-    .then(function(producer){
+    },function(err,response,producer){
+        if(err){log.error(err); return next(err);}
+        log.debug('producer found : '+producer);
         request({
-            url: conf.api_url+'/producer/products/'+req.params.producer_id,
+            url: conf.api_url+'/producer/products/'+producer.producer_id,
             json: true
-        },function(err,response,result){
-            log.debug('products found : '+result);
-            return {producer : producer, products : result};
+        },function(err,response,products){
+            if(err){log.error(err); return next(err);}
+            log.debug('products found : '+products);
+            var action = 'form';
+            if(req.url.indexOf('view') > -1) {
+                action = 'view';
+            }
+            return res.render('producer/'+action,{menu:req.session.menu,user:req.session.user, producer : producer, products : products});
         })
-    })
-    .done(function(producer,products){
-        var action = 'form';
-        if(req.url.indexOf('view') > -1) {
-            action = 'view';
-        }
-        return res.render('producer/'+action,{menu:req.session.menu,user:req.session.user, producer : producer, products : products});
-    },function(error){
-        log.error(err);
-        return res.sendStatus(500);
     });
 }
-//return res.render('producer/form',{menu:req.session.menu,user:req.session.user});
 
 var list = function (req, res, next){
     request({
