@@ -34,42 +34,50 @@ var submit = function (req, res, next){
         },function(err,response,body){
             if(err){log.error(err); return next(err);}
             log.debug('producer inserted : ',body);
-            return res.redirect('/producer/'+body.id);
+            return res.redirect('/producer/view/'+body.id);
         });
     }
 };
 
 var remove = function(req,res,next){
-
-    console.log('TODO');
+    request({
+        uri: conf.api_url+'/producer/'+req.params.producer_id,
+        method: 'DELETE'
+    },function(err,response,body){
+        if(err){log.error(err); return next(err);}
+        log.debug('producer deleted : ',body);
+        return res.redirect('/producer/list');
+    });
 }
 
-
-
 var form = function (req, res, next){
-    request({
-        url: conf.api_url+'/producer/'+req.params.producer_id,
-        json: true
-    },function(err,response,producer){
-        if(err){log.error(err); return next(err);}
-        if(response.statusCode == 200){
-            log.debug('producer found : '+producer);
-            request({
-                url: conf.api_url+'/producer/products/'+producer._id,
-                json: true
-            },function(err,response,products){
-                if(err){log.error(err); return next(err);}
-                log.debug('products found : '+products);
-                var action = 'form';
-                if(req.url.indexOf('view') > -1) {
-                    action = 'view';
-                }
-                return res.render('producer/'+action,{menu:req.session.menu,user:req.session.user, producer : producer, products : products});
-            })
-        }else{
-            return res.redirect('/producer/list');
-        }
-    });
+    if( typeof req.params.producer_id !== 'undefined'){
+        request({
+            url: conf.api_url+'/producer/'+req.params.producer_id,
+            json: true
+        },function(err,response,producer){
+            if(err){log.error(err); return next(err);}
+            if(response.statusCode == 200){
+                log.debug('producer found : '+producer);
+                request({
+                    url: conf.api_url+'/producer/products/'+producer._id,
+                    json: true
+                },function(err,response,products){
+                    if(err){log.error(err); return next(err);}
+                    log.debug('products found : '+products);
+                    var action = 'form';
+                    if(req.url.indexOf('view') > -1) {
+                        action = 'view';
+                    }
+                    return res.render('producer/'+action,{menu:req.session.menu,user:req.session.user, producer : producer, products : products});
+                })
+            }else{
+                return res.redirect('/producer/list');
+            }
+        });
+    }else{
+        return res.render('producer/form',{menu:req.session.menu,user:req.session.user});
+    }
 }
 
 var list = function (req, res, next){

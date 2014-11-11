@@ -26,9 +26,7 @@
             {{/error}} 
             <section class="main order">
             <form action="/producer/{{producer._id}}" method="post" class="form form-horizontal">	
-                {{#producer}}
-                <h1><input id="name" name="name" value="{{^_id}}Nouveau producteur{{/_id}}{{#_id}}{{name}}{{/_id}}"></input></h1>
-                {{/producer}}
+                <h1><input id="name" name="name" value="{{^producer._id}}Nouveau producteur{{/producer._id}}{{#producer._id}}{{producer.name}}{{/producer._id}}"></input></h1>
                 <div class="row-fluid control-group">
                     <div>
                         <dl>
@@ -47,7 +45,16 @@
                             <dt>Action</dt>
                             <dd>
                             <div class="commands">
-                                <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Mettre à jour</button>
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    <span class="glyphicon glyphicon-edit">
+                                        {{^producer._id}}Ajouter{{/producer._id}}{{#producer._id}}Mettre à jour{{/producer._id}}
+                                    </span>
+                                </button>
+                                {{#producer._id}}
+                                <a class="btn btn-sm btn-primary" href="/producer/remove/{{producer._id}}">
+                                    <span class="glyphicon glyphicon-remove-circle">Supprimer</span>
+                                </a>
+                                {{/producer._id}}
                             </div>
                             </dd>
                         </dl>

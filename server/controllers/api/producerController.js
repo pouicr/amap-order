@@ -9,25 +9,41 @@ var update = function (req, res, next){
         return res.sendStatus(403);
     }else{
         var id = req.params.producer_id;
-        Producer.findOne({_id: id},function(err,_producer){
-            if(err){log.error('err : '+err); return next(err);}
-            if(_producer){
-                _producer.name = req.body.name;
-                _producer.desc = req.body.desc;
-                _producer.category = req.body.category;
-                _producer.referent = req.body.referent;
-                _producer.save();
-                return res.sendStatus(200);
-            }else{
-                return res.sendStatus(404);
-            }
-        });
+        if (id){
+            Producer.findOne({_id: id},function(err,_producer){
+                if(err){log.error('err : '+err); return next(err);}
+                if(_producer){
+                    _producer.name = req.body.name;
+                    _producer.desc = req.body.desc;
+                    _producer.category = req.body.category;
+                    _producer.referent = req.body.referent;
+                    _producer.save();
+                    return res.sendStatus(200);
+                }else{
+                    return res.sendStatus(404);
+                }
+            });
+        }else{
+            Producer.create(req.body,function(err,producer){
+                return res.json({id:producer._id});
+            });
+        }
     }
 };
 
 var remove = function(req,res,next){
-
-    console.log('TODO');
+    if(req.session.user.role != 'admin'){
+        return res.sendStatus(403);
+    }else{
+        var id = req.params.producer_id;
+        Producer.findById(id)
+        .remove()
+        .exec()
+        .then(function(err,_producer){
+            if(err){log.error('err : '+err); return next(err);}
+            return res.sendStatus(200);
+        });
+    }
 }
 
 
@@ -52,7 +68,7 @@ var get = function (req, res, next){
 var getProducts = function (req, res, next){
     var id = req.params.producer_id;
     console.log('GET products for producer :',id);
-//    Product.findAllByCategory()
+    //    Product.findAllByCategory()
     Product.findByProducer(id)
     .then(function(products){
         return res.json(products);
