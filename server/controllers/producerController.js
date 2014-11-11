@@ -9,36 +9,32 @@ request = require('request');
 
 var submit = function (req, res, next){
     var id = req.params.producer_id;
-    var producer;
+    var producer={
+        name: req.body.name,
+        desc: req.body.description,
+        referent: req.body.referent,
+        category: req.body.category
+    };
     if(id){
-        producer = Producer.findOne({_id: id},function(err,result){
-            if(err){console.log('err : '+err); return next(err);}
-            if(result){
-                if(req.session.user.role != 'admin'){
-                    return res.sendStatus(403);
-                }
-                fillProducer(req,producer,function(err,filledProducer){
-                    console.log('fill order OK');
-                    if(err){console.log('err : '+err); return next(err);}
-                    filledProducer.save(function(err,result){
-                        if(err){console.log('err : '+err); return next(err);}
-                        return res.redirect('/producer/'+result._id);
-                    });
-                });
-            }else{
-                console.log("producer not found");
-                return res.send(403);
-            }
+        request({
+            uri: conf.api_url+'/producer/'+id,
+            method: 'POST',
+            body: producer,
+            json: true
+        },function(err,response,body){
+            if(err){log.error(err); return next(err);}
+            log.debug('producer updated');
+            return res.redirect('/producer/'+id);
         });
     }else{
-        producer = new Producer();
-        fillProducer(req,producer,function(err,filledProducer){
-            console.log('fill order OK');
-            if(err){console.log('err : '+err); return next(err);}
-            filledProducer.save(function(err,result){
-                if(err){console.log('err : '+err); return next(err);}
-                return res.redirect('/producer/'+result._id);
-            });
+        request({
+            uri: conf.api_url+'/producer',
+            method: 'PUT',
+            json: producer
+        },function(err,response,body){
+            if(err){log.error(err); return next(err);}
+            log.debug('producer inserted : ',body);
+            return res.redirect('/producer/'+body.id);
         });
     }
 };
@@ -56,19 +52,23 @@ var form = function (req, res, next){
         json: true
     },function(err,response,producer){
         if(err){log.error(err); return next(err);}
-        log.debug('producer found : '+producer);
-        request({
-            url: conf.api_url+'/producer/products/'+producer.producer_id,
-            json: true
-        },function(err,response,products){
-            if(err){log.error(err); return next(err);}
-            log.debug('products found : '+products);
-            var action = 'form';
-            if(req.url.indexOf('view') > -1) {
-                action = 'view';
-            }
-            return res.render('producer/'+action,{menu:req.session.menu,user:req.session.user, producer : producer, products : products});
-        })
+        if(response.statusCode == 200){
+            log.debug('producer found : '+producer);
+            request({
+                url: conf.api_url+'/producer/products/'+producer._id,
+                json: true
+            },function(err,response,products){
+                if(err){log.error(err); return next(err);}
+                log.debug('products found : '+products);
+                var action = 'form';
+                if(req.url.indexOf('view') > -1) {
+                    action = 'view';
+                }
+                return res.render('producer/'+action,{menu:req.session.menu,user:req.session.user, producer : producer, products : products});
+            })
+        }else{
+            return res.redirect('/producer/list');
+        }
     });
 }
 

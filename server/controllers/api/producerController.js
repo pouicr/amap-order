@@ -1,6 +1,6 @@
 var Producer = require('../../db/producer'),
 Product = require('../../db/product'),
-conf = require('../../log'),
+log = require('../../log'),
 conf = require('../../conf');
 
 
@@ -9,14 +9,17 @@ var update = function (req, res, next){
         return res.sendStatus(403);
     }else{
         var id = req.params.producer_id;
-        var producer = Producer.findOne({_id: id},function(err,result){
-            if(err){console.log('err : '+err); return next(err);}
-            if(result){
-                console.log('TODO ');
+        Producer.findOne({_id: id},function(err,_producer){
+            if(err){log.error('err : '+err); return next(err);}
+            if(_producer){
+                _producer.name = req.body.name;
+                _producer.desc = req.body.desc;
+                _producer.category = req.body.category;
+                _producer.referent = req.body.referent;
+                _producer.save();
                 return res.sendStatus(200);
             }else{
-                console.log("producer not found");
-                return res.send(404);
+                return res.sendStatus(404);
             }
         });
     }
@@ -35,6 +38,10 @@ var get = function (req, res, next){
     Producer.findById(id)
     .exec()
     .then(function(producer){
+        console.log('producer found : ',producer);
+        if(!producer){
+            res.status(404).json({error:'Not found'});
+        }
         return res.json(producer);
     }),function(err){
         log.error(err); 
@@ -45,8 +52,8 @@ var get = function (req, res, next){
 var getProducts = function (req, res, next){
     var id = req.params.producer_id;
     console.log('GET products for producer :',id);
-    Product.findAllByCategory()
-//    Product.findByProducer(id)
+//    Product.findAllByCategory()
+    Product.findByProducer(id)
     .then(function(products){
         return res.json(products);
     }),function(err){

@@ -37,6 +37,7 @@ Product.statics.findByCategory = function findByCategory(category){
 }
 
 Product.statics.findByProducer = function findByProducer(producer){
+    console.log('looking for prodcuts from producer : ',producer);
     return this.model('Product').find({producer:producer}).exec()
     .then(function(products) {
         return when.resolve(products);

@@ -25,56 +25,65 @@
             </div>
             {{/error}} 
             <section class="main order">
-            {{#producer}}
-            <h1>{{^_id}}Nouveau producteur{{/_id}}{{#_id}}{{name}}{{/_id}}</h1>
-            {{/producer}}
             <form action="/producer/{{producer._id}}" method="post" class="form form-horizontal">	
+                {{#producer}}
+                <h1><input id="name" name="name" value="{{^_id}}Nouveau producteur{{/_id}}{{#_id}}{{name}}{{/_id}}"></input></h1>
+                {{/producer}}
                 <div class="row-fluid control-group">
                     <div>
                         <dl>
                             <dt>Description</dt>
-                            <dd><textarea class="form-control" id="description" required>{{producer.desc}}</textarea></dd>
+                            <dd><textarea class="form-control" name="description" id="description" required>{{producer.desc}}</textarea></dd>
+                        </dl>
+                        <dl>
+                            <dt>Catégorie</dt>
+                            <dd><input class="form-control" name="category" id="category" value="{{producer.category}}"></input></dd>
                         </dl>
                         <dl>
                             <dt>Référent</dt>
-                            <dd><input type="text" class="form-control" id="referent" value="{{producer.referent}}" required></input></dd>
+                            <dd><input type="text" class="form-control" name="referent" id="referent" value="{{producer.referent}}" required></input></dd>
                         </dl>
+                        <dl>
+                            <dt>Action</dt>
+                            <dd>
+                            <div class="commands">
+                                <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Mettre à jour</button>
+                            </div>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt data-toggle="collapse" data-target="products">Produits</dt>
+                            <dd id="products" class="collapse in">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Unité</th>
+                                    <th>Tarif</th>
+                                    <th>Action</th>
+                                </tr>
+                                {{#producer}}
+                                {{#products}}
+                                <tr>
+                                    <td>{{name}}</td>
+                                    <td>{{unit}}</td>
+                                    <td>{{price}}</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-primary" href="#">
+                                            <span class="glyphicon glyphicon-edit"></span>
+                                        </a>
+                                        <a class="btn btn-sm btn-primary" href="#">
+                                            <span class="glyphicon glyphicon-remove-circle"></span>
+                                        </a>
+                                    </tr>
+                                    {{/products}}
+                                    {{/producer}}
+                                </table>
+                                </dd>
+                                </dd>
+                            </div>
+                        </form>
+                        </section>
                     </div>
-                    <dt><a class="btn" data-toggle="collapse" data-target="#producer_{{producer._id}}">Produits : </a></dt>
-                    <dd id="producer_{{producer._id}}" class="collapse in">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>Nom</th>
-                            <th>Unité</th>
-                            <th>Tarif</th>
-                            <th>Action</th>
-                        </tr>
-                        {{#producer}}
-                        {{#products}}
-                        <tr>
-                            <td>{{name}}</td>
-                            <td>{{unit}}</td>
-                            <td>{{price}}</td>
-                            <td>
-                                <a class="btn btn-sm btn-primary" href="#">
-                                    <span class="glyphicon glyphicon-edit"></span>
-                                </a>
-                                <a class="btn btn-sm btn-primary" href="#">
-                                    <span class="glyphicon glyphicon-remove-circle"></span>
-                                </a>
-                        </tr>
-                        {{/products}}
-                        {{/producer}}
-                    </table>
-                    </dd>
-
-                    <div class="commands">
-                        <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Mettre à jour</button>
-                    </div>
-                </div>
-            </form>
-            </section>
-        </div>
-    </body>
-</html>
+                </body>
+            </html>
 
