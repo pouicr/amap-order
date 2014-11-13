@@ -60,6 +60,7 @@ var get = function (req, res, next){
         }
         return res.json(producer);
     }),function(err){
+        console.log(' errorr while looking for producer');
         log.error(err); 
         return next(err);
     };
