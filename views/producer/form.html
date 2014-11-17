@@ -1,96 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="{{root}}/css/amap.min.css">
-
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
-        <script type="application/javascript" src="{{root}}/js/common.js"></script>
-        <script type="application/javascript" src="{{root}}/js/bootstrap.min.js"></script>
-    </head>
-    <body>
-
-        <header></header>
-
-        {{> menu}}
-
-        <div class="container-fluid">
-            {{#error}} 
-            <div class="alert">  
-                <a class="close" data-dismiss="alert">×</a>  
-                <strong>Validation error!</strong>  {{error}} 
-            </div>
-            {{/error}} 
-            <section class="main order">
-            <form action="/producer/{{producer._id}}" method="post" class="form form-horizontal">	
-                <h1><input id="name" name="name" value="{{^producer._id}}Nouveau producteur{{/producer._id}}{{#producer._id}}{{producer.name}}{{/producer._id}}"></input></h1>
-                <div class="row-fluid control-group">
-                    <div>
-                        <dl>
-                            <dt>Description</dt>
-                            <dd><textarea class="form-control" name="description" id="description" required>{{producer.desc}}</textarea></dd>
-                        </dl>
-                        <dl>
-                            <dt>Catégorie</dt>
-                            <dd><input class="form-control" name="category" id="category" value="{{producer.category}}"></input></dd>
-                        </dl>
-                        <dl>
-                            <dt>Référent</dt>
-                            <dd><input type="text" class="form-control" name="referent" id="referent" value="{{producer.referent}}" required></input></dd>
-                        </dl>
-                        <dl>
-                            <dt>Action</dt>
-                            <dd>
-                            <div class="commands">
-                                <button type="submit" class="btn btn-primary btn-sm">
-                                    <span class="glyphicon glyphicon-edit">
-                                        {{^producer._id}}Ajouter{{/producer._id}}{{#producer._id}}Mettre à jour{{/producer._id}}
-                                    </span>
-                                </button>
-                                {{#producer._id}}
-                                <a class="btn btn-sm btn-primary" href="/producer/remove/{{producer._id}}">
-                                    <span class="glyphicon glyphicon-remove-circle">Supprimer</span>
-                                </a>
-                                {{/producer._id}}
-                            </div>
-                            </dd>
-                        </dl>
-                        <dl>
-                            <dt data-toggle="collapse" data-target="products">Produits</dt>
-                            <dd id="products" class="collapse in">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Unité</th>
-                                    <th>Tarif</th>
-                                    <th>Action</th>
-                                </tr>
-                                {{#producer}}
-                                {{#products}}
-                                <tr>
-                                    <td>{{name}}</td>
-                                    <td>{{unit}}</td>
-                                    <td>{{price}}</td>
-                                    <td>
-                                        <a class="btn btn-sm btn-primary" href="#">
-                                            <span class="glyphicon glyphicon-edit"></span>
-                                        </a>
-                                        <a class="btn btn-sm btn-primary" href="#">
-                                            <span class="glyphicon glyphicon-remove-circle"></span>
-                                        </a>
-                                    </tr>
-                                    {{/products}}
-                                    {{/producer}}
-                                </table>
-                                </dd>
-                                </dd>
-                            </div>
-                        </form>
-                        </section>
-                    </div>
-                </body>
-            </html>
-
+<form action="/producer/{{producer._id}}" method="post" class="form form-horizontal">	
+    <h1><input id="name" name="name" value="{{^producer._id}}Nouveau producteur{{/producer._id}}{{#producer._id}}{{producer.name}}{{/producer._id}}"></input></h1>
+    <div class="row-fluid control-group">
+        <div>
+            <dl>
+                <dt>Description</dt>
+                <dd><textarea class="form-control" name="description" id="description" required>{{producer.desc}}</textarea></dd>
+            </dl>
+            <dl>
+                <dt>Catégorie</dt>
+                <dd><input class="form-control" name="category" id="category" value="{{producer.category}}"></input></dd>
+            </dl>
+            <dl>
+                <dt>Référent</dt>
+                <dd><input type="text" class="form-control" name="referent" id="referent" value="{{producer.referent}}" required></input></dd>
+            </dl>
+            <dl>
+                <dt>Action</dt>
+                <dd>
+                <div class="commands">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <span class="glyphicon glyphicon-edit">
+                            {{^producer._id}}Ajouter{{/producer._id}}{{#producer._id}}Mettre à jour{{/producer._id}}
+                        </span>
+                    </button>
+                    {{#producer._id}}
+                    <a class="btn btn-sm btn-primary" href="/producer/remove/{{producer._id}}">
+                        <span class="glyphicon glyphicon-remove-circle">Supprimer</span>
+                    </a>
+                    {{/producer._id}}
+                </div>
+                </dd>
+            </dl>
+            <dl>
+                <dt data-toggle="collapse" data-target="products">Produits</dt>
+                <dd id="products" class="collapse in">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Nom</th>
+                        <th>Unité</th>
+                        <th>Tarif</th>
+                        <th>Action</th>
+                    </tr>
+                    {{#producer}}
+                    {{#products}}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td>{{unit}}</td>
+                        <td>{{price}}</td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" href="#">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a>
+                            <a class="btn btn-sm btn-primary" href="#">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    {{/products}}
+                    {{/producer}}
+                </table>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</form>

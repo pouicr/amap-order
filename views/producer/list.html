@@ -1,40 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="{{root}}/css/amap.min.css">
+<h1>Producteurs :</h1>
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
-        <script type="application/javascript" src="{{root}}/js/common.js"></script>
-    </head>
-    <body>
-
-        <header></header>
-
-        {{> menu}}
-
-        <div class="container-fluid">
-            <section class="main">
-            <h1>Producteurs :</h1>
-
-            {{#producers}}
-            <div class="row-fluid">
-                <dt>Producteur : <a href="/producer/view/{{_id}}">{{name}}</a></dt>
-                <dd>
-                <div class="control-group">
-                    {{desc}}
-                </div>
-                </dd>
-            </div>
-            {{/producers}}
-            <div class="commands">
-                <a href="/producer" class="btn btn-primary" role="button">Créer un producteur</a>
-            </div>
-            </section>
-        </div>
-    </body>
-</html>
-
+{{#producers}}
+<div class="row-fluid">
+    <dt>Producteur : <a href="/producer/view/{{_id}}">{{name}}</a></dt>
+    <dd>
+    <div class="control-group">
+        {{desc}}
+    </div>
+    </dd>
+</div>
+{{/producers}}
+<div class="commands">
+    <a href="/producer" class="btn btn-primary" role="button">Créer un producteur</a>
+</div>

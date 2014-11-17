@@ -1,68 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{root}}/css/amap.min.css">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
-    <script type="application/javascript" src="{{root}}/js/common.js"></script>
-    <script type="application/javascript" src="{{root}}/js/bootstrap.min.js"></script>
-  </head>
-  <body>
-
-    <header></header>
-
-    {{> menu}}
-
-    <div class="container-fluid">
-      <section class="main order">
-       <h1>Commande mensuelle</h1>
-          <form action="/order/{{producers.order_id}}" method="post" class="form form-horizontal">	
-            <div class="row-fluid">
-            {{#error}} 
-                <div class="alert">  
-                    <a class="close" data-dismiss="alert">×</a>  
-                    <strong>Validation error!</strong>  {{error}} 
-                </div>
-            {{/error}} 
-            <dd id="producer_{{_id}}" class="collapse in">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Produits</th>
-                        <th>Unité</th>
-                        <th>Tarif</th>
-                        {{#cal.cal.deliveryList}}
-                            <th>{{.}}</th>
-                        {{/cal.cal.deliveryList}}
-                    </tr>
-                    {{#cal.cal}}
-                    <tr>
-                        <td>{{name}}</td>
-                        <td>{{unit}}</td>
-                        <td>{{price}}</td>
-                        {{#valList}}
-                            <td><input type="text" name="qty_{{_id}}_s1" id="qty_{{_id}}_s1" value="{{s1}}"/></td>
-                        {{/valList}}
-                    </tr>
-                    {{/cal.cal}}
-                </table>
-            </dd>
-            <h3>Recap</h3>
-            <div>
-                <span>REF = {{producers.order_ref}}</span>
-            </div>
-            <div>
-                <span>Amount = {{producers.amount}}</span>
-            </div>            
-            <div class="commands">
-              <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Commander</button>
-            </div>
-          </form>
-      </section>
-     </div>
-  </body>
-</html>
-
+<h1>Commande mensuelle</h1>
+<form action="/order/{{producers.order_id}}" method="post" class="form form-horizontal">	
+    <div class="row-fluid">
+        {{#error}} 
+        <div class="alert">  
+            <a class="close" data-dismiss="alert">×</a>  
+            <strong>Validation error!</strong>  {{error}} 
+        </div>
+        {{/error}} 
+        <dd id="producer_{{_id}}" class="collapse in">
+        <table class="table table-bordered">
+            <tr>
+                <th>Produits</th>
+                <th>Unité</th>
+                <th>Tarif</th>
+                {{#cal.cal.deliveryList}}
+                <th>{{.}}</th>
+                {{/cal.cal.deliveryList}}
+            </tr>
+            {{#cal.cal}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{unit}}</td>
+                <td>{{price}}</td>
+                {{#valList}}
+                <td><input type="text" name="qty_{{_id}}_s1" id="qty_{{_id}}_s1" value="{{s1}}"/></td>
+                {{/valList}}
+            </tr>
+            {{/cal.cal}}
+        </table>
+        </dd>
+        <h3>Recap</h3>
+        <div>
+            <span>REF = {{producers.order_ref}}</span>
+        </div>
+        <div>
+            <span>Amount = {{producers.amount}}</span>
+        </div>            
+        <div class="commands">
+            <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Commander</button>
+        </div>
+    </div>
+</form>

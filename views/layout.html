@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="{{root}}/css/amap.min.css">
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
+        <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+        <script type="application/javascript" src="{{root}}/js/common.js"></script>
+        <script type="application/javascript" src="{{root}}/js/bootstrap.min.js"></script>
+        <script type="application/javascript" src="{{root}}/js/calendar.js"></script>
+        <script type="application/javascript" src="{{root}}/js/multi-date-picker.js"></script>
+    </head>
+    <body>
+
+        <header></header>
+
+        {{> menu}}
+
+        <div class="container-fluid">
+            {{#error}} 
+            <div class="alert">  
+                <a class="close" data-dismiss="alert">×</a>  
+                <strong>Validation error!</strong>  {{error}} 
+            </div>
+            {{/error}} 
+            <section class="main">
+                {{{yield}}}
+            </section>
+        </div>
+    </body>
+</html>
+

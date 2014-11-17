@@ -32,6 +32,7 @@ app.set('port', conf.port);
 app.set('host', conf.ip);
 app.engine('html',hogan);
 app.set('view engine', 'html');
+app.set('layout', 'layout');
 app.set('partials', {menu: 'commons/menu'});
 app.set('views', viewFolder);
 app.use(bodyParser.urlencoded({ extended: true }));

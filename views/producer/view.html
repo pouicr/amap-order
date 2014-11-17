@@ -1,74 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="{{root}}/css/amap.min.css">
-
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
-        <script type="application/javascript" src="{{root}}/js/common.js"></script>
-        <script type="application/javascript" src="{{root}}/js/bootstrap.min.js"></script>
-    </head>
-    <body>
-
-        <header></header>
-
-        {{> menu}}
-
-        <div class="container-fluid">
-            {{#error}} 
-            <div class="alert">  
-                <a class="close" data-dismiss="alert">×</a>  
-                <strong>Validation error!</strong>  {{error}} 
-            </div>
-            {{/error}} 
-            {{#producer}}
-            <section class="main order">
-            <h1>
-                {{^_id}}Nouveau producteur{{/_id}}
-                {{#_id}}{{name}}{{/_id}} 
-                {{#user.admin}}<a class="btn btn-primary" href="/producer/{{producer._id}}"><i class="icon-star icon-white"></i>Edit</a>{{/user.admin}}
-            </h1>
-            <form action="/producer/{{_id}}" method="post" class="form form-horizontal">	
-                <div class="row-fluid control-group">
-                    <div>
-                        <dl>
-                            <dt>Description</dt>
-                            <dd>{{desc}}</dd>
-                        </dl>
-                        <dl>
-                            <dt>Catégorie</dt>
-                            <dd>{{category}}</dd>
-                        </dl>
-                        <dl>
-                            <dt>Référent</dt>
-                            <dd>{{referent}}</dd>
-                        </dl>
-                    </div>
-                    <dt><a class="btn" data-toggle="collapse" data-target="#producer_{{_id}}">Produits : </a></dt>
-                    <dd id="producer_{{_id}}" class="collapse in">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>Nom</th>
-                            <th>Unité</th>
-                            <th>Tarif</th>
-                        </tr>
-                        {{#products}}
-                        <tr>
-                            <td>{{name}}</td>
-                            <td>{{unit}}</td>
-                            <td>{{price}}</td>
-                        </tr>
-                        {{/products}}
-                    </table>
-                    </dd>
-                </div>
-            </form>
-            </section>
-            {{/producer}}
+{{#producer}}
+<h1>
+    {{^_id}}Nouveau producteur{{/_id}}
+    {{#_id}}{{name}}{{/_id}} 
+    {{#user.admin}}<a class="btn btn-primary" href="/producer/{{producer._id}}"><i class="icon-star icon-white"></i>Edit</a>{{/user.admin}}
+</h1>
+<form action="/producer/{{_id}}" method="post" class="form form-horizontal">	
+    <div class="row-fluid control-group">
+        <div>
+            <dl>
+                <dt>Description</dt>
+                <dd>{{desc}}</dd>
+            </dl>
+            <dl>
+                <dt>Catégorie</dt>
+                <dd>{{category}}</dd>
+            </dl>
+            <dl>
+                <dt>Référent</dt>
+                <dd>{{referent}}</dd>
+            </dl>
         </div>
-    </body>
-</html>
-
+        <dt><a class="btn" data-toggle="collapse" data-target="#producer_{{_id}}">Produits : </a></dt>
+        <dd id="producer_{{_id}}" class="collapse in">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nom</th>
+                <th>Unité</th>
+                <th>Tarif</th>
+            </tr>
+            {{#products}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{unit}}</td>
+                <td>{{price}}</td>
+            </tr>
+            {{/products}}
+        </table>
+        </dd>
+    </div>
+</form>
+{{/producer}}

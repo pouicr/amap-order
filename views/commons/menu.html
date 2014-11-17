@@ -1,13 +1,13 @@
 <div class="nav navbar" role="naviguation">
-        <div class="container">
-          <ul class="nav nav-pills">
+    <div class="container">
+        <ul class="nav nav-pills">
             {{#menu}}
-              <li {{#active}}class="active"{{/active}}><a {{^active}}href="{{link}}"{{/active}}>{{name}}</a></li>
+            <li {{#active}}class="active"{{/active}}><a {{^active}}href="{{link}}"{{/active}}>{{name}}</a></li>
             {{/menu}}
-          </ul>
-          <div class="user pull-right">
+        </ul>
+        <div class="user pull-right">
             <span class="name">Welcome {{user.name}}</span><a class="btn" href="{{root}}/logout"><i class="icon-lock"></i></a>
-          </div>
         </div>
+    </div>
 </div>
 

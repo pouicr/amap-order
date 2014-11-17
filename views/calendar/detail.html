@@ -1,65 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" type="text/css" href="{{root}}/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="{{root}}/css/amap.min.css">
-        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+<h1>Calendrier : {{calendar.reference}}</h1>
+<form action="/calendar/{{calendar._id}}" method="post" class="form form-horizontal">	
+    <div class="row-fluid">
+        {{#error}} 
+        <div class="alert">  
+            <a class="close" data-dismiss="alert">×</a>  
+            <strong>Validation error!</strong>  {{error}} 
+        </div>
+        {{/error}}
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
-        <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-        <script type="application/javascript" src="{{root}}/js/common.js"></script>
-        <script type="application/javascript" src="{{root}}/js/bootstrap.min.js"></script>
-        <script type="application/javascript" src="{{root}}/js/calendar.js"></script>
-        <script type="application/javascript" src="{{root}}/js/jquery-dateFormat.min.js"></script>
-        <script src="http://multidatespickr.sourceforge.net/jquery-ui.multidatespicker.js"/></script>
-    </head>
-    <body>
-
-        <header></header>
-
-        {{> menu}}
-
-        <div class="container-fluid">
-            <section class="main order">
-            <h1>Calendrier : {{calendar.reference}}</h1>
-            <form action="/calendar/{{calendar._id}}" method="post" class="form form-horizontal">	
-                <div class="row-fluid">
-                    {{#error}} 
-                    <div class="alert">  
-                        <a class="close" data-dismiss="alert">×</a>  
-                        <strong>Validation error!</strong>  {{error}} 
-                    </div>
-                    {{/error}}
-
-                    <dd id="producer_{{_id}}" class="collapse in">
-                    <table id="cal_table" class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <th>Produits : unité / tarif</th>
-                                {{#items}}
-                                <th>{{delivery_date}}</th>
-                                {{/items}}
-                            </tr>
-                            {{#products}}
-                            <tr>
-                                <td>{{name}} : {{unit}} / {{price}}</td>
-                                {{#items}}
-                                <td><input type="checkbox" name="val_{{product._id}}" id="val_{{product._id}}" value=""></td>
-                                {{/items}}
-                            </tr>
-                            {{/products}}
-                        </tbody>
-                    </table>
-                    </dd>
-                    <div class="commands">
-                        <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Sauvegarder</button>
-                    </div>
-                </form>
-                </section>
-            </div>
-        </body>
-    </html>
-
+        <dd id="producer_{{_id}}" class="collapse in">
+        <table id="cal_table" class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>Produits : unité / tarif</th>
+                    {{#items}}
+                    <th>{{delivery_date}}</th>
+                    {{/items}}
+                </tr>
+                {{#products}}
+                <tr>
+                    <td>{{name}} : {{unit}} / {{price}}</td>
+                    {{#items}}
+                    <td><input type="checkbox" name="val_{{product._id}}" id="val_{{product._id}}" value=""></td>
+                    {{/items}}
+                </tr>
+                {{/products}}
+            </tbody>
+        </table>
+        </dd>
+        <div class="commands">
+            <button type="submit" class="btn btn-primary btn-large"><i class="icon-upload icon-white"></i>Sauvegarder</button>
+        </div>
+    </div>
+</form>
