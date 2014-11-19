@@ -64,7 +64,12 @@ require('./db/initDB');
 
 console.log('start the server');
 var server = http.createServer(app);
-server.listen(app.get('port'), function(err) {
-    console.log('web server listening on port '+app.get('port'));
-    console.log('web server listening on host '+app.get('host'));
-});
+
+if(!module.parent){
+    server.listen(app.get('port'), function(err) {
+        console.log('web server listening on port '+app.get('port'));
+        console.log('web server listening on host '+app.get('host'));
+    });
+}else{
+    module.exports = server;
+}
