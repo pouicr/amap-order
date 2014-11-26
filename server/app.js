@@ -71,5 +71,6 @@ if(!module.parent){
         console.log('web server listening on host '+app.get('host'));
     });
 }else{
+    console.log('export server for test mode');
     module.exports = server;
 }
