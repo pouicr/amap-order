@@ -65,8 +65,7 @@ ltest:
 	-docker run -d --name mongo_test -p 27017:27017 mongo:2.6 mongod --smallfiles
 	-docker run -v $(PWD):/data --name $(APPNAME)_test_volumes busybox true
 	sleep 6
-	-docker run --rm --volumes-from $(APPNAME)_test_volumes -p 8000:8000 $(IMAGE) test
-	-docker stop $(APPNAME)_test && docker rm $(APPNAME)_test
+	-docker run --rm --link mongo_test:mongo --volumes-from $(APPNAME)_test_volumes -p 8000:8000 $(IMAGE) test
 	-docker rm $(APPNAME)_test_volumes
 	-docker stop mongo_test && docker rm mongo_test
 
