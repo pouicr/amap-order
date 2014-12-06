@@ -1,34 +1,23 @@
 var Producer = require('../../db/producer'),
 Product = require('../../db/product'),
+Calendar = require('../../db/calendar'),
 log = require('../../log'),
 conf = require('../../conf');
 
 
 var update = function (req, res, next){
+    log.debug('insert/update calendar');
     if(req.session.user.role != 'admin'){
         return res.sendStatus(403);
     }else{
-        var id = req.params.producer_id;
-        if (id){
-            Producer.findOne({_id: id},function(err,_producer){
-                if(err){log.error('err : '+err); return next(err);}
-                if(_producer){
-                    _producer.name = req.body.name;
-                    _producer.desc = req.body.desc;
-                    _producer.category = req.body.category;
-                    _producer.referent = req.body.referent;
-                    _producer.save();
-                    return res.sendStatus(200);
-                }else{
-                    return res.sendStatus(404);
-                }
-            });
-        }else{
-            Producer.create(req.body,function(err,producer){
-                return res.json({id:producer._id});
-            });
-        }
-    }
+        var id = req.params.calendar_id;
+        Calendar.process(id,req.body)
+        .then(function(_calendar){
+            return res.json({id:_calendar._id});
+        },function(){
+            return res.sendStatus(404);
+        });
+    };
 };
 
 var remove = function(req,res,next){
@@ -63,16 +52,6 @@ var get = function (req, res, next){
     };
 };
 
-var getProducts = function (req, res, next){
-    var id = req.params.producer_id;
-    Product.findByProducer(id)
-    .then(function(products){
-        return res.json(products);
-    }),function(err){
-        log.error(err); 
-        return next(err);
-    };
-};
 
 var list = function (req, res, next){
     var limit = conf.limit;
@@ -83,7 +62,7 @@ var list = function (req, res, next){
     if (req.query.skip){
         skip = req.query.skip;
     }
-    Producer.find({})
+    Calendar.find({})
     .skip(skip)
     .limit(limit)
     .sort({
@@ -93,7 +72,6 @@ var list = function (req, res, next){
     .then(function(result){
         return res.json(result);
     }),function(err){
-        console.log('err : '+err);
         return next(err);
     };
 };
@@ -115,7 +93,6 @@ module.exports = {
     update : update,
     list :list,
     get : get,
-    getProducts : getProducts,
     get : get,
     validate :validate
 }

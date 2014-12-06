@@ -1,68 +1,46 @@
 var Order = require('../db/order'),
 Family = require('../db/family'),
+log = require('../log'),
+conf = require('../conf'),
+request = require('request'),
 Db = require('../db/db'),
 when = require('when'),
-OrderCalendar = require('../db/orderCalendar'),
 Calendar = require('../db/calendar'),
-CalendarItem = require('../db/calendarItem'),
 Product = require('../db/product'),
 moment = require('moment'),
 Producer = require('../db/producer');
 
 
 var submit = function (req, res, next){
-    var calId = req.params.calendar_id;
-    Calendar.process(calId,req.body)
-    .then(function(cal) {
-        return res.redirect('/calendar/'+cal._id);
-    }, function(err){
-        console.log('err on save calendar:'+err);
-    });
+    var id = req.params.calendar_id;
+    var calendar = {
+        reference: req.body.reference,
+        openDate: req.body.openDate,
+        endDate: req.body.endDate
+    }
+    if( typeof id !== 'undefined'){
+        request({
+            uri: conf.api_url+'/calendar/'+id,
+            method: 'POST',
+            json: calendar
+        },function(err,response,body){
+            if(err){log.error(err); return next(err);}
+            log.debug('calendar updated');
+            return res.redirect('/calendar/'+body.id);
+        });
+    }else{
+        request({
+            uri: conf.api_url+'/calendar',
+            method: 'PUT',
+            json: calendar
+        },function(err,response,body){
+            if(err){log.error(err); return next(err);}
+            log.debug('calendar inserted : ',body);
+            return res.redirect('/calendar/'+body.id);
+        });
+    }
 };
 
-var submit_old = function(req,res,next){
-    var cal = new Calendar(
-        {
-        reference: req.body.reference,
-        openDate: new Date(req.body.openDate),
-        endDate: new Date(req.body.endDate)
-    });
-    Calendar.create(cal,function(err,_cal){
-        if (err) return next(err);
-        var dateTab = req.body.itemDates.split(",");
-        for(item in req.body.itemDates.split(",")){
-            var calItem = new CalendarItem({
-                reference: _cal,
-                delivery_date: new Date(dateTab[item]),
-                products: []
-            });
-            calItem.save(function(err) {
-                if (err) throw err;
-            });
-        }
-        return res.redirect('/calendar/'+_cal._id);
-    });
-}
-
-var getLine = function(req,res,next){
-    Product.findById(req.body.id)
-    .exec()
-    .then(function(product){
-        return res.send(product);
-    });
-}
-var dateFormatter =  function(){
-    return function(text,render){
-        console.log(text);
-        console.log(render(text));
-        if(true){
-            console.log('date = '+moment(this).format('MM/DD/YY'));
-            return moment(this).format('MM/DD/YY');
-        }else{
-            return '';
-        }
-    }
-}
 var detail = function (req, res, next){
     var calId = req.params.calendar_id;
     Calendar.findById(calId)
@@ -106,16 +84,18 @@ var form = function (req, res, next){
 
 
 var list = function (req, res, next){
-    console.log('list calendar');
-    Calendar.find({},function(err,result){
-        if(err){console.log('err : '+err); return next(err);}
+    request({
+        url: conf.api_url+'/calendar',
+        json: true
+    },function(err,response,result){
+        if(err){log.error(err); return next(err);}
+        log.debug('calendars found : ',result);
         var data;
         if (!result){
             data = {menu:req.session.menu, user:req.session.user};
         }else{
             data = {menu:req.session.menu, user:req.session.user, calendars : result};
         }
-        console.log('calendar list data = %s',data);
         return res.render('calendar/list',data);
     });
 };
@@ -138,6 +118,5 @@ var validate = function (req, res, next){
         submit : submit,
         detail : detail,
         validate : validate,
-        list : list,
-        getLine : getLine
+        list : list
     }

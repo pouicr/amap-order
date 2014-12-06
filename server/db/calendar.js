@@ -33,7 +33,8 @@ Calendar.statics.process = function process (calId,data){
                 endDate: new Date(moment(data.endDate,'DD/MM/YYYY'))
             });
             return db.model('Calendar').create(calendar)
-            .then(function(cal){ 
+            .then(function(cal){
+                console.log('calendar create, will return',calendar);
                 return when.resolve(cal);
             });
         } 
@@ -44,39 +45,10 @@ Calendar.statics.process = function process (calId,data){
             console.log('Saved !!!! ');
             return when.resolve(cal);
         });
-
-        //.then(function(cal){
-        //    return when.resolve(cal);
-        //});
     });
 };
 function formatedDate (val){
     return moment(val).format('DD/MM/YYYY');
 }
-/*    db.model('Calendar').update({reference: data.name},calData,{upsert: true},function(err, _cal) {
-      db.model('Calendar').create(calendar,function(err,_calendar){
-      if(err) return err;
-      console.log("cal"+_calendar);
-      return when.resolve(_calendar);
-      })
-      if (err) return err;
-      console.log('saved _cal = ',_cal);
-      var savedItem = []
-      for(item in data.itemDates.split(",")){
-      var calItem = new CalendarItem({
-reference: _cal,
-delivery_date: new Date(item),
-products: []
-});
-calItem.save(function(err) {
-if (err) throw err;
-});
-savedItem.push(calItem);
-}
-console.log('calitems saved');
-return when.all (savedItem);
-return _cal;
-});
-};*/
 
 module.exports = db.model('Calendar', Calendar);

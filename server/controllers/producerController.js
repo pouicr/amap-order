@@ -86,7 +86,7 @@ var list = function (req, res, next){
         json: true
     },function(err,response,result){
         if(err){log.error(err); return next(err);}
-        log.debug('producer found : '+result);
+        log.debug('producer found : ',result);
         var data;
         if (!result){
             data = {menu:req.session.menu,user:req.session.user};
