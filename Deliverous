@@ -1,0 +1,3 @@
+application:
+  description: Amap Order
+  container: pouic/amap-order
