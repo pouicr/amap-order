@@ -11,10 +11,10 @@ WORKDIR /data
 
 RUN chown node:node /data
 
-USER node
-ENV HOME /home/node
-
 RUN npm install
+
+#USER node
+#ENV HOME /home/node
 
 ENTRYPOINT ["/usr/local/bin/npm"]
 

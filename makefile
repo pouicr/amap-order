@@ -3,21 +3,21 @@
 USERNAME:=pouic
 APPNAME:=amap-order
 IMAGE:=$(USERNAME)/$(APPNAME)
-MONGO_IP:=`docker inspect --format '{{ .NetworkSettings.IPAddress }}' mongo`
+MONGO_IP:=`sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' mongo`
 
-define docker_install_flags
+define sudo docker_install_flags
 --rm \
 --volumes-from $(APPNAME)_volumes
 endef
 
-define docker_run_flags
+define sudo docker_run_flags
 -p 8000:8000 \
 -it \
 --rm
 endef
 
 ifdef MONGO_IP
-	docker_run_flags += --link mongo:mongo
+	sudo docker_run_flags += --link mongo:mongo
 endif
 
 all: build
@@ -28,17 +28,16 @@ dev:
 
 volume:
 	echo "Building $(APPNAME) volumes..."
-	-docker run -v $(PWD):/data --name $(APPNAME)_volumes busybox true
+	-sudo docker run -v $(PWD):/data --name $(APPNAME)_volumes busybox true
 
 build:
-	@echo "Building $(IMAGE) docker image..."
-	docker build --rm -t $(IMAGE) .
+	@echo "Building $(IMAGE) sudo docker image..."
+	sudo docker build --rm -t $(IMAGE) .
 
 clean:
-	@echo "Removing  all docker container..."
-	-docker stop $(APPNAME)
-	-docker rm $(APPNAME)
-	-docker rm $(APPNAME)_volumes
+	@echo "Removing  all sudo docker container..."
+	-sudo docker rm $(APPNAME)
+	-sudo docker rm $(APPNAME)_volumes
 
 up: volume mongo-up run
 
@@ -46,42 +45,42 @@ down: mongo-rm clean
 
 run:
 	@echo "Running $(IMAGE) ..."
-	docker run $(docker_run_flags) --name $(APPNAME) $(IMAGE)
+	sudo docker run $(sudo docker_run_flags) --name $(APPNAME) $(IMAGE)
 
 itest:
 	@echo "Launch tests ..."
-	-docker run -d --name mongo_test -p 27017:27017 mongo:2.6 mongod --smallfiles
-	-docker run -v $(PWD):/data --name $(APPNAME)_test_volumes busybox true
+	-sudo docker run -d --name mongo_test -p 27017:27017 mongo:2.6 mongod --smallfiles
+	-sudo docker run -v $(PWD):/data --name $(APPNAME)_test_volumes busybox true
 	sleep 6
-	-docker run -p 8000:8000 -d --link mongo_test:mongo --volumes-from $(APPNAME)_test_volumes --name $(APPNAME)_test $(IMAGE)
+	-sudo docker run -p 8000:8000 -d --link mongo_test:mongo --volumes-from $(APPNAME)_test_volumes --name $(APPNAME)_test $(IMAGE)
 	sleep 2
-	-docker run --rm --volumes-from $(APPNAME)_test_volumes --link $(APPNAME)_test:server $(IMAGE) test
-	-docker stop $(APPNAME)_test && docker rm $(APPNAME)_test
-	-docker rm $(APPNAME)_test_volumes
-	-docker stop mongo_test && docker rm mongo_test
+	-sudo docker run --rm --volumes-from $(APPNAME)_test_volumes --link $(APPNAME)_test:server $(IMAGE) test
+	-sudo docker stop $(APPNAME)_test && sudo docker rm $(APPNAME)_test
+	-sudo docker rm $(APPNAME)_test_volumes
+	-sudo docker stop mongo_test && sudo docker rm mongo_test
 
 ltest:
 	@echo "Launch local tests ..."
-	-docker run -d --name mongo_test -p 27017:27017 mongo:2.6 mongod --smallfiles
-	-docker run -v $(PWD):/data --name $(APPNAME)_test_volumes busybox true
+	-sudo docker run -d --name mongo_test -p 27017:27017 mongo:2.6 mongod --smallfiles
+	-sudo docker run -v $(PWD):/data --name $(APPNAME)_test_volumes busybox true
 	sleep 6
-	-docker run --rm --link mongo_test:mongo --volumes-from $(APPNAME)_test_volumes -p 8000:8000 $(IMAGE) test
-	-docker rm $(APPNAME)_test_volumes
-	-docker stop mongo_test && docker rm mongo_test
+	-sudo docker run --rm --link mongo_test:mongo --volumes-from $(APPNAME)_test_volumes -p 8000:8000 $(IMAGE) test
+	-sudo docker rm $(APPNAME)_test_volumes
+	-sudo docker stop mongo_test && sudo docker rm mongo_test
 
 install:
 	@echo "Installing $(IMAGE) ..."
-	docker run $(docker_install_flags) $(IMAGE) install
+	sudo docker run $(sudo docker_install_flags) $(IMAGE) install
 
 shell:
 	@echo "Shell..."
-	docker run $(docker_run_flags) --entrypoint /bin/bash $(IMAGE) -c bash
+	sudo docker run $(sudo docker_run_flags) --entrypoint /bin/bash $(IMAGE) -c bash
 
 mongo-cli:
-	docker run --rm -it --link mongo:mongo mongo:2.6 mongo $(MONGO_IP)/mydb
+	sudo docker run --rm -it --link mongo:mongo mongo:2.6 mongo $(MONGO_IP)/mydb
 
 mongo-up:
-	-docker run -d --name mongo -v /var/data/amap:/data/db -p 27017:27017 mongo:2.6 mongod --smallfiles
+	-sudo docker run -d --name mongo -v /var/data/amap:/data/db -p 27017:27017 mongo:2.6 mongod --smallfiles
 
 mongo-rm:
-	-docker stop mongo && docker rm mongo
+	-sudo docker stop mongo && sudo docker rm mongo
