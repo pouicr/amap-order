@@ -10,14 +10,14 @@ define sudo docker_install_flags
 --volumes-from $(APPNAME)_volumes
 endef
 
-define sudo docker_run_flags
+define docker_run_flags
 -p 8000:8000 \
 -it \
 --rm
 endef
 
 ifdef MONGO_IP
-	sudo docker_run_flags += --link mongo:mongo
+	docker_run_flags += --link mongo:mongo
 endif
 
 all: build
@@ -45,7 +45,7 @@ down: mongo-rm clean
 
 run:
 	@echo "Running $(IMAGE) ..."
-	sudo docker run $(sudo docker_run_flags) --name $(APPNAME) $(IMAGE)
+	sudo docker run $(docker_run_flags) --name $(APPNAME) $(IMAGE)
 
 itest:
 	@echo "Launch tests ..."

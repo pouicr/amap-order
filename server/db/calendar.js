@@ -14,19 +14,15 @@ Calendar.statics.process = function process (calId,data){
     return this.model('Calendar').findById(calId)
     .exec()
     .then(function(calendar){
-        console.log('calendddar found : ',calendar);
         if ( calendar != null){
-            console.log('non vide  ');
             calendar.reference = data.reference;
             calendar.openDate = new Date(moment(data.openDate,'DD/MM/YYYY'));
             calendar.endDate = new Date(moment(data.endDate,'DD/MM/YYYY'));
-            console.log('will save :  ',calendar);
-            return db.model('Calendar').update({reference: calendar.reference},calendar,{upsert: true},function(err,cal){
+            return db.model('Calendar').update({_id:calId},calendar,{upsert: true},function(err,cal){
                 console.log('Saved !!!! ');
                 return when.resolve(cal);
             });
         }else{
-            console.log('vide !!!!');
             calendar = new(db.model('Calendar'))({
                 reference: data.reference,
                 openDate: new Date(moment(data.openDate,'DD/MM/YYYY')),
@@ -34,17 +30,9 @@ Calendar.statics.process = function process (calId,data){
             });
             return db.model('Calendar').create(calendar)
             .then(function(cal){
-                console.log('calendar create, will return',calendar);
                 return when.resolve(cal);
             });
         } 
-        var dataCal = calendar.toObject();
-        delete dataCal._id;
-        console.log('will save :  ',calendar);
-        return db.model('Calendar').update({reference: calendar.reference},calendar,{upsert: true},function(err,cal){
-            console.log('Saved !!!! ');
-            return when.resolve(cal);
-        });
     });
 };
 function formatedDate (val){

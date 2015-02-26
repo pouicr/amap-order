@@ -66,20 +66,20 @@ var detail = function (req, res, next){
 };
 
 var form = function (req, res, next){
-    var calId = req.params.calendar_id;
-    Calendar.findById(calId)
-    .populate('cal.calendarItems')
-    .exec()
-    .then(function(result){
-        if(!result){
-            return res.render('calendar/form',{menu : req.session.menu, user : req.session.user});
-        }else{
-            return res.render('calendar/form',{menu : req.session.menu, user : req.session.user, calendar : result});
-        }
-    },function(err){
-        console.log('err in form calendar : '+err);
-        return next(err);
-    });
+    var id = req.params.calendar_id;
+    if( typeof id !== 'undefined'){
+        request({
+            uri: conf.api_url+'/calendar/'+id,
+            method: 'GET',
+            json: true
+        },function(err,response,_calendar){
+            _calendar.openDate = moment(_calendar.openDate).format('DD/MM/YYYY');
+            _calendar.endDate = moment(_calendar.endDate).format('DD/MM/YYYY');
+            return res.render('calendar/form',{menu : req.session.menu, user : req.session.user, calendar : _calendar });
+        });
+    }else{
+        return res.render('calendar/form',{menu : req.session.menu, user : req.session.user});
+    }
 };
 
 
@@ -113,10 +113,10 @@ var validate = function (req, res, next){
 
 
 
-    module.exports = {
-        form : form,
-        submit : submit,
-        detail : detail,
-        validate : validate,
-        list : list
-    }
+module.exports = {
+    form : form,
+    submit : submit,
+    detail : detail,
+    validate : validate,
+    list : list
+}

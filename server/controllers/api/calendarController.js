@@ -24,28 +24,27 @@ var remove = function(req,res,next){
     if(req.session.user.role != 'admin'){
         return res.sendStatus(403);
     }else{
-        var id = req.params.producer_id;
-        Producer.findById(id)
+        var id = req.params.calendar_id;
+        Calendar.findById(id)
         .remove()
         .exec()
-        .then(function(err,_producer){
+        .then(function(err,_calendar){
             if(err){log.error('err : '+err); return next(err);}
             return res.sendStatus(200);
         });
     }
 }
 
-
-
 var get = function (req, res, next){
-    var id = req.params.producer_id;
-    Producer.findById(id)
+    var id = req.params.calendar_id;
+    log.debug('get cal : ',id);
+    Calendar.findById(id)
     .exec()
-    .then(function(producer){
-        if(!producer){
+    .then(function(calendar){
+        if(!calendar){
             res.status(404).json({error:'Not found'});
         }
-        return res.json(producer);
+        return res.json(calendar);
     }),function(err){
         log.error(err); 
         return next(err);
