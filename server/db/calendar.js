@@ -18,10 +18,8 @@ Calendar.statics.process = function process (calId,data){
             calendar.reference = data.reference;
             calendar.openDate = new Date(moment(data.openDate,'DD/MM/YYYY'));
             calendar.endDate = new Date(moment(data.endDate,'DD/MM/YYYY'));
-            return db.model('Calendar').update({_id:calId},calendar,{upsert: true},function(err,cal){
-                console.log('Saved !!!! ');
-                return when.resolve(cal);
-            });
+            calendar.save();
+            return calendar;
         }else{
             calendar = new(db.model('Calendar'))({
                 reference: data.reference,

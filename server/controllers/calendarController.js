@@ -25,7 +25,7 @@ var submit = function (req, res, next){
             json: calendar
         },function(err,response,body){
             if(err){log.error(err); return next(err);}
-            log.debug('calendar updated');
+            log.debug('calendar updated',body);
             return res.redirect('/calendar/'+body.id);
         });
     }else{
