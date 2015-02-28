@@ -16,7 +16,8 @@ var submit = function (req, res, next){
     var calendar = {
         reference: req.body.reference,
         openDate: req.body.openDate,
-        endDate: req.body.endDate
+        endDate: req.body.endDate,
+        distDates: req.body.distDates
     }
     if( typeof id !== 'undefined'){
         request({
@@ -41,30 +42,6 @@ var submit = function (req, res, next){
     }
 };
 
-var detail = function (req, res, next){
-    var calId = req.params.calendar_id;
-    Calendar.findById(calId)
-    .exec()
-    .then(function(result){
-        if(!result){
-            return res.redirect('/calendar/form');
-        }else{
-            Product.find({})
-            .exec()
-            .then(function(products){
-                CalendarItem.find({reference: result._id})
-                .exec()
-                .then(function(calItem){
-                    return res.render('calendar/detail',{menu : req.session.menu, user : req.session.user, calendar : result, products : products, items: calItem});
-                });
-            });
-        }
-    },function(err){
-        console.log('err in form calendar : '+err);
-        return next(err);
-    });
-};
-
 var form = function (req, res, next){
     var id = req.params.calendar_id;
     if( typeof id !== 'undefined'){
@@ -75,6 +52,13 @@ var form = function (req, res, next){
         },function(err,response,_calendar){
             _calendar.openDate = moment(_calendar.openDate).format('DD/MM/YYYY');
             _calendar.endDate = moment(_calendar.endDate).format('DD/MM/YYYY');
+            console.log('calendar = ',_calendar);
+            var distDates = _calendar.distDates;
+            var formatedDistDates = Array();
+            for (d in distDates){
+                formatedDistDates.push(moment(distDates[d]).format('DD/MM/YYYY'));
+            }
+            _calendar.distDates = formatedDistDates;
             return res.render('calendar/form',{menu : req.session.menu, user : req.session.user, calendar : _calendar });
         });
     }else{
@@ -116,7 +100,6 @@ var validate = function (req, res, next){
 module.exports = {
     form : form,
     submit : submit,
-    detail : detail,
     validate : validate,
     list : list
 }

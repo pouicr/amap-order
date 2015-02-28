@@ -5,12 +5,13 @@ when = require('when');
 
 var Calendar = new db.Schema(
     {
-    reference      : { type: String , required: true, index: true}
-    , openDate     : { type : Date, required: true, get : formatedDate }
-    , endDate      : { type : Date, required: true, get : formatedDate }
+    reference       : { type: String , required: true, index: true}
+    , openDate      : { type : Date, required: true}
+    , endDate       : { type : Date, required: true}
+    , distDates     : [ { type : Date} ]
 });
 
-Calendar.statics.process = function process (calId,data){
+Calendar.statics.update = function process (calId,data){
     return this.model('Calendar').findById(calId)
     .exec()
     .then(function(calendar){
@@ -18,6 +19,10 @@ Calendar.statics.process = function process (calId,data){
             calendar.reference = data.reference;
             calendar.openDate = new Date(moment(data.openDate,'DD/MM/YYYY'));
             calendar.endDate = new Date(moment(data.endDate,'DD/MM/YYYY'));
+            dates = data.distDates.split(',');
+            for (d in dates){
+                calendar.distDates.push(new Date(moment(dates[d],'DD/MM/YYYY')));
+            }
             calendar.save();
             return calendar;
         }else{
@@ -26,15 +31,24 @@ Calendar.statics.process = function process (calId,data){
                 openDate: new Date(moment(data.openDate,'DD/MM/YYYY')),
                 endDate: new Date(moment(data.endDate,'DD/MM/YYYY'))
             });
-            return db.model('Calendar').create(calendar)
-            .then(function(cal){
-                return when.resolve(cal);
+            dates = data.distDates.split(',');
+            for (d in dates){
+                calendar.distDates.push(new Date(moment(dates[d],'DD/MM/YYYY')));
+            }
+            return db.model('Calendar').create(calendar,function(err, cal){
+                return cal;
             });
         } 
     });
 };
-function formatedDate (val){
-    return moment(val).format('DD/MM/YYYY');
+
+Calendar.statics.findCurrent = function findCurrent(){
+    return this.model('Calendar').find({openDate : { $lt : new Date()}, endDate : { $gt : new Date()}})
+        .exec()
+        .then(function(cal) {
+            console.log('cal found ',cal);
+            return when.resolve(cal);
+        });
 }
 
 module.exports = db.model('Calendar', Calendar);

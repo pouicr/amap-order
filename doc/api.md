@@ -64,22 +64,7 @@ Calendar
 [get]   /calendar/{id}/dates    get calendar's delivery dates
 [post]  /calendar               add a calendar
 [post]  /calendar/{id}          update calendar
+[post]  /calendar/dates/{date}  add a delivery date (return delivery dates)
 [delete]/calendar/{id}          delete calendar
+[delete]/calendar/dates/{date}  delete a delivery date (return delivery dates)
 
-
-
-CalendarItem
----
-
-{
-    reference    :  { type: db.Schema.Types.ObjectId, ref: 'Calendar', required: true }
-  , delivery_date:  { type: Date, required: true }
-  , product      :  { type: db.Schema.Types.ObjectId, ref: 'Product', required: true }
-  , price        :  { type: Number, required: true }
-})
-
-
-[get]   /item/date/products/{date}         get products item for a particular calendar date
-[get]   /item/date/product/{date}/{id}     get an calendar item (for a date and a product)
-[post]  /item/date/product/{date}/{id}     create a calendar item for a product and a date
-[delete]/item/date/product/{date}/{id}     delete calendar a calendar item 
