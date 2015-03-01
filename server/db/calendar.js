@@ -19,9 +19,13 @@ Calendar.statics.update = function process (calId,data){
             calendar.reference = data.reference;
             calendar.openDate = new Date(moment(data.openDate,'DD/MM/YYYY'));
             calendar.endDate = new Date(moment(data.endDate,'DD/MM/YYYY'));
-            dates = data.distDates.split(',');
-            for (d in dates){
-                calendar.distDates.push(new Date(moment(dates[d],'DD/MM/YYYY')));
+            if (data.distDates != ''){
+                dates = data.distDates.split(',');
+                calendar.distDates = Array();
+                for (d in dates){
+                    var dateToPush = new Date(moment(dates[d],'DD/MM/YYYY'));
+                    calendar.distDates.push(dateToPush);
+                }
             }
             calendar.save();
             return calendar;
@@ -31,9 +35,11 @@ Calendar.statics.update = function process (calId,data){
                 openDate: new Date(moment(data.openDate,'DD/MM/YYYY')),
                 endDate: new Date(moment(data.endDate,'DD/MM/YYYY'))
             });
-            dates = data.distDates.split(',');
-            for (d in dates){
-                calendar.distDates.push(new Date(moment(dates[d],'DD/MM/YYYY')));
+            if (data.distDates != ''){
+                dates = data.distDates.split(',');
+                for (d in dates){
+                    calendar.distDates.push(new Date(moment(dates[d],'DD/MM/YYYY')));
+                }
             }
             return db.model('Calendar').create(calendar,function(err, cal){
                 return cal;
@@ -44,11 +50,11 @@ Calendar.statics.update = function process (calId,data){
 
 Calendar.statics.findCurrent = function findCurrent(){
     return this.model('Calendar').find({openDate : { $lt : new Date()}, endDate : { $gt : new Date()}})
-        .exec()
-        .then(function(cal) {
-            console.log('cal found ',cal);
-            return when.resolve(cal);
-        });
+    .exec()
+    .then(function(cal) {
+        console.log('cal found ',cal);
+        return when.resolve(cal);
+    });
 }
 
 module.exports = db.model('Calendar', Calendar);

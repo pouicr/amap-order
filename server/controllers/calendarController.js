@@ -19,6 +19,7 @@ var submit = function (req, res, next){
         endDate: req.body.endDate,
         distDates: req.body.distDates
     }
+    console.log('calendar to insert = ',calendar);
     if( typeof id !== 'undefined'){
         request({
             uri: conf.api_url+'/calendar/'+id,
@@ -52,11 +53,11 @@ var form = function (req, res, next){
         },function(err,response,_calendar){
             _calendar.openDate = moment(_calendar.openDate).format('DD/MM/YYYY');
             _calendar.endDate = moment(_calendar.endDate).format('DD/MM/YYYY');
-            console.log('calendar = ',_calendar);
             var distDates = _calendar.distDates;
-            var formatedDistDates = Array();
+            var formatedDistDates = '';
             for (d in distDates){
-                formatedDistDates.push(moment(distDates[d]).format('DD/MM/YYYY'));
+                if ( d > 0) formatedDistDates = formatedDistDates+', ';
+                formatedDistDates = formatedDistDates+moment(distDates[d]).format('DD/MM/YYYY');
             }
             _calendar.distDates = formatedDistDates;
             return res.render('calendar/form',{menu : req.session.menu, user : req.session.user, calendar : _calendar });

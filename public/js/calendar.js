@@ -31,19 +31,17 @@ var addLine = function (){
 };
 
 $().ready(function() {
-    $(".multical").each(function() {
-        $(this).multiDatesPicker({
-            dateFormat: "dd/mm/yy",
-            addDates : $(this).val().split(',')
-        });
-    });
 
     $(".cal").each(function() {
         $(this).multiDatesPicker({
             dateFormat: "dd/mm/yy",
-            addDates : $(this).val(),
             maxPicks:1
         });
     });
 
+    $(".multical").each(function() {
+            $(this).multiDatesPicker({
+                dateFormat: "dd/mm/yy"
+            });
+    });
 });

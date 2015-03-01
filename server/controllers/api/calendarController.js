@@ -13,7 +13,6 @@ var update = function (req, res, next){
         var id = req.params.calendar_id;
         Calendar.update(id,req.body)
         .then(function(_calendar){
-            console.log('calendar updated : ',_calendar);
             return res.json({id:_calendar._id});
         },function(){
             return res.sendStatus(404);

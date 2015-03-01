@@ -21,7 +21,6 @@ var configureUser = function(req, res, next){
                 u.admin='bla';
                 req.session.menu.push({name: 'Admin', link: '/admin'});
             }
-            console.log('user : ',u);
             req.session.user = u;
             return next();
         })
