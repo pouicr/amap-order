@@ -22,7 +22,6 @@ Producer
 ?page=y                 get specific page
 [get]   /producer/{id}  get producer
 [post]  /producer       add a producer
-[post]  /producer/product/{id}  add a product to a producer
 [post]  /producer/{id}  update producer
 [delete]/producer/{id}  delete producer
 

@@ -3,7 +3,8 @@ var
     order = require('./api/order'),
     admin = require('./api/admin'),*/
     calendar = require('./api/calendar'),
-    producer = require('./api/producer')
+    producer = require('./api/producer'),
+    product = require('./api/product')
     ;
 
 module.exports = function(server){
@@ -11,6 +12,7 @@ module.exports = function(server){
 /*        admin: admin(server),
         order: order(server),*/
         producer: producer(server),
+        product: product(server),
         calendar: calendar(server)
     }
 };
