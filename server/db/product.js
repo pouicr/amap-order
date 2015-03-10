@@ -9,6 +9,7 @@ var Product = new db.Schema(
   , desc        :  { type: String}
   , unit        :  { type: String, required: true }
   , price       :  { type: Number, required: true }
+  , available   :  { type: Boolean, required: true, default:true}
   , update_date :  { type: Date, default: Date.now }
   , producer    :  { type: db.Schema.Types.ObjectId, ref: 'Producer', required: true}
 });
@@ -36,9 +37,9 @@ Product.statics.findByCategory = function findByCategory(category){
     });
 }
 
-Product.statics.findByProducer = function findByProducer(producer){
+Product.statics.findActiveByProducer = function findByProducer(producer){
     console.log('looking for prodcuts from producer : ',producer);
-    return this.model('Product').find({producer:producer}).exec()
+    return this.model('Product').find({producer:producer,available:true}).exec()
     .then(function(products) {
         return when.resolve(products);
     });

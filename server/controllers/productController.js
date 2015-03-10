@@ -41,11 +41,12 @@ var submit = function (req, res, next){
 var remove = function(req,res,next){
     request({
         uri: conf.api_url+'/product/'+req.params.product_id,
-        method: 'DELETE'
-    },function(err,response,body){
+        method: 'DELETE',
+        json: true
+    },function(err,response,product){
         if(err){log.error(err); return next(err);}
-        log.debug('product deleted : ',body);
-        return res.redirect(req.originalUrl);
+        log.debug('product deleted : ',product);
+        return res.redirect('/producer/'+product.producer);
     });
 }
 

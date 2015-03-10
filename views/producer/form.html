@@ -1,7 +1,7 @@
-<form action="/producer/{{producer._id}}" method="post" class="form form-horizontal">	
-    <h1><input id="name" name="name" value="{{^producer._id}}Nouveau producteur{{/producer._id}}{{#producer._id}}{{producer.name}}{{/producer._id}}"></input></h1>
-    <div class="row-fluid control-group">
-        <div>
+<h1><input id="name" name="name" value="{{^producer._id}}Nouveau producteur{{/producer._id}}{{#producer._id}}{{producer.name}}{{/producer._id}}"></input></h1>
+<div class="row-fluid control-group">
+    <div>
+        <form action="/producer/{{producer._id}}" method="post" class="form form-horizontal">	
             <dl>
                 <dt>Description</dt>
                 <dd><textarea class="form-control" name="description" id="description" required>{{producer.desc}}</textarea></dd>
@@ -31,36 +31,51 @@
                 </div>
                 </dd>
             </dl>
-            <dl>
-                <dt data-toggle="collapse" data-target="products">Produits</dt>
-                <dd id="products" class="collapse in">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Nom</th>
-                        <th>Unité</th>
-                        <th>Tarif</th>
-                        <th>Action</th>
-                    </tr>
-                    {{#producer}}
-                    {{#products}}
-                    <tr>
-                        <td>{{name}}</td>
-                        <td>{{unit}}</td>
-                        <td>{{price}}</td>
-                        <td>
-                            <a class="btn btn-sm btn-primary" href="#">
-                                <span class="glyphicon glyphicon-edit"></span>
-                            </a>
-                            <a class="btn btn-sm btn-primary" href="/product/delete/{{_id}}">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                            </a>
-                        </td>
-                    </tr>
-                    {{/products}}
-                    {{/producer}}
-                </table>
-                </dd>
-            </dl>
-        </div>
+        </form>
     </div>
-</form>
+    <div>
+        <dl>
+            <dt data-toggle="collapse" data-target="products_col">Produits</dt>
+            <dd id="products_col" class="collapse in">
+            <table id="products" class="table table-bordered">
+                <tbody>
+                <tr>
+                    <th>Nom</th>
+                    <th>Unité</th>
+                    <th>Tarif</th>
+                    <th>Action</th>
+                </tr>
+                {{#producer}}
+                {{#products}}
+                <tr id="{{_id}}">
+                    <td>
+                        <input type="text" class="form-control" name="name" id="name" value="{{name}}" required></input>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="unit" id="unit" value="{{unit}}" required></input>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="price" id="price" value="{{price}}" required></input>
+                    </td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="javascript:updateProduct('{{_id}}')">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        <a class="btn btn-sm btn-primary" href="/product/remove/{{_id}}">
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                        </a>
+                    </td>
+                </tr>
+                {{/products}}
+                {{/producer}}
+            </tbody>
+            </table>
+            <div id="add">
+                <a class="btn btn-sm btn-primary" href="javascript:addProduct()">
+                    <span class="glyphicon glyphicon-remove-circle">Ajouter un produit</span>
+                </a>
+            </div>
+            </dd>
+        </dl>
+    </div>
+</div>

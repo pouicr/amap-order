@@ -65,7 +65,7 @@ var get = function (req, res, next){
 
 var getProducts = function (req, res, next){
     var id = req.params.producer_id;
-    Product.findByProducer(id)
+    Product.findActiveByProducer(id)
     .then(function(products){
         return res.json(products);
     }),function(err){

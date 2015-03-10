@@ -35,12 +35,11 @@ var remove = function(req,res,next){
         return res.sendStatus(403);
     }else{
         var id = req.params.product_id;
-        Product.findById(id)
-        .remove()
-        .exec()
-        .then(function(err,_product){
+        Product.findById(id,function(err,_product){
             if(err){log.error('err : '+err); return next(err);}
-            return res.sendStatus(200);
+            _product.available = false;
+            _product.save();
+            return res.json(_product);
         });
     }
 }
