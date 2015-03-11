@@ -43,6 +43,7 @@ Product
 
 [get]   /product       get product list
 [get]   /product/{id}  get product
+[post]  /product       create product
 [post]  /product/{id}  update product
 [delete]/product/{id}  delete product
 

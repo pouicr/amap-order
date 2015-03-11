@@ -1,39 +1,50 @@
 var updateProduct = function(id){
     if(id == 'new'){
-        alert('new');
+        var tr = $('#new');
+        var p = {};
+        p.producer = $('#producer_id').val();
+        p.name = tr.find("input[id='name']").val();
+        p.unit = tr.find("input[id='unit']").val();
+        p.price = tr.find("input[id='price']").val();
+        $.ajax({
+            url : "/api/product",
+            type: "POST",
+            data : p,
+            success: function(data, status, jqXHR){
+                tr.find("a[id='updateLink']").attr("href","javascript:updateProduct('"+data+"')");
+                tr.children().last('<td>').append('<a class="btn btn-sm btn-primary" href="/product/remove/'+data+'"><span class="glyphicon glyphicon-remove-circle"></span></a>');
+                tr.attr("id",data);
+            },complete: function(jqXHR, status){
+                //alert('complete');
+            },error: function(jqXHR, status, errorThrown){
+                //err
+                alert(status);
+            }
+        });
     }else{
-        alert('update');
+        var tr = $('#'+id);
+        var p = {};
+        p.producer = $('#producer_id').val();
+        p.name = tr.find("input[id='name']").val();
+        p.unit = tr.find("input[id='unit']").val();
+        p.price = tr.find("input[id='price']").val();
+        $.ajax({
+            url : "/api/product/"+id,
+            type: "POST",
+            data : p,
+            success: function(data, status, jqXHR){
+            },complete: function(jqXHR, status){
+                //alert('complete');
+            },error: function(jqXHR, status, errorThrown){
+                //err
+                alert(status);
+            }
+        });
     }
-    /*    $('#product').find(":selected").remove();
-          $.ajax({
-url : "/calendar/getLine",
-type: "POST",
-data : {id:id},
-success: function(data, status, jqXHR){
-    //add line to the table
-    $('#cal_table')
-    .find('tbody')
-    .append($('<tr>')
-    .append($('<td>')
-    .text(data.name))
-    .append($('<td>')
-    .text(data.unit))
-    .append($('<td>')
-    .text(data.price))
-    .append($('<td>')
-    .append('<input type="text" value="02-16-2014" name="val_'+id+'" id="val_'+id+'">')));
-    },complete: function(jqXHR, status){
-    $("#val_"+id).multiDatesPicker();
-    },error: function(jqXHR, status, errorThrown){
-    //err
-    alert(status);
-    }
-    });*/
 };
 
 
 var addProduct = function(){
-    alert('add');
     $('#products').find('tbody')
     .append($('<tr id="new">')
             .append($('<td>')
@@ -43,5 +54,5 @@ var addProduct = function(){
                             .append($('<td>')
                                     .append('<input type="text" class="form-control" name="price" id="price" value="prix" required></input>'))
                                     .append($('<td>')
-                                            .append('<a class="btn btn-sm btn-primary" href="javascript:updateProduct(\'new\')"><span class="glyphicon glyphicon-edit"></span></a>')));
+                                            .append('<a id="updateLink" class="btn btn-sm btn-primary" href="javascript:updateProduct(\'new\')"><span class="glyphicon glyphicon-edit"></span></a>')));
 }

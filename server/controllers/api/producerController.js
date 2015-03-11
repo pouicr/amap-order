@@ -5,6 +5,7 @@ conf = require('../../conf');
 
 
 var update = function (req, res, next){
+    log.debug('update producer');
     if(req.session.user.role != 'admin'){
         return res.sendStatus(403);
     }else{

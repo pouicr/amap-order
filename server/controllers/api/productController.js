@@ -7,24 +7,25 @@ var update = function (req, res, next){
     if(req.session.user.role != 'admin'){
         return res.sendStatus(403);
     }else{
-        var id = req.params.producer_id;
+        var id = req.params.product_id;
+        log.debug('update product :',id);
         if (id){
-            Producer.findOne({_id: id},function(err,_producer){
+            Product.findOne({_id: id},function(err,_product){
                 if(err){log.error('err : '+err); return next(err);}
-                if(_producer){
-                    _producer.name = req.body.name;
-                    _producer.desc = req.body.desc;
-                    _producer.category = req.body.category;
-                    _producer.referent = req.body.referent;
-                    _producer.save();
+                if(_product){
+                    _product.name = req.body.name;
+                    _product.unit = req.body.unit;
+                    _product.price = req.body.price;
+                    _product.save();
                     return res.sendStatus(200);
                 }else{
                     return res.sendStatus(404);
                 }
             });
         }else{
-            Producer.create(req.body,function(err,producer){
-                return res.json({id:producer._id});
+            Product.create(req.body,function(err,product){
+                if(err){log.error('err : ',err); return res.sendStatus(400);}
+                return res.json(product._id);
             });
         }
     }

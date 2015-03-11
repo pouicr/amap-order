@@ -5,7 +5,7 @@ var db = require('./db'),
 var Product = new db.Schema(
 {
     name        :  { type: String, required: true }
-  , category    :  { type: String, required: true, index: true}
+  , category    :  { type: String, index: true}
   , desc        :  { type: String}
   , unit        :  { type: String, required: true }
   , price       :  { type: Number, required: true }
