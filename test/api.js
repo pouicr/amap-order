@@ -7,6 +7,7 @@ describe('Routing', function() {
     //var url = process.env.SERVER_PORT.replace('tcp','http');
     var url;
 
+    this.timeout(50000);
     // within before() you can run all the operations that are needed to setup your tests. In this case
     // I want to create a connection with the database, and when I'm done, I call done().
     before(function(done) {
