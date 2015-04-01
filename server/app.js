@@ -60,12 +60,12 @@ function errorHandler(err, req, res, next) {
 require('./routes')(app);
 require('./routes/api')(app);
 
-require('./db/initDB');
 
 console.log('start the server');
 var server = http.createServer(app);
 
 if(!module.parent){
+    require('./db/initDB');
     server.listen(app.get('port'), function(err) {
         console.log('web server listening on port '+app.get('port'));
         console.log('web server listening on host '+app.get('host'));

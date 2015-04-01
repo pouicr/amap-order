@@ -49,19 +49,14 @@ run:
 
 itest:
 	@echo "Launch tests ..."
-	-sudo docker run -d --name mongo_test -p 27017:27017 mongo:2.6 mongod --smallfiles
-	-sudo docker run -v $(PWD):/data --name $(APPNAME)_test_volumes busybox true
-	sleep 6
-	-sudo docker run -p 8000:8000 -d --link mongo_test:mongo --volumes-from $(APPNAME)_test_volumes --name $(APPNAME)_test $(IMAGE)
-	sleep 2
-	-sudo docker run --rm --volumes-from $(APPNAME)_test_volumes --link $(APPNAME)_test:server $(IMAGE) test
-	-sudo docker stop $(APPNAME)_test && sudo docker rm $(APPNAME)_test
-	-sudo docker rm $(APPNAME)_test_volumes
+	-sudo docker run -d --name mongo_test -p 27017:27017 mongo:3 mongod --smallfiles
+	sleep 4
+	-sudo docker run -p 8000:8000 --rm --link mongo_test:mongo --name $(APPNAME)_test $(IMAGE) test
 	-sudo docker stop mongo_test && sudo docker rm mongo_test
 
 ltest:
 	@echo "Launch local tests ..."
-	-sudo docker run -d --name mongo_test -p 27017:27017 mongo:2.6 mongod --smallfiles
+	-sudo docker run -d --name mongo_test -p 27017:27017 mongo:3 mongod --smallfiles
 	-sudo docker run -v $(PWD):/data --name $(APPNAME)_test_volumes busybox true
 	sleep 6
 	-sudo docker run --rm --link mongo_test:mongo --volumes-from $(APPNAME)_test_volumes -p 8000:8000 $(IMAGE) test
@@ -77,10 +72,10 @@ shell:
 	sudo docker run $(sudo docker_run_flags) --entrypoint /bin/bash $(IMAGE) -c bash
 
 mongo-cli:
-	sudo docker run --rm -it --link mongo:mongo mongo:2.6 mongo $(MONGO_IP)/mydb
+	sudo docker run --rm -it --link mongo:mongo mongo:3 mongo $(MONGO_IP)/mydb
 
 mongo-up:
-	-sudo docker run -d --name mongo -v /var/data/amap:/data/db -p 27017:27017 mongo:2.6 mongod --smallfiles
+	-sudo docker run -d --name mongo -v /var/data/amap:/data/db -p 27017:27017 mongo:3 mongod --smallfiles
 
 mongo-rm:
 	-sudo docker stop mongo && sudo docker rm mongo

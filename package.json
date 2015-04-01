@@ -13,7 +13,7 @@
         "js-yaml": "2.0.5",
         "less-middleware": "1.0.4",
         "hogan-express": "0.5.2",
-        "mongoose": "3.8.8",
+        "mongoose": "4.0.1",
         "when":"3.5.1",
         "slugs":"0.1.2",
         "moment":"2.8.3",
