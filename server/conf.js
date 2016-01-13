@@ -6,7 +6,10 @@ var conf = function() {
     c.limit = 10;
     c.api_url = 'http://localhost:8000/api'
     
-    if (process.env.MONGO_PORT_27017_TCP_ADDR){
+    if (process.env.MONGODB_SERVICE_HOST){
+        console.log('mongo from docker link');
+        c.dburl = process.env.MONGODB_SERVICE_HOST +':'+ process.env.MONGODB_SERVICE_HOST + '/mydb';
+    }else if (process.env.MONGO_PORT_27017_TCP_ADDR){
         console.log('mongo from docker link');
         c.dburl = process.env.MONGO_PORT_27017_TCP_ADDR +':'+ process.env.MONGO_PORT_27017_TCP_PORT + '/mydb';
     }else if (process.env.MONGOLAB_URI){
