@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 RUN npm install
 
-
+EXPOSE 8000
 ENTRYPOINT ["/usr/local/bin/npm"]
 
 CMD ["start"]
