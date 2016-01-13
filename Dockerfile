@@ -1,5 +1,5 @@
 # docker build -t pouic/amap-order .
-FROM dockerfile/nodejs
+FROM google/nodejs
 
 RUN useradd node
 RUN chown node:node -R /data
