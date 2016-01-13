@@ -1,20 +1,11 @@
 # docker build -t pouic/amap-order .
-FROM google/nodejs
+FROM node
 
-RUN useradd node
-RUN chown node:node -R /data
-RUN mkdir /home/node
-RUN chown node:node /home/node
-
-ADD . /data
-WORKDIR /data
-
-RUN chown node:node /data
+ADD . /usr/src/app
+WORKDIR /usr/src/app
 
 RUN npm install
 
-#USER node
-#ENV HOME /home/node
 
 ENTRYPOINT ["/usr/local/bin/npm"]
 
